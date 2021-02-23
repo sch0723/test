@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.persistence.*;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Table
@@ -32,9 +33,11 @@ public class Users implements Serializable {
 
 	private String usersEmail;
 
-	@OneToMany(mappedBy = "users")
+	@OneToMany(mappedBy = "users",cascade = CascadeType.ALL)
+	@ToString.Exclude
 	private Set<Cart> usersCart = new HashSet<>();
 
-	@OneToMany(mappedBy = "users")
+	@OneToMany(mappedBy = "users",cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+	@ToString.Exclude
 	private List<Orders> usersOrders = new ArrayList<>();
 }

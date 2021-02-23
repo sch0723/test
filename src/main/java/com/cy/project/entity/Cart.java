@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Table
@@ -25,11 +26,12 @@ public class Cart implements Serializable {
 	//@Column
 	//private Integer cartPrice;
 
-	@ManyToOne
-	@JoinColumn(name="users_id")
+	@ManyToOne(targetEntity = Users.class)
+	@JoinColumn(name="usersId",referencedColumnName = "usersId")
+	@ToString.Exclude
 	private Users users;
 
-	@ManyToOne
-	@JoinColumn(name="product_id")
+	@ManyToOne(targetEntity = Product.class ,cascade = CascadeType.DETACH)
+	@JoinColumn(name="productId",referencedColumnName = "productId")
 	private Product product;
 }

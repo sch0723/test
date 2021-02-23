@@ -1,6 +1,7 @@
 package com.cy.project.entity;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -18,12 +19,13 @@ public class  OrdersDetail implements Serializable {
 
     private Integer ordersDetailProductNums;
 
-    @ManyToOne
-    @JoinColumn(name="product_id")
+    @ManyToOne(targetEntity = Product.class ,cascade = CascadeType.DETACH)
+    @JoinColumn(name="productId",referencedColumnName = "productId")
     private Product product;
 
-    @ManyToOne
-    @JoinColumn(name="orders_id")
+    @ManyToOne(targetEntity = Orders.class)
+    @JoinColumn(name="ordersId",referencedColumnName = "ordersId")
+    @ToString.Exclude
     private Orders orders;
 
 }

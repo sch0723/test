@@ -29,13 +29,15 @@ public class Product implements Serializable {
 
 	private Integer productNumsOfSale;
 
+	private String productCategory;
+
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date productDate;
 
-	@OneToMany(mappedBy = "product")
-	private Set<Cart> productCart = new HashSet<>();
-
-	@OneToMany(mappedBy = "product")
-	private Set<OrdersDetail> productOrdersDetail = new HashSet<>();
+//	@OneToMany(mappedBy = "product")
+//	private Set<Cart> productCart = new HashSet<>();
+//
+//	@OneToMany(mappedBy = "product")
+//	private Set<OrdersDetail> productOrdersDetail = new HashSet<>();
 
 }

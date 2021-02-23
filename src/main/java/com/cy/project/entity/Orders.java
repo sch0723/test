@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.persistence.*;
 
 import lombok.Data;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 
@@ -36,11 +37,13 @@ public class Orders implements Serializable {
 
 	private Integer ordersState;
 
-	@ManyToOne
-	@JoinColumn(name="users_id")
+	@ManyToOne(targetEntity = Users.class)
+	@JoinColumn(name="usersId",referencedColumnName = "usersId")
+	@ToString.Exclude
 	private Users users;
 
-	@OneToMany(mappedBy = "orders")
+	@OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
+	@ToString.Exclude
 	private Set<OrdersDetail> ordersOrdersDetail = new HashSet<>();
 
 

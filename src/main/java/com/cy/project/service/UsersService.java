@@ -2,7 +2,6 @@ package com.cy.project.service;
 
 import com.cy.project.entity.Users;
 import com.cy.project.repository.UsersRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,14 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UsersService {
 
-    private final UsersRepository usersRepository;
+    private final UsersRepository ur;
 
     public UsersService(UsersRepository usersRepository) {
-        this.usersRepository = usersRepository;
+        this.ur = usersRepository;
     }
 
-
     public Users findByUsersAccount(String account){
-        return usersRepository.findByUsersAccount(account);
+        return ur.findByUsersAccount(account);
     }
 }
