@@ -17,20 +17,20 @@ import java.util.List;
 @Service
 public class ProductService {
 
-    private final int PAGESIZE=20;
+    //每頁商品數目
+    private final int PAGESIZE=12;
 
     private final ProductRepository pr;
-
     public ProductService(ProductRepository productRepository){this.pr=productRepository;}
 
 
     //搜索全商品
-    public Page<Product> findByOrderPage(String orderType, String orderBy, Integer pageIndex){
+    public Page<Product> findBySortPage(String sortType, String sortBy, Integer pageIndex){
         Sort sort;
-        if("DESC".equals(orderType)){
-            sort = Sort.by(orderBy).descending();
+        if("DESC".equals(sortType)){
+            sort = Sort.by(sortBy).descending();
         }else {
-            sort = Sort.by(orderBy).ascending();
+            sort = Sort.by(sortBy).ascending();
         }
         Pageable pageable = PageRequest.of(pageIndex-1, PAGESIZE, sort);
 
@@ -38,12 +38,12 @@ public class ProductService {
     }
 
     //搜索分類商品
-    public Page<Product> findByCategoryOrderPage(String category,String orderType,String orderBy, Integer pageIndex){
+    public Page<Product> findByCategorySortPage(String category,String sortType,String sortBy, Integer pageIndex){
         Sort sort;
-        if("DESC".equals(orderType)){
-            sort = Sort.by(orderBy).descending();
+        if("DESC".equals(sortType)){
+            sort = Sort.by(sortBy).descending();
         }else {
-            sort = Sort.by(orderBy).ascending();
+            sort = Sort.by(sortBy).ascending();
         }
         Pageable pageable = PageRequest.of(pageIndex-1, PAGESIZE, sort);
 
@@ -51,12 +51,12 @@ public class ProductService {
     }
 
     //like搜索單一條件
-    public Page<Product> findByKeywordOrderPage(String keyword, String orderType, String orderBy, Integer pageIndex){
+    public Page<Product> findByKeywordSortPage(String keyword, String sortType, String sortBy, Integer pageIndex){
         Sort sort;
-        if("DESC".equals(orderType)){
-            sort = Sort.by(orderBy).descending();
+        if("DESC".equals(sortType)){
+            sort = Sort.by(sortBy).descending();
         }else {
-            sort = Sort.by(orderBy).ascending();
+            sort = Sort.by(sortBy).ascending();
         }
         Pageable pageable = PageRequest.of(pageIndex-1, PAGESIZE, sort);
 
@@ -66,12 +66,12 @@ public class ProductService {
     }
 
     //like搜索多條件
-    public Page<Product> findByKeywordsOrderPage(String[] keywords, String orderType, String orderBy, Integer pageIndex){
+    public Page<Product> findByKeywordsSortPage(String[] keywords, String sortType, String sortBy, Integer pageIndex){
         Sort sort;
-        if("DESC".equals(orderType)){
-            sort = Sort.by(orderBy).descending();
+        if("DESC".equals(sortType)){
+            sort = Sort.by(sortBy).descending();
         }else {
-            sort = Sort.by(orderBy).ascending();
+            sort = Sort.by(sortBy).ascending();
         }
         Pageable pageable = PageRequest.of(pageIndex-1, PAGESIZE, sort);
 
