@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 public class UsersService {
 
     private final UsersRepository ur;
@@ -15,7 +14,7 @@ public class UsersService {
         this.ur = usersRepository;
     }
 
-    public Users findByUsersAccount(String account){
+    public Users findByUsersAccount(String account) {
         return ur.findByUsersAccount(account);
     }
 }

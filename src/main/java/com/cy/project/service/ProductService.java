@@ -32,7 +32,7 @@ public class ProductService {
         }else {
             sort = Sort.by(sortBy).ascending();
         }
-        Pageable pageable = PageRequest.of(pageIndex-1, PAGESIZE, sort);
+        Pageable pageable = PageRequest.of(pageIndex, PAGESIZE, sort);
 
         return pr.findAll(pageable);
     }
@@ -45,7 +45,7 @@ public class ProductService {
         }else {
             sort = Sort.by(sortBy).ascending();
         }
-        Pageable pageable = PageRequest.of(pageIndex-1, PAGESIZE, sort);
+        Pageable pageable = PageRequest.of(pageIndex, PAGESIZE, sort);
 
         return pr.findByproductCategory(category,pageable);
     }
@@ -58,7 +58,7 @@ public class ProductService {
         }else {
             sort = Sort.by(sortBy).ascending();
         }
-        Pageable pageable = PageRequest.of(pageIndex-1, PAGESIZE, sort);
+        Pageable pageable = PageRequest.of(pageIndex, PAGESIZE, sort);
 
         Specification<Product> sp= (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(root.get("productName"),"%"+keyword+"%");
 
@@ -73,12 +73,12 @@ public class ProductService {
         }else {
             sort = Sort.by(sortBy).ascending();
         }
-        Pageable pageable = PageRequest.of(pageIndex-1, PAGESIZE, sort);
+        Pageable pageable = PageRequest.of(pageIndex, PAGESIZE, sort);
 
         Specification<Product> sp= (root, criteriaQuery, criteriaBuilder) -> {
-            List<Predicate> predicates=new ArrayList<>();
+            List<Predicate> predicates = new ArrayList<>();
             for (String keyword : keywords) {
-                predicates.add(criteriaBuilder.like(root.get("productName"),"%"+keyword+"%"));
+                predicates.add(criteriaBuilder.like(root.get("productName"), "%" + keyword + "%"));
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
