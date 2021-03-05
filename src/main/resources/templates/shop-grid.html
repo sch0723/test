@@ -13,84 +13,215 @@
 </head>
 
 <body>
-    <div th:replace="common::preloder"></div>
-    <div th:replace="common::humbergeroverlay"></div>
-    <div th:replace="common::humbergerwrapper"></div>
-    <div th:replace="common::headersection"></div>
-    <div th:replace="common::herosection"></div>
+<div th:replace="common::preloder"></div>
+<div th:replace="common::humbergeroverlay"></div>
+<div th:replace="common::humbergerwrapper"></div>
+<div th:replace="common::headersection"></div>
+<div th:replace="common::herosection"></div>
 
 
-
-    <!-- Product Section Begin -->
-    <section class="product spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-5">
-                    <div class="sidebar">
-                        <div class="sidebar__item">
-                            <h4>商品分類</h4>
-                            <ul>
-                                <li><a href="category">七龍珠</a></li>
-                                <li><a href="category">鋼彈</a></li>
-                                <li><a href="category">航海王</a></li>
-                                <li><a href="category">鬼滅之刃</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-9 col-md-7">
-                    <div class="filter__item">
-                        <div class="row">
-                            <div class="col-lg-4 col-md-8">
-                                <div class="filter__sort">
-                                    <span>Sort By</span>
-                                    <select>
-                                        <option value="0">Default</option>
-                                        <option value="0">Default</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-3">
-                                <div class="filter__found">
-                                    <h6><span>16</span> Products found</h6>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-1">
-                                <div class="filter__option">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="res/img/product/product-1.jpg">
-                                    <ul class="product__item__pic__hover">
-                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <h6><a href="#">Crab Pool Security</a></h6>
-                                    <h5>$30.00</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product__pagination">
-                        <a href="#">1</a>
-                        <a href="#">2</a>
-                        <a href="#">3</a>
-                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+<!-- Product Section Begin -->
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-5">
+                <div class="sidebar">
+                    <div class="sidebar__item">
+                        <h4>商品分類</h4>
+                        <ul id="category">
+                            <li><a class="category" href="">七龍珠</a></li>
+                            <li><a class="category" href="">鋼彈</a></li>
+                            <li><a class="category" href="">航海王</a></li>
+                            <li><a class="category" href="">鬼滅之刃</a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
+            <div class="col-lg-9 col-md-7">
+                <div class="filter__item">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-8">
+                            <div class="filter__sort">
+                                <span>Sort By</span>
+                                <select id="sortSelect">
+                                    <option value="productIdASC" id="AAA">Default</option>
+                                    <option value="PriceDESC">PriceDESC</option>
+                                    <option value="PriceASC">PriceASC</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3">
+                            <div class="filter__found">
+                                <h6><span id="totalElements">16</span> Products found</h6>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-1">
+                            <div class="filter__option">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="content">
+
+                </div>
+                <div class="product__pagination" id="totalPages">
+                    <a href="" >1</a>
+                    <a href="">2</a>
+                    <a href="">3</a>
+                </div>
+            </div>
         </div>
-    </section>
-    <!-- Product Section End -->
+        <input id="search" type="hidden" value="all" name="search">
+        <input id="sort" type="hidden" value="productIdASC" name="sort">
+        <input id="page" type="hidden" value="1" name="page">
+    </div>
+</section>
+<!-- Product Section End -->
+
+<script>
+
+    window.onload = function () {
+
+        $.ajax({
+            url: "/grid/all",
+            method: "GET",
+            async: true,
+            success: function (data) {
+                //商品個數
+                const totalElements = data.totalElements;
+                $("#totalElements").html(totalElements)
+                //頁數
+                const totalPages = data.totalPages + 1;
+                let pageStr = "";
+                for (let i = 1; i < totalPages; i++) {
+                    pageStr +="<a  class='pages' href=''>" + i + "</a>";
+                }
+                $("#totalPages").html(pageStr)
+                //商品
+                let content = data.content;
+                let contentStr="";
+                for (let i = 0; i < content.length; i++) {
+                    contentStr+= "<div class='col-lg-4 col-md-6 col-sm-6'><div class='product__item'><div class='product__item__pic set-bg' ><img src='"+content[i].productImg+"'><ul class='product__item__pic__hover'><li><a href='#shopping-cart'><i class='fa fa-shopping-cart'></i></a></li></ul></div> <div class='product__item__text'><h6><a href='#productName'>"+content[i].productName+"</a></h6><h5>$"+content[i].productPrice+"</h5></div></div></div>";
+                }
+                $("#content").html(contentStr)
+            }
+        });
 
 
-    <div th:replace="common::footersection"></div>
-    <div th:replace="common::commonscript"></div>
+        $(".category").on('click', function a() {
+            $("#search").val($(this).html())
+            const search = $("#search").val();
+            $.ajax({
+                url: "/grid/category/" + search,
+                method: "GET",
+                async: true,
+                success: function (data) {
+
+                    //重置排序
+                    $('.nice-select span').html('Default')
+                    $('.nice-select ul .selected').removeClass('selected')
+                    $('.nice-select ul li:first').addClass('selected');
+                    $("#sort").val('productIdASC');
+
+                    //商品個數
+                    const totalElements = data.totalElements;
+                    $("#totalElements").html(totalElements)
+                    //頁數
+                    const totalPages = data.totalPages + 1;
+                    let pageStr = "";
+                    for (let i = 1; i < totalPages; i++) {
+                        pageStr +="<a class='pages' href=''>" + i + "</a>";
+                    }
+                    $("#totalPages").html(pageStr)
+                    //商品
+                    let content = data.content;
+                    let contentStr="";
+                    for (let i = 0; i < content.length; i++) {
+                        contentStr+= "<div class='col-lg-4 col-md-6 col-sm-6'><div class='product__item'><div class='product__item__pic set-bg' ><img src='"+content[i].productImg+"'><ul class='product__item__pic__hover'><li><a href='#shopping-cart'><i class='fa fa-shopping-cart'></i></a></li></ul></div> <div class='product__item__text'><h6><a href='#productName'>"+content[i].productName+"</a></h6><h5>$"+content[i].productPrice+"</h5></div></div></div>";
+                    }
+                    $("#content").html(contentStr)
+                }
+            });
+
+            return false;
+        });
+
+
+        $("#sortSelect").on('change', function a() {
+            $("#sort").val($("#sortSelect option:selected").val());
+            const search = $("#search").val();
+            const sort = $("#sort").val();
+
+            $.ajax({
+                url: "/grid/"+search+"/" + sort,
+                method: "GET",
+                async: true,
+                success: function (data) {
+                    //商品個數
+                    const totalElements = data.totalElements;
+                    $("#totalElements").html(totalElements)
+                    //頁數
+                    const totalPages = data.totalPages + 1;
+                    let pageStr = "";
+                    for (let i = 1; i < totalPages; i++) {
+                        pageStr +="<a class='pages' href=''>" + i + "</a>";
+                    }
+                    $("#totalPages").html(pageStr)
+                    //商品
+                    let content = data.content;
+                    let contentStr="";
+                    for (let i = 0; i < content.length; i++) {
+                        contentStr+= "<div class='col-lg-4 col-md-6 col-sm-6'><div class='product__item'><div class='product__item__pic set-bg' ><img src='"+content[i].productImg+"'><ul class='product__item__pic__hover'><li><a href='#shopping-cart'><i class='fa fa-shopping-cart'></i></a></li></ul></div> <div class='product__item__text'><h6><a href='#productName'>"+content[i].productName+"</a></h6><h5>$"+content[i].productPrice+"</h5></div></div></div>";
+                    }
+                    $("#content").html(contentStr)
+                }
+            });
+
+            return false;
+        });
+
+        $(document).on("click",".pages",function a() {
+            $("#page").val($(this).html());
+            const search = $("#search").val();
+            const sort = $("#sort").val();
+            const page = $("#page").val();
+            $.ajax({
+                url: "/grid/"+search+"/" + sort+"/"+page,
+                method: "GET",
+                async: true,
+                success: function (data) {
+                    //商品個數
+                    const totalElements = data.totalElements;
+                    $("#totalElements").html(totalElements)
+                    //頁數
+                    const totalPages = data.totalPages + 1;
+                    let pageStr = "";
+                    for (let i = 1; i < totalPages; i++) {
+                        pageStr +="<a class='pages' href=''>" + i + "</a>";
+                    }
+                    $("#totalPages").html(pageStr)
+                    //商品
+                    let content = data.content;
+                    let contentStr="";
+                    for (let i = 0; i < content.length; i++) {
+                        contentStr+= "<div class='col-lg-4 col-md-6 col-sm-6'><div class='product__item'><div class='product__item__pic set-bg' ><img src='"+content[i].productImg+"'><ul class='product__item__pic__hover'><li><a href='#shopping-cart'><i class='fa fa-shopping-cart'></i></a></li></ul></div> <div class='product__item__text'><h6><a href='#productName'>"+content[i].productName+"</a></h6><h5>$"+content[i].productPrice+"</h5></div></div></div>";
+                    }
+                    $("#content").html(contentStr)
+                }
+            });
+
+            return false;
+        });
+
+
+
+
+    }
+</script>
+
+
+<div th:replace="common::footersection"></div>
+<div th:replace="common::commonscript"></div>
 </body>
 
 </html>
