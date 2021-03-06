@@ -8,10 +8,7 @@ import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @Transactional
@@ -50,20 +47,13 @@ public class ProductController {
             page = ps.findByCategorySortPage(productType, sortType, sortBy, pageIndex - 1);
         }
 
-        for (Product p : page) {
-            System.out.println(p);
-        }
-        System.out.println("都走這裡");
 
         return page;
     }
 
     @GetMapping(value = "/keys/{sort}/{pageIndex}")
     @ResponseBody
-    public Page<Product>  productKeysPage(@PathVariable String sort, @PathVariable Integer pageIndex, @RequestAttribute String[] arr) {
-
-
-        System.out.println(arr);
+    public Page<Product>  productKeysPage(@PathVariable String sort, @PathVariable Integer pageIndex, @RequestParam(value="keywords[]")String[] keywords) {
 
         String sortType = "ASC";
         String sortBy = "productId";
@@ -77,13 +67,7 @@ public class ProductController {
         }
 
         Page<Product> page;
-        page = ps.findByKeywordsSortPage(arr, sortType, sortBy, pageIndex-1);
-
-
-        for (Product p : page) {
-            System.out.println(p);
-        }
-        System.out.println("??");
+        page = ps.findByKeywordsSortPage(keywords, sortType, sortBy, pageIndex-1);
 
         return page;
     }
