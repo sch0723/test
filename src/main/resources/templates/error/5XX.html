@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ogani Template">
+    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>5XX</title>
+
+    <link th:replace="common::commonhead">
+</head>
+
+<body>
+<div th:replace="common::preloder"></div>
+<div th:replace="common::humbergeroverlay"></div>
+<div th:replace="common::humbergerwrapper"></div>
+<div th:replace="common::headersection"></div>
+<div th:replace="common::herosection"></div>
+<!--    <div th:replace="common::breadcrumbsection"></div>-->
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-2 col-md-2">
+        </div>
+        <div class="col-lg-8 col-md-8">
+            <h1>5XX錯誤頁面</h1>
+            <p th:text="${timestamp}"></p>
+            <p th:text="${status}"></p>
+            <p th:text="${error}"></p>
+            <p th:text="${message}"></p>
+            <p th:text="${path}"></p>
+        </div>
+        <div class="col-lg-2 col-md-2">
+        </div>
+    </div>
+</div>
+
+
+<div th:replace="common::footersection"></div>
+<div th:replace="common::commonscript"></div>
+</body>
+
+</html>

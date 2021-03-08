@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -21,7 +22,12 @@ public class ProductService {
     private final int PAGESIZE=12;
 
     private final ProductRepository pr;
+
     public ProductService(ProductRepository productRepository){this.pr=productRepository;}
+
+    public Optional<Product> findByProductId(Integer id){
+        return pr.findById(id);
+    }
 
 
     //搜索全商品

@@ -10,6 +10,13 @@
     <title>Ogani | Template</title>
 
     <link th:replace="common::commonhead">
+
+    <style>
+        .pages-focus{
+            background: #7fad39;
+            border-color: #7fad39;
+        }
+    </style>
 </head>
 
 <body>
@@ -29,10 +36,10 @@
                     <div class="sidebar__item">
                         <h4>商品分類</h4>
                         <ul id="category">
-                            <li><a class="category" href="">七龍珠</a></li>
-                            <li><a class="category" href="">鋼彈</a></li>
-                            <li><a class="category" href="">海賊王</a></li>
-                            <li><a class="category" href="">鬼滅之刃</a></li>
+                            <li><a class="category" href="/category/七龍珠">七龍珠</a></li>
+                            <li><a class="category" href="/category/鋼彈">鋼彈</a></li>
+                            <li><a class="category" href="/category/海賊王">海賊王</a></li>
+                            <li><a class="category" href="/category/鬼滅之刃">鬼滅之刃</a></li>
                         </ul>
                     </div>
                 </div>
@@ -52,7 +59,7 @@
                         </div>
                         <div class="col-lg-4 col-md-3">
                             <div class="filter__found">
-                                <h6><span id="totalElements">16</span> Products found</h6>
+                                <h6><span id="totalElements" th:text="${pageData.totalElements}">16</span> Products found</h6>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-1">
@@ -61,16 +68,34 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" id="content">
-
+                <div class="row" id="content" th:if="${pageData}">
+                    <div class='col-lg-4 col-md-6 col-sm-6' th:each="product:${pageData}">
+                        <div class='product__item'>
+                            <div class='product__item__pic set-bg1'><img th:src="${product.productImg}" alt=''>
+                                <ul class='product__item__pic__hover'>
+                                    <li>
+                                        <a href='#shopping-cart'>
+                                            <i class='fa fa-shopping-cart'></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class='product__item__text'>
+                                <h6>
+                                    <a  th:href="'/product/'+${product.productId}" th:text='${product.productName}'></a>
+                                </h6>
+                                <h5 th:text="'$'+${product.productPrice}"></h5>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="product__pagination" id="totalPages">
-                    <a href="">1</a>
-                    <a href="">2</a>
-                    <a href="">3</a>
+                <div class="product__pagination" id="totalPages" th:if="${pageData}">
+                    <a href="" class='pages' th:each="i:${#numbers.sequence(1, pageData.totalPages)}" th:text="${i}">1</a>
                 </div>
             </div>
         </div>
+        <input type="hidden" id="search" th:value="${search}"/>
+        <input type="hidden" id="getKeys" th:value="${getKeys}"/>
     </div>
 </section>
 <!-- Product Section End -->

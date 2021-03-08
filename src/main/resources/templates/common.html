@@ -15,6 +15,7 @@
           type="text/css">
     <link rel="stylesheet" href="res/css/slicknav.min.css" th:href="@{/res/css/slicknav.min.css}" type="text/css">
     <link rel="stylesheet" href="res/css/style.css" th:href="@{/res/css/style.css}" type="text/css">
+
 </head>
 <body>
 
@@ -27,24 +28,26 @@
 <div th:fragment="humbergeroverlay" class="humberger__menu__overlay"></div>
 <div th:fragment="humbergerwrapper" class="humberger__menu__wrapper">
     <div class="humberger__menu__logo">
-        <a href="#"><img src="res/img/logo.png" alt=""></a>
+        <a href="#"><img src="/res/img/logo.png" alt=""></a>
     </div>
     <div class="humberger__menu__cart">
         <ul>
-            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>0</span></a></li>
         </ul>
-        <div class="header__cart__price">item: <span>$150.00</span></div>
+        <div class="header__cart__price">item: $<span>0</span></div>
     </div>
     <div class="humberger__menu__widget">
 
         <div class="header__top__right__auth">
-            <a href="#"><i class="fa fa-user"></i> Login</a>
+            <a href="/login"><i class="fa fa-user"></i> Login</a>
         </div>
     </div>
     <nav class="humberger__menu__nav mobile-menu">
         <ul>
             <li class="active"><a href="./index.html">Home</a></li>
             <li><a href="./blog.html">Oders</a></li>
+            <li><a href="/iii">4XX</a></li>
+            <li><a href="/getError">5XX</a></li>
         </ul>
     </nav>
     <div id="mobile-menu-wrap"></div>
@@ -71,7 +74,7 @@
                 <div class="col-lg-6">
                     <div class="header__top__right">
                         <div class="header__top__right__auth">
-                            <a href="#"><i class="fa fa-user"></i> Login</a>
+                            <a href="/login"><i class="fa fa-user"></i> Login</a>
                         </div>
                     </div>
                 </div>
@@ -82,7 +85,7 @@
         <div class="row">
             <div class="col-lg-3">
                 <div class="header__logo">
-                    <a href="./index.html"><img src="res/img/logo.png" alt=""></a>
+                    <a href="/"><img src="/res/img/logo.png" alt=""></a>
                 </div>
             </div>
             <div class="col-lg-6">
@@ -98,9 +101,9 @@
             <div class="col-lg-3">
                 <div class="header__cart">
                     <ul>
-                        <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                        <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>0</span></a></li>
                     </ul>
-                    <div class="header__cart__price">item: <span>$150.00</span></div>
+                    <div class="header__cart__price">item: $<span>0</span></div>
                 </div>
             </div>
         </div>
@@ -122,7 +125,7 @@
                     <div class="hero__search__form">
                         <form action="/keys">
 
-                            <input id="keywords" type="text" value="" placeholder="What do yo u need?">
+                            <input id="keywords" name="keywords" type="text" value="" placeholder="What do yo u need?">
                             <button id="submit" type="submit" class="site-btn">SEARCH</button>
                         </form>
                     </div>
@@ -134,23 +137,6 @@
 </section>
 <!-- Hero Section End -->
 
-<!-- Breadcrumb Section Begin -->
-<section th:fragment="breadcrumbsection" class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <div class="breadcrumb__text">
-                    <h2>Organi Shop</h2>
-                    <div class="breadcrumb__option">
-                        <a href="./index.html">Home</a>
-                        <span>Shop</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Breadcrumb Section End -->
 
 
 <!-- Footer Section Begin -->
@@ -167,7 +153,7 @@
                                     href="https://colorlib.com" target="_blank">Colorlib</a>
                             <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
                     </div>
-                    <div class="footer__copyright__payment"><img src="res/img/payment-item.png" alt=""></div>
+<!--                    <div class="footer__copyright__payment"><img src="/res/img/payment-item.png" alt=""></div>-->
                 </div>
             </div>
         </div>
