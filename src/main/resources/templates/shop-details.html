@@ -18,7 +18,6 @@
 <div th:replace="common::humbergerwrapper"></div>
 <div th:replace="common::headersection"></div>
 <div th:replace="common::herosection"></div>
-<!--    <div th:replace="common::breadcrumbsection"></div>-->
 
 
     <!-- Product Details Section Begin -->
@@ -48,7 +47,8 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="#" class="primary-btn" id="addToCart">ADD TO CART</a>
+                        <input type="hidden" th:value="${product.productId}" id="productId"/>
+                        <a href="#" class="primary-btn addToCart">ADD TO CART</a>
                         <ul>
                         </ul>
                     </div>
@@ -60,10 +60,12 @@
 
 <script>
     window.onload = function () {
+        let productId=$("#productId").val();
 
-        alert(window.location.href);
-        $('#addToCart').on('click', function () {
-            alert($("#pro-qty").val())
+        $('.addToCart').on('click', function () {
+            let productNums=$("#pro-qty").val();
+            alert(productId)
+            alert(productNums)
             return false;
         });
 

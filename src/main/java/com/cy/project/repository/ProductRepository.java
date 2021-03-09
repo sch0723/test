@@ -12,12 +12,6 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Integer> , JpaSpecificationExecutor<Product> {
 
-    Product findByProductId(Integer id);
-
-    Page<Product> findByproductCategory(String productCategory, Pageable pageable);
-
-    Product findByproductDate(Integer id);
-
-
+    Page<Product> findByProductCategory(String productCategory, Pageable pageable);
 
 }

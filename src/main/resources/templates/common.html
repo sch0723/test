@@ -32,7 +32,7 @@
     </div>
     <div class="humberger__menu__cart">
         <ul>
-            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>0</span></a></li>
+            <li><a href="/cart"><i class="fa fa-shopping-bag"></i> <span>0</span></a></li>
         </ul>
         <div class="header__cart__price">item: $<span>0</span></div>
     </div>
@@ -42,7 +42,7 @@
         </div>
     </div>
     <div class="humberger__menu__widget" th:if="${session.users}">
-        <i>Hi! sss</i>
+        <i th:text="'Hi! '+${session.users.getUsersAccount()}"></i>
         &nbsp;&nbsp;&nbsp;
         <div class="header__top__right__auth">
             <a href="/logout">Logout</a>
@@ -84,7 +84,7 @@
                         </div>
                     </div>
                     <div class="header__top__right" th:if="${session.users}">
-                        <i>Hi! sss</i>
+                        <i th:text="'Hi! '+${session.users.getUsersAccount()}"></i>
                         &nbsp;&nbsp;&nbsp;
                         <div class="header__top__right__auth">
                             <a href="/logout">Logout</a>
@@ -114,7 +114,7 @@
             <div class="col-lg-3">
                 <div class="header__cart">
                     <ul>
-                        <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>0</span></a></li>
+                        <li><a href="/cart"><i class="fa fa-shopping-bag"></i> <span>0</span></a></li>
                     </ul>
                     <div class="header__cart__price">item: $<span>0</span></div>
                 </div>

@@ -87,6 +87,15 @@ window.onload = function () {
 
     $("#totalPages a:first").addClass("pages-focus").siblings().removeClass("pages-focus");
 
+
+
+    //添加商品到購物車
+    $('.addToCart').on('click', function () {
+        let productId=$(this).parent().parent().val();
+        alert(productId);
+        return false;
+    });
+
     //依分類載入商品
     // $(".category").on('click', function a() {
     //     search = $(this).html();

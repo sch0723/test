@@ -4,9 +4,7 @@ import com.cy.project.entity.Users;
 import com.cy.project.service.UsersService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -32,11 +30,8 @@ public class UserController {
 
 
     @PostMapping (value = "/verifyUsers")
-    public String productById(@RequestParam(value="usersAccount")String usersAccount, @RequestParam(value="usersPwd")String usersPwd,
-                              Model model, HttpSession session) {
+    public String productById(String usersAccount, String usersPwd, Model model, HttpSession session, @CookieValue(value = "preURI",required = false)String preURI) {
 
-        System.out.println(usersAccount);
-        System.out.println(usersPwd);
 
         Users users = us.findByUsersAccount(usersAccount);
         if(users==null){
@@ -49,7 +44,10 @@ public class UserController {
         }
         session.setAttribute("users",users);
 
-        System.out.println("111");
+        if ("/cart".equals(preURI)){
+            return "redirect:/cart";
+        }
+
         return "redirect:/";
     }
 

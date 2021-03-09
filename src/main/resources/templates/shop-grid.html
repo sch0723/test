@@ -73,9 +73,9 @@
                         <div class='product__item'>
                             <div class='product__item__pic set-bg1'><img th:src="${product.productImg}" alt=''>
                                 <ul class='product__item__pic__hover'>
-                                    <li>
-                                        <a href='#shopping-cart'  th:value="${product.productId}">
-                                            <i class='fa fa-shopping-cart'></i>
+                                    <li  th:value="${product.productId}" class="productId">
+                                        <a href=''>
+                                            <i class='fa fa-shopping-cart addToCart'></i>
                                         </a>
                                     </li>
                                 </ul>

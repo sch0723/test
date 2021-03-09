@@ -25,6 +25,7 @@ public class ProductService {
 
     public ProductService(ProductRepository productRepository){this.pr=productRepository;}
 
+    //單一商品
     public Optional<Product> findByProductId(Integer id){
         return pr.findById(id);
     }
@@ -53,7 +54,7 @@ public class ProductService {
         }
         Pageable pageable = PageRequest.of(pageIndex, PAGESIZE, sort);
 
-        return pr.findByproductCategory(category,pageable);
+        return pr.findByProductCategory(category,pageable);
     }
 
     //like搜索單一條件
