@@ -36,10 +36,16 @@
         </ul>
         <div class="header__cart__price">item: $<span>0</span></div>
     </div>
-    <div class="humberger__menu__widget">
-
+    <div class="humberger__menu__widget" th:unless="${session.users}">
         <div class="header__top__right__auth">
             <a href="/login"><i class="fa fa-user"></i> Login</a>
+        </div>
+    </div>
+    <div class="humberger__menu__widget" th:if="${session.users}">
+        <i>Hi! sss</i>
+        &nbsp;&nbsp;&nbsp;
+        <div class="header__top__right__auth">
+            <a href="/logout">Logout</a>
         </div>
     </div>
     <nav class="humberger__menu__nav mobile-menu">
@@ -72,9 +78,16 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="header__top__right">
+                    <div class="header__top__right" th:unless="${session.users}">
                         <div class="header__top__right__auth">
                             <a href="/login"><i class="fa fa-user"></i> Login</a>
+                        </div>
+                    </div>
+                    <div class="header__top__right" th:if="${session.users}">
+                        <i>Hi! sss</i>
+                        &nbsp;&nbsp;&nbsp;
+                        <div class="header__top__right__auth">
+                            <a href="/logout">Logout</a>
                         </div>
                     </div>
                 </div>

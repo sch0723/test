@@ -41,12 +41,14 @@
                         <div class="product__details__price" th:text="'$'+${product.productPrice}">$50.00</div>
                         <div class="product__details__quantity">
                             <div class="quantity">
-                                <div class="pro-qty">
-                                    <input type="text" value="1">
+                                <div class="pro-qty" >
+                                    <span class="dec qtybtn">-</span>
+                                    <input type="text" value="1" id="pro-qty">
+                                    <span class="inc qtybtn">+</span>
                                 </div>
                             </div>
                         </div>
-                        <a href="#" class="primary-btn">ADD TO CARD</a>
+                        <a href="#" class="primary-btn" id="addToCart">ADD TO CART</a>
                         <ul>
                         </ul>
                     </div>
@@ -55,6 +57,18 @@
         </div>
     </section>
     <!-- Product Details Section End -->
+
+<script>
+    window.onload = function () {
+
+        alert(window.location.href);
+        $('#addToCart').on('click', function () {
+            alert($("#pro-qty").val())
+            return false;
+        });
+
+    };
+</script>
 
 
     <div th:replace="common::footersection"></div>
