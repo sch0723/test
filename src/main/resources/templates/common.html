@@ -32,9 +32,9 @@
     </div>
     <div class="humberger__menu__cart">
         <ul>
-            <li><a href="/cart"><i class="fa fa-shopping-bag"></i> <span>0</span></a></li>
+            <li><a href="/cart"><i class="fa fa-shopping-bag"></i> <span class="totalNums">0</span></a></li>
         </ul>
-        <div class="header__cart__price">item: $<span>0</span></div>
+        <div class="header__cart__price">item: $<span class="totalPrice" >0</span></div>
     </div>
     <div class="humberger__menu__widget" th:unless="${session.users}">
         <div class="header__top__right__auth">
@@ -42,7 +42,7 @@
         </div>
     </div>
     <div class="humberger__menu__widget" th:if="${session.users}">
-        <i th:text="'Hi! '+${session.users.getUsersAccount()}"></i>
+        <i th:text="'Hi! '+${session.users}"></i>
         &nbsp;&nbsp;&nbsp;
         <div class="header__top__right__auth">
             <a href="/logout">Logout</a>
@@ -84,7 +84,7 @@
                         </div>
                     </div>
                     <div class="header__top__right" th:if="${session.users}">
-                        <i th:text="'Hi! '+${session.users.getUsersAccount()}"></i>
+                        <i th:text="'Hi! '+${session.users}"></i>
                         &nbsp;&nbsp;&nbsp;
                         <div class="header__top__right__auth">
                             <a href="/logout">Logout</a>
@@ -114,9 +114,9 @@
             <div class="col-lg-3">
                 <div class="header__cart">
                     <ul>
-                        <li><a href="/cart"><i class="fa fa-shopping-bag"></i> <span>0</span></a></li>
+                        <li><a href="/cart"><i class="fa fa-shopping-bag"></i> <span class="totalNums">0</span></a></li>
                     </ul>
-                    <div class="header__cart__price">item: $<span>0</span></div>
+                    <div class="header__cart__price">item: $<span class="totalPrice">0</span></div>
                 </div>
             </div>
         </div>
@@ -176,8 +176,30 @@
 
 
 <div th:fragment="commonscript">
+
     <!-- Js Plugins -->
     <script th:src="@{/res/js/jquery-3.3.1.min.js}"></script>
+
+    <script th:inline="javascript">
+        var usersAccount = [[${session.users}]];
+        $.ajax({
+            url: "/getCartNumsAndPrice",
+            method: "GET",
+            dataType: "JSON",
+
+            success: function (data) {
+                if(data){
+                    $(".totalNums").html(data.totalNums);
+                    $(".totalPrice").html(data.totalPrice);
+                }else{
+                    $(".totalNums").html(0);
+                    $(".totalPrice").html(0);
+                }
+
+            }
+        });
+    </script>
+
     <script th:src="@{/res/js/bootstrap.min.js}"></script>
     <script th:src="@{/res/js/jquery.nice-select.min.js}"></script>
     <script th:src="@{/res/js/jquery-ui.min.js}"></script>
@@ -185,6 +207,7 @@
     <script th:src="@{/res/js/mixitup.min.js}"></script>
     <script th:src="@{/res/js/owl.carousel.min.js}"></script>
     <script th:src="@{/res/js/main.js}"></script>
+
 </div>
 </body>
 </html>

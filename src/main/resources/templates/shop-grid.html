@@ -74,8 +74,8 @@
                             <div class='product__item__pic set-bg1'><img th:src="${product.productImg}" alt=''>
                                 <ul class='product__item__pic__hover'>
                                     <li  th:value="${product.productId}" class="productId">
-                                        <a href=''>
-                                            <i class='fa fa-shopping-cart addToCart'></i>
+                                        <a href='#' class='addToCart'>
+                                            <i class='fa fa-shopping-cart'></i>
                                         </a>
                                     </li>
                                 </ul>
@@ -101,9 +101,12 @@
 <!-- Product Section End -->
 
 
-<script src="/res/js/shop-grid.js"></script>
+
 <div th:replace="common::footersection"></div>
 <div th:replace="common::commonscript"></div>
+
+
+<script src="/res/js/shop-grid.js" ></script>
 </body>
 
 </html>

@@ -1,54 +1,76 @@
 package com.cy.project.controller;
 
 import com.cy.project.entity.Users;
+import com.cy.project.service.CartService;
 import com.cy.project.service.UsersService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
 @Controller
 public class UserController {
-    private final UsersService us;
 
-    public UserController(UsersService usersService){
-        this.us=usersService;
+    private final UsersService us;
+    private final CartService cs;
+
+    public UserController(UsersService usersService, CartService cartService) {
+        this.us = usersService;
+        this.cs = cartService;
     }
 
     @GetMapping(value = "/login")
-    public String toLogin(){
+    public String toLogin() {
         return "login";
     }
 
     @GetMapping(value = "/logout")
-    public String toLogout(HttpSession session){
+    public String toLogout(HttpSession session) {
         session.removeAttribute("users");
+
         return "login";
     }
 
 
-    @PostMapping (value = "/verifyUsers")
-    public String productById(String usersAccount, String usersPwd, Model model, HttpSession session, @CookieValue(value = "preURI",required = false)String preURI) {
+    @PostMapping(value = "/verifyUsers")
+    public String productById(String usersAccount, String usersPwd, Model model,
+                              HttpSession session, HttpServletResponse response,
+                              @CookieValue(value = "preURI", required = false) String preURI,
+                              @CookieValue(value = "myUUID", required = false) String myUUID) {
 
 
         Users users = us.findByUsersAccount(usersAccount);
-        if(users==null){
-            model.addAttribute("msg","帳號不存在");
+        if (users == null) {
+            model.addAttribute("msg", "帳號不存在");
             return "login";
         }
-        if(!users.getUsersPwd().equals(usersPwd)){
-            model.addAttribute("msg","密碼錯誤");
+        if (!users.getUsersPwd().equals(usersPwd)) {
+            model.addAttribute("msg", "密碼錯誤");
             return "login";
         }
-        session.setAttribute("users",users);
 
-        if ("/cart".equals(preURI)){
-            return "redirect:/cart";
+        //合併購物車
+        if (myUUID != null) {
+            cs.mergeCart(usersAccount,myUUID);
+        }
+
+        //清除UUID
+        Cookie cookie = new Cookie("myUUID", null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+
+        //
+        session.setAttribute("users", users.getUsersAccount());
+
+        if (preURI != null) {
+            return "redirect:" + preURI;
         }
 
         return "redirect:/";
     }
-
 }

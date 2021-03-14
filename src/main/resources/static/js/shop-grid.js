@@ -1,9 +1,23 @@
+
+
+var keywords;
+var search = $("#search").val();
+var sort = "productIdASC";
+var page = 1;
+var d = $("#getKeys").val();
+if (d) {
+    keywords = d;
+    search = "keys";
+}
+
+$("#totalPages a:first").addClass("pages-focus").siblings().removeClass("pages-focus");
+
 function refreshList(data) {
     //更新商品目錄
     let content = data.content;
     let contentStr = "";
     for (let i = 0; i < content.length; i++) {
-        contentStr += "<div class='col-lg-4 col-md-6 col-sm-6'><div class='product__item'><div class='product__item__pic set-bg' ><img src='" + content[i].productImg + "' alt='QQ'><ul class='product__item__pic__hover'><li><a href='#shopping-cart'><i class='fa fa-shopping-cart'></i></a></li></ul></div> <div class='product__item__text'><h6><a href='/product/" + content[i].productId + "'>" + content[i].productName + "</a></h6><h5>$" + content[i].productPrice + "</h5></div></div></div>";
+        contentStr += "<div class='col-lg-4 col-md-6 col-sm-6'><div class='product__item'><div class='product__item__pic set-bg' ><img src='" + content[i].productImg + "' alt=''><ul class='product__item__pic__hover'><li value='" + content[i].productId + "' class='productId'><a href='#' class='addToCart'><i class='fa fa-shopping-cart'></i></a></li></ul></div> <div class='product__item__text'><h6><a href='/product/" + content[i].productId + "'>" + content[i].productName + "</a></h6><h5>$" + content[i].productPrice + "</h5></div></div></div>";
     }
     $("#content").html(contentStr)
 }
@@ -51,7 +65,7 @@ function sortOrPages(search, sort, page) {
     $.ajax({
         url: "/grid/" + search + "/" + sort + "/" + page,
         method: "GET",
-        dataType:"JSON",
+        dataType: "JSON",
         success: function (data) {
             refreshList(data)
         }
@@ -62,7 +76,7 @@ function keysSortOrPages(keywords, sort, page) {
     $.ajax({
         url: "/keys/" + sort + "/" + page,
         method: "GET",
-        dataType:"JSON",
+        dataType: "JSON",
         data: {"keywords": keywords},
         success: function (data) {
             refreshList(data)
@@ -70,97 +84,56 @@ function keysSortOrPages(keywords, sort, page) {
     });
 }
 
-window.onload = function () {
-
-    //初始化需要使用的變數
-    let keywords;
-    let search = $("#search").val();
-    let sort = "productIdASC";
-    let page = 1;
-
-    //從其他頁面以搜索攔到商品目錄
-    let d = $("#getKeys").val();
-    if (d) {
-        keywords = d;
-        search = "keys";
-    }
-
+//依排序載入商品
+$(document).on("change", "#sortSelect", function () {
     $("#totalPages a:first").addClass("pages-focus").siblings().removeClass("pages-focus");
 
+    sort = $("#sortSelect option:selected").val();
+    page = 1;
+
+    if (search === "keys") {
+        keysSortOrPages(keywords, sort, page)
+    } else {
+        sortOrPages(search, sort, page)
+    }
+    return false;
+});
 
 
-    //添加商品到購物車
-    $('.addToCart').on('click', function () {
-        let productId=$(this).parent().parent().val();
-        alert(productId);
-        return false;
-    });
+//依頁碼載入商品
+$(document).on("click", ".pages", function () {
+    //滾輪上移,頁碼上色
+    $('html,body').animate({
+        scrollTop: $("#scrollTop").offset().top
+    }, 500);
+    $(this).addClass("pages-focus").siblings().removeClass("pages-focus");
 
-    //依分類載入商品
-    // $(".category").on('click', function a() {
-    //     search = $(this).html();
-    //     sort = "productIdASC";
-    //     page = 1;
-    //
-    //     productType(search);
-    //
-    //     //重置排序
-    //     $('.nice-select span').html('Default')
-    //     $('.nice-select ul .selected').removeClass('selected')
-    //     $('.nice-select ul li:first').addClass('selected');
-    //     $("#sort").val('productIdASC');
-    //     return false;
-    // });
 
-    //依搜索條件載入商品
-    // $("#submit").on('click', function a() {
-    //     keywords = $("#keywords").val();
-    //     search = "keys";
-    //     sort = "productIdASC";
-    //     page = 1;
-    //
-    //     productKeys(keywords);
-    //
-    //     //重置排序
-    //     $('.nice-select span').html('Default')
-    //     $('.nice-select ul .selected').removeClass('selected')
-    //     $('.nice-select ul li:first').addClass('selected');
-    //     $("#sort").val('productIdASC');
-    //
-    //     return false;
-    // });
+    const page = $(this).html();
+    if (search === "keys") {
+        keysSortOrPages(keywords, sort, page)
+    } else {
+        sortOrPages(search, sort, page)
+    }
+    return false;
+});
 
-    //依排序
-    $("#sortSelect").on('change', function a() {
+//添加商品到購物車
+$(document).on("click", ".addToCart", function () {
+    let productId = $(this).parent().val();
+    alert(productId);
+    $.ajax({
+        url: "/addToCart/" + productId+"/1",
+        method: "GET",
+        dataType: "JSON",
 
-        $("#totalPages a:first").addClass("pages-focus").siblings().removeClass("pages-focus");
-
-        sort = $("#sortSelect option:selected").val();
-        page = 1;
-
-        if (search === "keys") {
-            keysSortOrPages(keywords, sort, page)
-        } else {
-            sortOrPages(search, sort, page)
+        success: function (data) {
+            $(".totalNums").html(data.totalNums);
+            $(".totalPrice").html(data.totalPrice);
         }
-        return false;
     });
-
-    //依頁碼
-    $(document).on("click", ".pages", function a() {
-        //滾輪上移,頁碼上色
-        $('html,body').animate({
-            scrollTop: $("#scrollTop").offset().top
-        }, 500);
-        $(this).addClass("pages-focus").siblings().removeClass("pages-focus");
+    return false;
+});
 
 
-        const page = $(this).html();
-        if (search === "keys") {
-            keysSortOrPages(keywords, sort, page)
-        } else {
-            sortOrPages(search, sort, page)
-        }
-        return false;
-    });
-};
+

@@ -33,11 +33,11 @@ public class Users implements Serializable {
 
 	private String usersEmail;
 
-	@OneToMany(mappedBy = "users",cascade = CascadeType.ALL)
-	@ToString.Exclude
-	private Set<Cart> usersCart = new HashSet<>();
+//	@OneToMany(mappedBy = "users",cascade = CascadeType.ALL)
+//	@ToString.Exclude
+//	private Set<Cart> usersCart = new HashSet<>();
 
-	@OneToMany(mappedBy = "users",cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+	@OneToMany(mappedBy = "users",cascade = {CascadeType.MERGE,CascadeType.PERSIST}, fetch = FetchType.EAGER)
 	@ToString.Exclude
 	private List<Orders> usersOrders = new ArrayList<>();
 }

@@ -36,7 +36,8 @@
                             <th></th>
                         </tr>
                         </thead>
-                        <tbody>
+
+                        <tbody id="tt">
                         <tr>
                             <td class="shoping__cart__item">
                                 <input class='checkbox' type='checkbox' name='age[]' checked='checked' value='id'>
@@ -44,19 +45,19 @@
                                 <h5>Vegetable’s Package</h5>
                             </td>
                             <td class="shoping__cart__price">
-                                $55.00
+                                <span>$</span><span class="cart__price" value="55">55</span>
                             </td>
                             <td class="shoping__cart__quantity">
                                 <div class="quantity">
                                     <div class="pro-qty">
                                         <span class="dec qtybtn">-</span>
-                                        <input type="text" value="1">
+                                        <input type="text" value="1" class="cart__nums">
                                         <span class="inc qtybtn">+</span>
                                     </div>
                                 </div>
                             </td>
                             <td class="shoping__cart__total">
-                                $110.00
+                                <span>$</span><span class="cart__total" value="110">110</span>
                             </td>
                             <td class="shoping__cart__item__close">
                                 <span class="icon_close"></span>
@@ -65,23 +66,23 @@
                         <tr>
                             <td class="shoping__cart__item">
                                 <input class='checkbox' type='checkbox' name='age[]' checked='checked' value='id'>
-                                <img src="/res/img/cart/cart-2.jpg" alt="">
-                                <h5>Fresh Garden Vegetable</h5>
+                                <img src="/res/img/cart/cart-1.jpg" alt="">
+                                <h5>Vegetable’s Package</h5>
                             </td>
                             <td class="shoping__cart__price">
-                                $39.00
+                                <span>$</span><span class="cart__price" value="55">55</span>
                             </td>
                             <td class="shoping__cart__quantity">
                                 <div class="quantity">
                                     <div class="pro-qty">
                                         <span class="dec qtybtn">-</span>
-                                        <input type="text" value="1">
+                                        <input type="text" value="1" class="cart__nums">
                                         <span class="inc qtybtn">+</span>
                                     </div>
                                 </div>
                             </td>
                             <td class="shoping__cart__total">
-                                $39.99
+                                <span>$</span><span class="cart__total" value="110">110</span>
                             </td>
                             <td class="shoping__cart__item__close">
                                 <span class="icon_close"></span>
@@ -90,23 +91,23 @@
                         <tr>
                             <td class="shoping__cart__item">
                                 <input class='checkbox' type='checkbox' name='age[]' checked='checked' value='id'>
-                                <img src="/res/img/cart/cart-3.jpg" alt="">
-                                <h5>Organic Bananas</h5>
+                                <img src="/res/img/cart/cart-1.jpg" alt="">
+                                <h5>Vegetable’s Package</h5>
                             </td>
                             <td class="shoping__cart__price">
-                                $69.00
+                                <span>$</span><span class="cart__price">55</span>
                             </td>
                             <td class="shoping__cart__quantity">
                                 <div class="quantity">
                                     <div class="pro-qty">
                                         <span class="dec qtybtn">-</span>
-                                        <input type="text" value="1">
+                                        <input type="text" value="1" class="cart__nums">
                                         <span class="inc qtybtn">+</span>
                                     </div>
                                 </div>
                             </td>
                             <td class="shoping__cart__total">
-                                $69.99
+                                <span>$</span><span class="cart__total">110</span>
                             </td>
                             <td class="shoping__cart__item__close">
                                 <span class="icon_close"></span>
@@ -132,7 +133,7 @@
                     <h5>Cart Total</h5>
                     <ul>
                         <li>Subtotal <span>$454.98</span></li>
-                        <li>Total <span>$454.98</span></li>
+                        <li>Total <span id="total">$454.98</span></li>
                     </ul>
                     <a href="/check" class="primary-btn">PROCEED TO CHECKOUT</a>
                 </div>
@@ -141,6 +142,101 @@
     </div>
 </section>
 <!-- Shoping Cart Section End -->
+
+<script>
+
+    function addTotal() {
+        let totals = [];
+        $(".checkbox").each(function () {
+            if ($(this).prop("checked")) {
+                totals.push($(this).closest("tr").find(".cart__total").html());
+            }
+        });
+        let sum = 0;
+        totals.forEach(function (e) {
+            sum += parseInt(e);
+        });
+
+        $("#total").html(sum);
+    }
+
+    function addSingleTotal(t) {
+        let $tr = t.closest("tr");
+
+        let cart__price = $tr.find(".cart__price").html();
+        let cart__nums = $tr.find(".cart__nums").val();
+        let sum = cart__price * cart__nums;
+
+        $tr.find(".cart__total").html(sum);
+    }
+
+    function checked(t) {
+        return t.closest("tr").find(".checkbox").prop("checked");
+    }
+
+    function deleteCartItem(t) {
+        return t.closest("tr").remove();
+    }
+
+
+
+
+    window.onload = function () {
+        $("#tt").on('change', '.cart__nums', function () {
+            if ($(this).val() < 1) {
+                $(this).val(1);
+                alert("請輸入正確的數量");
+            }
+            let t=$(this)
+            addSingleTotal(t)
+            if(checked(t)){
+                addTotal()
+            }
+
+        });
+        $("#tt").on('click', '.qtybtn', function () {
+            let t=$(this)
+            addSingleTotal(t)
+            if(checked(t)){
+                addTotal()
+            }
+            // if ($button.hasClass('inc')) {
+            //
+            // }
+            // if ($button.hasClass('dec')) {
+            //
+            // }
+        });
+        $("#tt").on('click', '.icon_close', function () {
+            let t=$(this)
+            if (checked(t)){
+                deleteCartItem(t);
+                addTotal()
+                if($("#tt").html()==0){
+                    $("#tt").html("<br><br><h5>購物車內無商品。</h5>");
+                }
+            }
+            deleteCartItem(t);
+        });
+
+
+        $("#tt").on('click', 'input:checkbox', function () {
+            addTotal()
+        });
+
+        $("#button").click(function () {
+            let check = $('input:checkbox:checked').length;//判斷有多少個方框被勾選
+            if (check === 0) {
+                alert("您尚未勾選任何商品");
+                return false;//不要提交表單
+            } else {
+                return true;//提交表單
+            }
+        })
+
+
+    }
+</script>
 
 
 <div th:replace="common::footersection"></div>

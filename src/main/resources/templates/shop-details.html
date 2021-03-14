@@ -20,61 +20,65 @@
 <div th:replace="common::herosection"></div>
 
 
-    <!-- Product Details Section Begin -->
-    <section class="product-details spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-md-6">
-                    <div class="product__details__pic">
-                        <div class="product__details__pic__item">
-                            <img class="product__details__pic__item--large"
-                                 th:src='${product.productImg}' alt='QQ'>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6">
-                    <div class="product__details__text">
-                        <h3 th:text='${product.productName}'></h3>
-                        <ul>
-                        </ul>
-                        <div class="product__details__price" th:text="'$'+${product.productPrice}">$50.00</div>
-                        <div class="product__details__quantity">
-                            <div class="quantity">
-                                <div class="pro-qty" >
-                                    <span class="dec qtybtn">-</span>
-                                    <input type="text" value="1" id="pro-qty">
-                                    <span class="inc qtybtn">+</span>
-                                </div>
-                            </div>
-                        </div>
-                        <input type="hidden" th:value="${product.productId}" id="productId"/>
-                        <a href="#" class="primary-btn addToCart">ADD TO CART</a>
-                        <ul>
-                        </ul>
+<!-- Product Details Section Begin -->
+<section class="product-details spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <div class="product__details__pic">
+                    <div class="product__details__pic__item">
+                        <img class="product__details__pic__item--large"
+                             th:src='${product.productImg}' alt='QQ'>
                     </div>
                 </div>
             </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="product__details__text">
+                    <h3 th:text='${product.productName}'></h3>
+                    <ul>
+                    </ul>
+                    <div class="product__details__price" th:text="'$'+${product.productPrice}">$50.00</div>
+                    <div class="product__details__quantity">
+                        <div class="quantity">
+                            <div class="pro-qty">
+                                <span class="dec qtybtn">-</span>
+                                <input type="text" value="1" id="pro-qty">
+                                <span class="inc qtybtn">+</span>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" th:value="${product.productId}" id="productId"/>
+                    <a href="#" class="primary-btn addToCart">ADD TO CART</a>
+                    <ul>
+                    </ul>
+                </div>
+            </div>
         </div>
-    </section>
-    <!-- Product Details Section End -->
+    </div>
+</section>
+<!-- Product Details Section End -->
 
+<div th:replace="common::footersection"></div>
+<div th:replace="common::commonscript"></div>
 <script>
-    window.onload = function () {
-        let productId=$("#productId").val();
 
-        $('.addToCart').on('click', function () {
-            let productNums=$("#pro-qty").val();
-            alert(productId)
-            alert(productNums)
-            return false;
+    $(document).on("click", ".addToCart", function () {
+        let productId = $("#productId").val();
+        let productNums = $("#pro-qty").val();
+        alert(productId);
+        $.ajax({
+            url: "/addToCart/" + productId+"/"+productNums,
+            method: "GET",
+            dataType: "JSON",
+
+            success: function (data) {
+                $(".totalNums").html(data.totalNums);
+                $(".totalPrice").html(data.totalPrice);
+            }
         });
-
-    };
+        return false;
+    });
 </script>
-
-
-    <div th:replace="common::footersection"></div>
-    <div th:replace="common::commonscript"></div>
 </body>
 
 </html>
