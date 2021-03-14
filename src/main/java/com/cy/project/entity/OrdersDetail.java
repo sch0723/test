@@ -25,7 +25,6 @@ public class  OrdersDetail implements Serializable {
 
     @ManyToOne(targetEntity = Orders.class)
     @JoinColumn(name="ordersId",referencedColumnName = "ordersId")
-    @ToString.Exclude
     private Orders orders;
 
 }

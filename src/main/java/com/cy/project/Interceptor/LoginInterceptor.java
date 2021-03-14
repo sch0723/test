@@ -23,7 +23,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
 
         Cookie cookie = new Cookie("preURI", request.getRequestURI());
-        cookie.setMaxAge(600);
+        cookie.setMaxAge(300);
         response.addCookie(cookie);
 
         request.setAttribute("msg","請登錄");

@@ -17,7 +17,7 @@ function refreshList(data) {
     let content = data.content;
     let contentStr = "";
     for (let i = 0; i < content.length; i++) {
-        contentStr += "<div class='col-lg-4 col-md-6 col-sm-6'><div class='product__item'><div class='product__item__pic set-bg' ><img src='" + content[i].productImg + "' alt=''><ul class='product__item__pic__hover'><li value='" + content[i].productId + "' class='productId'><a href='#' class='addToCart'><i class='fa fa-shopping-cart'></i></a></li></ul></div> <div class='product__item__text'><h6><a href='/product/" + content[i].productId + "'>" + content[i].productName + "</a></h6><h5>$" + content[i].productPrice + "</h5></div></div></div>";
+        contentStr += "<div class='col-lg-4 col-md-6 col-sm-6'><div class='product__item'><div class='product__item__pic set-bg' ><img src='/res/img/product/" + content[i].productId + ".jpg' alt=''><ul class='product__item__pic__hover'><li value='" + content[i].productId + "' class='productId'><a href='#' class='addToCart'><i class='fa fa-shopping-cart'></i></a></li></ul></div> <div class='product__item__text'><h6><a href='/product/" + content[i].productId + "'>" + content[i].productName + "</a></h6><h5>$" + content[i].productPrice + "</h5></div></div></div>";
     }
     $("#content").html(contentStr)
 }

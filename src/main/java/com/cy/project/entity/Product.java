@@ -25,7 +25,7 @@ public class Product implements Serializable {
 
 	private Integer productPrice;
 
-	private String productImg;
+//	private String productImg;
 
 	private Integer productNumsOfSale;
 

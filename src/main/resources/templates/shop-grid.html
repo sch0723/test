@@ -71,7 +71,7 @@
                 <div class="row" id="content" th:if="${pageData}">
                     <div class='col-lg-4 col-md-6 col-sm-6' th:each="product:${pageData}">
                         <div class='product__item'>
-                            <div class='product__item__pic set-bg1'><img th:src="${product.productImg}" alt=''>
+                            <div class='product__item__pic set-bg1'><img th:src="'/res/img/product/'+${product.productId}+'.jpg'" alt=''>
                                 <ul class='product__item__pic__hover'>
                                     <li  th:value="${product.productId}" class="productId">
                                         <a href='#' class='addToCart'>
@@ -89,8 +89,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="product__pagination" id="totalPages" th:if="${pageData}">
+                <div class="product__pagination" id="totalPages" th:if="${pageData.getTotalElements()}!=0">
                     <a href="" class='pages' th:each="i:${#numbers.sequence(1, pageData.totalPages)}" th:text="${i}">1</a>
+                </div>
+                <div class="product__pagination" id="totalPages" th:if="${pageData.getTotalElements()}==0">
+                    <br><br><h5>沒有搜索到商品。</h5>
                 </div>
             </div>
         </div>

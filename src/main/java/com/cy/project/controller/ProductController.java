@@ -33,6 +33,7 @@ public class ProductController {
     @GetMapping(value = "/")
     public String index(Model model) {
         Page<Product> page = ps.findBySortPage("ASC", "productId", 0);
+        System.out.println(page.getTotalElements());
 
         model.addAttribute("pageData",page);
         model.addAttribute("search","all");
@@ -62,7 +63,6 @@ public class ProductController {
         String[] strArr=keywords.split(" ");
 
         Page<Product> page = ps.findByKeywordsSortPage(strArr, "ASC", "productId", 0);
-
         model.addAttribute("pageData",page);
         model.addAttribute("search","keys");
         model.addAttribute("getKeys",keywords);

@@ -11,6 +11,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -23,7 +25,7 @@ import java.util.List;
 @SpringBootTest
 public class ProductTest {
 
-    private final int PAGESIZE=12;
+    private final int PAGESIZE = 12;
 
     @Autowired
     private ProductRepository pr;
@@ -31,40 +33,40 @@ public class ProductTest {
     private ProductService ps;
 
     @Test
-    void test1(){
+    void test1() {
 
-        int pageIndex=0;
-        String order="DESC";
-        String orderType="productNumsOfSale";
-        String pros="鋼彈";
+        int pageIndex = 0;
+        String order = "DESC";
+        String orderType = "productNumsOfSale";
+        String pros = "鋼彈";
 
         Sort sort;
-        if("DESC".equals(order)){
+        if ("DESC".equals(order)) {
             sort = Sort.by(orderType).descending();
-        }else {
+        } else {
             sort = Sort.by(orderType).ascending();
         }
         Pageable pageable = PageRequest.of(pageIndex, PAGESIZE, sort);
 
-        Specification<Product> sp1= new Specification<Product>() {
+        Specification<Product> sp1 = new Specification<Product>() {
             @Override
             public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-                List<Predicate> predicates=new ArrayList<>();
-                predicates.add(criteriaBuilder.like(root.get("productName"),"%"+pros+"%"));
-                predicates.add(criteriaBuilder.like(root.get("productName"),"%"+"不挑盒況"+"%"));
+                List<Predicate> predicates = new ArrayList<>();
+                predicates.add(criteriaBuilder.like(root.get("productName"), "%" + pros + "%"));
+                predicates.add(criteriaBuilder.like(root.get("productName"), "%" + "不挑盒況" + "%"));
                 return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
             }
         };
 
-        Specification<Product> sp2= (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(root.get("productName"),"%"+pros+"%");
+        Specification<Product> sp2 = (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(root.get("productName"), "%" + pros + "%");
 
-        Page<Product> page=pr.findAll(sp1,pageable);
+        Page<Product> page = pr.findAll(sp1, pageable);
 
-        System.out.println("本頁筆數:"+page.getNumberOfElements());
-        System.out.println("每頁筆數:"+page.getSize());
-        System.out.println("全部筆數:"+page.getTotalElements());
-        System.out.println("全部頁數:"+page.getTotalPages());
-        for (Product p :page) {
+        System.out.println("本頁筆數:" + page.getNumberOfElements());
+        System.out.println("每頁筆數:" + page.getSize());
+        System.out.println("全部筆數:" + page.getTotalElements());
+        System.out.println("全部頁數:" + page.getTotalPages());
+        for (Product p : page) {
             System.out.println(p);
         }
 
@@ -73,28 +75,28 @@ public class ProductTest {
 
 
     @org.junit.jupiter.api.Test
-    void test2(){
+    void test2() {
 
-        int pageIndex=0;
-        String order="ASC";
-        String orderType="productNumsOfSale";
+        int pageIndex = 0;
+        String order = "ASC";
+        String orderType = "productNumsOfSale";
 
         Sort sort;
-        if("DESC".equals(order)){
+        if ("DESC".equals(order)) {
             sort = Sort.by(orderType).descending();
-        }else {
+        } else {
             sort = Sort.by(orderType).ascending();
         }
 
         Pageable pageable = PageRequest.of(pageIndex, PAGESIZE, sort);
 
-        Page<Product> page=pr.findAll(pageable);
+        Page<Product> page = pr.findAll(pageable);
 
-        System.out.println("本頁筆數:"+page.getNumberOfElements());
-        System.out.println("每頁筆數:"+page.getSize());
-        System.out.println("全部筆數:"+page.getTotalElements());
-        System.out.println("全部頁數:"+page.getTotalPages());
-        System.out.println("內容:"+page.getContent());
+        System.out.println("本頁筆數:" + page.getNumberOfElements());
+        System.out.println("每頁筆數:" + page.getSize());
+        System.out.println("全部筆數:" + page.getTotalElements());
+        System.out.println("全部頁數:" + page.getTotalPages());
+        System.out.println("內容:" + page.getContent());
     }
 //    @org.junit.jupiter.api.Test
 //    void test3(){
@@ -109,40 +111,66 @@ public class ProductTest {
 //    }
 
     @org.junit.jupiter.api.Test
-    void test4(){
-        Page<Product> page = ps.findBySortPage("","productPrice", 1);
+    void test4() {
+        Page<Product> page = ps.findBySortPage("", "productPrice", 1);
 
-        System.out.println("本頁筆數:"+page.getNumberOfElements());
-        System.out.println("每頁筆數:"+page.getSize());
-        System.out.println("全部筆數:"+page.getTotalElements());
-        System.out.println("全部頁數:"+page.getTotalPages());
-        System.out.println("內容:"+page.getContent());
-
-    }
-
-    @org.junit.jupiter.api.Test
-    void test5(){
-        Page<Product> page = ps.findByCategorySortPage("七龍珠","","productPrice", 1);
-
-        System.out.println("本頁筆數:"+page.getNumberOfElements());
-        System.out.println("每頁筆數:"+page.getSize());
-        System.out.println("全部筆數:"+page.getTotalElements());
-        System.out.println("全部頁數:"+page.getTotalPages());
-        System.out.println("內容:"+page.getContent());
+        System.out.println("本頁筆數:" + page.getNumberOfElements());
+        System.out.println("每頁筆數:" + page.getSize());
+        System.out.println("全部筆數:" + page.getTotalElements());
+        System.out.println("全部頁數:" + page.getTotalPages());
+        System.out.println("內容:" + page.getContent());
 
     }
 
     @org.junit.jupiter.api.Test
-    void test6(){
-        String[] keywords={};
-        Page<Product> page = ps.findByKeywordsSortPage(keywords,"","productPrice", 17);
+    void test5() {
+        Page<Product> page = ps.findByCategorySortPage("七龍珠", "", "productPrice", 1);
 
-        System.out.println("本頁筆數:"+page.getNumberOfElements());
-        System.out.println("每頁筆數:"+page.getSize());
-        System.out.println("全部筆數:"+page.getTotalElements());
-        System.out.println("全部頁數:"+page.getTotalPages());
-        System.out.println("內容:"+page.getContent());
+        System.out.println("本頁筆數:" + page.getNumberOfElements());
+        System.out.println("每頁筆數:" + page.getSize());
+        System.out.println("全部筆數:" + page.getTotalElements());
+        System.out.println("全部頁數:" + page.getTotalPages());
+        System.out.println("內容:" + page.getContent());
 
+    }
+
+    @org.junit.jupiter.api.Test
+    void test6() {
+        String[] keywords = {};
+        Page<Product> page = ps.findByKeywordsSortPage(keywords, "", "productPrice", 17);
+
+        System.out.println("本頁筆數:" + page.getNumberOfElements());
+        System.out.println("每頁筆數:" + page.getSize());
+        System.out.println("全部筆數:" + page.getTotalElements());
+        System.out.println("全部頁數:" + page.getTotalPages());
+        System.out.println("內容:" + page.getContent());
+
+
+    }
+
+    @Test
+    @Transactional
+    @Rollback(value = false)
+    void test7() {
+        String pros = "鬼滅之刃";
+
+
+//        Specification<Product> sp1= (root, criteriaQuery, criteriaBuilder) -> {
+//            List<Predicate> predicates=new ArrayList<>();
+//            predicates.add(criteriaBuilder.like(root.get("productName"),"%"+pros+"%"));
+//            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+//        };
+
+        Specification<Product> sp2 = (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(root.get("productName"), "%" + pros + "%");
+
+        List<Product> page = pr.findAll(sp2);
+
+        for (Product p : page) {
+            p.setProductCategory(pros);
+            System.out.println(p);
+        }
+
+        pr.saveAll(page);
 
 
     }

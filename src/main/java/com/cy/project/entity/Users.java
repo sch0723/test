@@ -37,7 +37,7 @@ public class Users implements Serializable {
 //	@ToString.Exclude
 //	private Set<Cart> usersCart = new HashSet<>();
 
-	@OneToMany(mappedBy = "users",cascade = {CascadeType.MERGE,CascadeType.PERSIST}, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "users",cascade = {CascadeType.MERGE,CascadeType.PERSIST})
 	@ToString.Exclude
 	private List<Orders> usersOrders = new ArrayList<>();
 }

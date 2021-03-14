@@ -39,7 +39,6 @@ public class Orders implements Serializable {
 
 	@ManyToOne(targetEntity = Users.class)
 	@JoinColumn(name="usersId",referencedColumnName = "usersId")
-	@ToString.Exclude
 	private Users users;
 
 	@OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
