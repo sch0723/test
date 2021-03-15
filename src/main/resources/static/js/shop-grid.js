@@ -123,13 +123,18 @@ $(document).on("click", ".addToCart", function () {
     let productId = $(this).parent().val();
     alert(productId);
     $.ajax({
-        url: "/addToCart/" + productId+"/1",
-        method: "GET",
+        url: "/cart/" + productId+"/1",
+        method: "post",
         dataType: "JSON",
 
         success: function (data) {
-            $(".totalNums").html(data.totalNums);
-            $(".totalPrice").html(data.totalPrice);
+            if(data){
+                $(".totalNums").html(data.totalNums);
+                $(".totalPrice").html(data.totalPrice);
+            }else{
+                $(".totalNums").html(0);
+                $(".totalPrice").html(0);
+            }
         }
     });
     return false;

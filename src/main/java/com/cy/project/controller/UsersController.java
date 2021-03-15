@@ -8,18 +8,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
 @Controller
-public class UserController {
+public class UsersController {
 
     private final UsersService us;
     private final CartService cs;
 
-    public UserController(UsersService usersService, CartService cartService) {
+    public UsersController(UsersService usersService, CartService cartService) {
         this.us = usersService;
         this.cs = cartService;
     }
@@ -39,8 +38,7 @@ public class UserController {
 
     @PostMapping(value = "/verifyUsers")
     public String productById(String usersAccount, String usersPwd, Model model,
-                              HttpSession session,
-                              HttpServletRequest request, HttpServletResponse response,
+                              HttpSession session, HttpServletResponse response,
                               @CookieValue(value = "preURI", required = false) String preURI,
                               @CookieValue(value = "myUUID", required = false) String myUUID) {
 

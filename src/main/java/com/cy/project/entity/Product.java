@@ -1,18 +1,18 @@
 package com.cy.project.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.*;
 
 @Entity
 @Table
-@Data
+@Getter
+@Setter
 public class Product implements Serializable {
 
 	private static final long serialVersionUID = 2982227680155473789L;

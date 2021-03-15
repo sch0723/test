@@ -10,6 +10,13 @@
     <title>Ogani | Template</title>
 
     <link th:replace="common::commonhead">
+    <style>
+
+        .myCartImg {
+            height: auto;
+            height: 100px;
+        }
+    </style>
 </head>
 
 <body>
@@ -23,125 +30,85 @@
 <!-- Shoping Cart Section Begin -->
 <section class="shoping-cart spad">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="shoping__cart__table">
-                    <table>
-                        <thead>
-                        <tr>
-                            <th class="shoping__product">Products</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Total</th>
-                            <th></th>
-                        </tr>
-                        </thead>
+        <form action="/check" method="get">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="shoping__cart__table">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th class="shoping__product">Products</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                            </thead>
 
-                        <tbody id="tt">
-                        <tr>
-                            <td class="shoping__cart__item">
-                                <input class='checkbox' type='checkbox' name='age[]' checked='checked' value='id'>
-                                <img src="/res/img/cart/cart-1.jpg" alt="">
-                                <h5>Vegetable’s Package</h5>
-                            </td>
-                            <td class="shoping__cart__price">
-                                <span>$</span><span class="cart__price" value="55">55</span>
-                            </td>
-                            <td class="shoping__cart__quantity">
-                                <div class="quantity">
-                                    <div class="pro-qty">
-                                        <span class="dec qtybtn">-</span>
-                                        <input type="text" value="1" class="cart__nums">
-                                        <span class="inc qtybtn">+</span>
+                            <tbody id="tt">
+                            <tr th:each="cartItem:${cart}">
+                                <td class="shoping__cart__item">
+                                    <input class='checkbox' type='checkbox' name='product[]' checked='checked'
+                                           th:value="${cartItem.product.productId}">
+                                    <img class="myCartImg"
+                                         th:src="'/res/img/product/'+${cartItem.product.productId}+'.jpg'" alt=""><br>
+                                    <h5 th:text='${cartItem.product.productName}'></h5>
+                                </td>
+                                <td class="shoping__cart__price">
+                                    <span>$</span><span class="cart__price"
+                                                        th:text="${cartItem.product.productPrice}">55</span>
+                                </td>
+                                <td class="shoping__cart__quantity">
+                                    <div class="quantity">
+                                        <div class="pro-qty">
+                                            <span class="dec qtybtn">-</span>
+                                            <input type="text" th:value="${cartItem.count}" class="cart__nums">
+                                            <span class="inc qtybtn">+</span>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                            <td class="shoping__cart__total">
-                                <span>$</span><span class="cart__total" value="110">110</span>
-                            </td>
-                            <td class="shoping__cart__item__close">
-                                <span class="icon_close"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="shoping__cart__item">
-                                <input class='checkbox' type='checkbox' name='age[]' checked='checked' value='id'>
-                                <img src="/res/img/cart/cart-1.jpg" alt="">
-                                <h5>Vegetable’s Package</h5>
-                            </td>
-                            <td class="shoping__cart__price">
-                                <span>$</span><span class="cart__price" value="55">55</span>
-                            </td>
-                            <td class="shoping__cart__quantity">
-                                <div class="quantity">
-                                    <div class="pro-qty">
-                                        <span class="dec qtybtn">-</span>
-                                        <input type="text" value="1" class="cart__nums">
-                                        <span class="inc qtybtn">+</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="shoping__cart__total">
-                                <span>$</span><span class="cart__total" value="110">110</span>
-                            </td>
-                            <td class="shoping__cart__item__close">
-                                <span class="icon_close"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="shoping__cart__item">
-                                <input class='checkbox' type='checkbox' name='age[]' checked='checked' value='id'>
-                                <img src="/res/img/cart/cart-1.jpg" alt="">
-                                <h5>Vegetable’s Package</h5>
-                            </td>
-                            <td class="shoping__cart__price">
-                                <span>$</span><span class="cart__price">55</span>
-                            </td>
-                            <td class="shoping__cart__quantity">
-                                <div class="quantity">
-                                    <div class="pro-qty">
-                                        <span class="dec qtybtn">-</span>
-                                        <input type="text" value="1" class="cart__nums">
-                                        <span class="inc qtybtn">+</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="shoping__cart__total">
-                                <span>$</span><span class="cart__total">110</span>
-                            </td>
-                            <td class="shoping__cart__item__close">
-                                <span class="icon_close"></span>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="shoping__continue">
-                    <div class="shoping__discount">
-                        <div class="shoping__cart__btns">
-                            <a href="/" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
-                        </div>
+                                </td>
+                                <td class="shoping__cart__total">
+                                    <span>$</span><span class="cart__total"
+                                                        th:text="${cartItem.subTotalPrice}">110</span>
+                                </td>
+                                <td class="shoping__cart__item__close">
+                                    <span class="icon_close"></span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="shoping__checkout">
-                    <h5>Cart Total</h5>
-                    <ul>
-                        <li>Subtotal <span>$454.98</span></li>
-                        <li>Total <span id="total">$454.98</span></li>
-                    </ul>
-                    <a href="/check" class="primary-btn">PROCEED TO CHECKOUT</a>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="shoping__continue">
+                        <div class="shoping__discount">
+                            <div class="shoping__cart__btns">
+                                <a href="/" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="shoping__checkout">
+                        <h5>Cart Total</h5>
+                        <ul>
+                            <li>Subtotal <span id="Subtotal" th:text="'$'+${totalPrice}">$454.98</span></li>
+                            <li>Total <span id="total" th:text="'$'+${totalPrice}">$454.98</span></li>
+                        </ul>
+                        <input type="submit" id="button" class="btn primary-btn btn-lg rounded-0" value="前往結帳"/>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 </section>
 <!-- Shoping Cart Section End -->
+
+
+<div th:replace="common::footersection"></div>
+<div th:replace="common::commonscript"></div>
 
 <script>
 
@@ -157,7 +124,7 @@
             sum += parseInt(e);
         });
 
-        $("#total").html(sum);
+        $("#Subtotal").html("$" + sum);
     }
 
     function addSingleTotal(t) {
@@ -178,69 +145,106 @@
         return t.closest("tr").remove();
     }
 
+    function refreshTotalNumsPrice(data) {
+        if (data) {
+            $(".totalNums").html(data.totalNums);
+            $(".totalPrice").html(data.totalPrice);
+            $("#total").html("$" + data.totalPrice);
+        } else {
+            $(".totalNums").html(0);
+            $(".totalPrice").html(0);
+            $("#total").html("$" + 0);
+        }
+    }
 
 
+    $(document).on('change', '.cart__nums', function () {
+        if ($(this).val() < 1) {
+            $(this).val(1);
+            alert("請輸入正確的數量");
+            return false;
+        }
+        let t = $(this)
+        let nums = t.val();
+        let id = t.closest("tr").find(".checkbox").val();
 
-    window.onload = function () {
-        $("#tt").on('change', '.cart__nums', function () {
-            if ($(this).val() < 1) {
-                $(this).val(1);
-                alert("請輸入正確的數量");
-            }
-            let t=$(this)
-            addSingleTotal(t)
-            if(checked(t)){
-                addTotal()
-            }
-
-        });
-        $("#tt").on('click', '.qtybtn', function () {
-            let t=$(this)
-            addSingleTotal(t)
-            if(checked(t)){
-                addTotal()
-            }
-            // if ($button.hasClass('inc')) {
-            //
-            // }
-            // if ($button.hasClass('dec')) {
-            //
-            // }
-        });
-        $("#tt").on('click', '.icon_close', function () {
-            let t=$(this)
-            if (checked(t)){
-                deleteCartItem(t);
-                addTotal()
-                if($("#tt").html()==0){
-                    $("#tt").html("<br><br><h5>購物車內無商品。</h5>");
+        $.ajax({
+            url: "/cart/" + id + "/" + nums,
+            method: "put",
+            dataType: "JSON",
+            success: function (data) {
+                refreshTotalNumsPrice(data)
+                addSingleTotal(t)
+                if (checked(t)) {
+                    addTotal()
                 }
             }
-            deleteCartItem(t);
         });
 
-
-        $("#tt").on('click', 'input:checkbox', function () {
-            addTotal()
-        });
-
-        $("#button").click(function () {
-            let check = $('input:checkbox:checked').length;//判斷有多少個方框被勾選
-            if (check === 0) {
-                alert("您尚未勾選任何商品");
-                return false;//不要提交表單
-            } else {
-                return true;//提交表單
+    });
+    $(document).on('click', '.qtybtn', function () {
+        let t = $(this)
+        let nums = t.siblings("input").val();
+        let id = t.closest("tr").find(".checkbox").val();
+        $.ajax({
+            url: "/cart/" + id + "/" + nums,
+            method: "put",
+            dataType: "JSON",
+            success: function (data) {
+                refreshTotalNumsPrice(data)
+                addSingleTotal(t)
+                if (checked(t)) {
+                    addTotal()
+                }
             }
-        })
+        });
 
 
-    }
+    });
+
+    $(document).on('click', '.icon_close', function () {
+        let t = $(this)
+        let id = t.closest("tr").find(".checkbox").val();
+
+        $.ajax({
+            url: "/cart/" + id,
+            method: "delete",
+            dataType: "JSON",
+            success: function (data) {
+                refreshTotalNumsPrice(data)
+
+                let isChecked = checked(t);
+                deleteCartItem(t);
+                if ($("#tt").html() == 0) {
+                    $("#tt").html("<br><br><h5>購物車內無商品。</h5>");
+                }
+                if (isChecked) {
+                    addTotal()
+                }
+
+            }
+        });
+
+
+    });
+
+
+    $(document).on('click', 'input:checkbox', function () {
+        addTotal()
+    });
+
+
+    $(document).on("click", "#button", function () {
+        let check = $('input:checkbox:checked').length;//判斷有多少個方框被勾選
+        if (check === 0) {
+            alert("您尚未勾選任何商品");
+            return false;//不要提交表單
+        } else {
+            return true;//提交表單
+        }
+    });
+
 </script>
-
-
-<div th:replace="common::footersection"></div>
-<div th:replace="common::commonscript"></div>
 </body>
 
 </html>

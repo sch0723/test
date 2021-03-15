@@ -33,7 +33,6 @@ public class ProductController {
     @GetMapping(value = "/")
     public String index(Model model) {
         Page<Product> page = ps.findBySortPage("ASC", "productId", 0);
-        System.out.println(page.getTotalElements());
 
         model.addAttribute("pageData",page);
         model.addAttribute("search","all");
@@ -114,9 +113,7 @@ public class ProductController {
             sortBy = "productPrice";
         }
 
-        Page<Product> page = ps.findByKeywordsSortPage(strArr, sortType, sortBy, pageIndex-1);
-
-        return page;
+        return ps.findByKeywordsSortPage(strArr, sortType, sortBy, pageIndex-1);
     }
 
     //5XX

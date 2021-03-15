@@ -2,19 +2,18 @@ package com.cy.project.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 import javax.persistence.*;
 
-import lombok.Data;
-import lombok.ToString;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table
-@Data
+@Getter
+@Setter
 public class Users implements Serializable {
 
 	private static final long serialVersionUID = 7971373323053352652L;
@@ -33,11 +32,6 @@ public class Users implements Serializable {
 
 	private String usersEmail;
 
-//	@OneToMany(mappedBy = "users",cascade = CascadeType.ALL)
-//	@ToString.Exclude
-//	private Set<Cart> usersCart = new HashSet<>();
-
 	@OneToMany(mappedBy = "users",cascade = {CascadeType.MERGE,CascadeType.PERSIST})
-	@ToString.Exclude
 	private List<Orders> usersOrders = new ArrayList<>();
 }

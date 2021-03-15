@@ -68,7 +68,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" id="content" th:if="${pageData}">
+                <div class="row" id="content">
                     <div class='col-lg-4 col-md-6 col-sm-6' th:each="product:${pageData}">
                         <div class='product__item'>
                             <div class='product__item__pic set-bg1'><img th:src="'/res/img/product/'+${product.productId}+'.jpg'" alt=''>
@@ -89,12 +89,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="product__pagination" id="totalPages" th:if="${pageData.getTotalElements()}!=0">
-                    <a href="" class='pages' th:each="i:${#numbers.sequence(1, pageData.totalPages)}" th:text="${i}">1</a>
+                <div class="product__pagination" id="totalPages" >
+                    <a href="" class='pages' th:each="i:${#numbers.sequence(1, pageData.totalPages)}" th:text="${i}" th:if="${pageData.getTotalElements()}!=0">1</a>
+                    <div th:if="${pageData.getTotalElements()}==0"><br><br><h5>沒有搜索到商品。</h5></div>
                 </div>
-                <div class="product__pagination" id="totalPages" th:if="${pageData.getTotalElements()}==0">
-                    <br><br><h5>沒有搜索到商品。</h5>
-                </div>
+
             </div>
         </div>
         <input type="hidden" id="search" th:value="${search}"/>

@@ -8,14 +8,16 @@ import java.util.Set;
 
 import javax.persistence.*;
 
-import lombok.Data;
-import lombok.ToString;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Entity
 @Table
-@Data
+@Getter
+@Setter
+//@EqualsAndHashCode
 public class Orders implements Serializable {
 
 	private static final long serialVersionUID = 1862980183182340905L;
@@ -37,12 +39,11 @@ public class Orders implements Serializable {
 
 	private Integer ordersState;
 
-	@ManyToOne(targetEntity = Users.class)
+	@ManyToOne(targetEntity = Users.class,fetch = FetchType.LAZY)
 	@JoinColumn(name="usersId",referencedColumnName = "usersId")
 	private Users users;
 
-	@OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
-	@ToString.Exclude
+	@OneToMany(mappedBy = "orders", cascade = CascadeType.ALL,orphanRemoval = true)
 	private Set<OrdersDetail> ordersOrdersDetail = new HashSet<>();
 
 

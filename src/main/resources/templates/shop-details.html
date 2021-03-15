@@ -67,8 +67,8 @@
         let productNums = $("#pro-qty").val();
         alert(productId);
         $.ajax({
-            url: "/addToCart/" + productId+"/"+productNums,
-            method: "GET",
+            url: "/cart/" + productId+"/"+productNums,
+            method: "post",
             dataType: "JSON",
 
             success: function (data) {
