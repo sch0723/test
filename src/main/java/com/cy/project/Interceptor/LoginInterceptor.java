@@ -22,6 +22,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;
         }
 
+        session.setAttribute("preURI",request.getRequestURI());
         Cookie cookie = new Cookie("preURI", request.getRequestURI());
         cookie.setMaxAge(300);
         response.addCookie(cookie);

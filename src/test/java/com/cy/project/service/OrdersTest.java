@@ -11,6 +11,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+import java.util.Set;
+
 @SpringBootTest
 public class OrdersTest {
 
@@ -42,6 +45,18 @@ public class OrdersTest {
 //        or.save(orders);
 
 
+////        users.getUsersOrders().remove(1);
+//        Orders orders = or.findById(19).orElse(null);
+        or.deleteById(24);
+//        Set<OrdersDetail> detail = orders.getOrdersOrdersDetail();
+//
+//
+//        for (OrdersDetail d: detail) {
+//            detail.remove(d);
+//            odr.delete(d);
+////            odr.saveAndFlush(d);
+//            break;
+//        }
 
 
 

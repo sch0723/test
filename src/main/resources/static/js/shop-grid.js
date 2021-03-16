@@ -104,7 +104,7 @@ $(document).on("change", "#sortSelect", function () {
 $(document).on("click", ".pages", function () {
     //滾輪上移,頁碼上色
     $('html,body').animate({
-        scrollTop: $("#scrollTop").offset().top
+        scrollTop: $("#totalElements").offset().top
     }, 500);
     $(this).addClass("pages-focus").siblings().removeClass("pages-focus");
 

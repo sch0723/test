@@ -9,9 +9,11 @@ import com.cy.project.repository.ProductRepository;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -29,7 +31,16 @@ public class OrdersService {
         this.pr = productRepository;
     }
 
-    public Orders getOrdersDetailSet(String usersAccount,Integer[] arrayId){
+    @Transactional
+    public Orders save(Orders orders){
+        return or.save(orders);
+    }
+
+    public List<Orders> findOrdersByUsers_UsersAccount(String usersAccount){
+        return or.findOrdersByUsers_UsersAccount(usersAccount);
+    }
+
+    public Orders getInitOrders(String usersAccount,Integer[] arrayId){
 
         Orders orders=new Orders();
         Set<OrdersDetail> ordersDetailSet = new HashSet<>();
@@ -38,17 +49,18 @@ public class OrdersService {
         int SumPrice=0;
         for (Integer id : arrayId) {
             Product product=pr.findById(id).orElse(null);
-            HashOperations<String, Integer, CartItem> opsForHash = redisTemplate.opsForHash();
+            HashOperations<String, String, CartItem> opsForHash = redisTemplate.opsForHash();
 
-            int nums=opsForHash.get(usersAccount,id).getCount();
+            int nums=opsForHash.get(usersAccount,String.valueOf(id)).getCount();
+            int Price=product.getProductPrice()*nums;
 
             OrdersDetail detail = new OrdersDetail();
             detail.setOrders(orders);
             detail.setProduct(product);
             detail.setOrdersDetailProductNums(nums);
-
+            detail.setOrdersDetailTotalPrice(Price);
             ordersDetailSet.add(detail);
-            SumPrice+=product.getProductPrice()*nums;
+            SumPrice+=Price;
         }
         orders.setOrdersState(0);
         orders.setOrdersOrdersDetail(ordersDetailSet);

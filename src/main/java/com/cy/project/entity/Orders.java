@@ -37,6 +37,8 @@ public class Orders implements Serializable {
 
 	private String ordersPhone;
 
+	private String ordersEmail;
+
 	private Integer ordersState;
 
 	@ManyToOne(targetEntity = Users.class,fetch = FetchType.LAZY)

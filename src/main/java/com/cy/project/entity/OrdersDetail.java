@@ -20,6 +20,8 @@ public class  OrdersDetail implements Serializable {
 
     private Integer ordersDetailProductNums;
 
+    private Integer ordersDetailTotalPrice;
+
     @ManyToOne(targetEntity = Product.class)
     @JoinColumn(name="productId",referencedColumnName = "productId")
     private Product product;

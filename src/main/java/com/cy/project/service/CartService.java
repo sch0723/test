@@ -25,16 +25,16 @@ public class CartService {
         this.pr = productRepository;
     }
 
-    private HashOperations<String, Integer, CartItem> getOpsForHash(){
+    private HashOperations<String, String, CartItem> getOpsForHash(){
         return redisTemplate.opsForHash();
     }
 
     //購物車總數和總金額
-    public Map<String, Integer> getNumsAndPrice(String redisKEY) {
+    public Map<String, Integer> getNumsAndPrice(String redisKey) {
 
         int totalNums = 0;
         int totalPrice = 0;
-        List<CartItem> cartItemList = getOpsForHash().values(redisKEY);
+        List<CartItem> cartItemList = getOpsForHash().values(redisKey);
         for (CartItem cartItem : cartItemList) {
             totalNums += cartItem.getCount();
             totalPrice += cartItem.getSubTotalPrice();
@@ -47,9 +47,9 @@ public class CartService {
     }
 
     //購物車清單
-    public List<CartItem> getCart(String redisKEY) {
+    public List<CartItem> getCart(String redisKey) {
 
-        return getOpsForHash().values(redisKEY);
+        return getOpsForHash().values(redisKey);
     }
 
     //合併UUID和帳號購物車
@@ -59,24 +59,24 @@ public class CartService {
         for (CartItem cartItem : cartItemList) {
             int id = cartItem.getProduct().getProductId();
 
-            if (getOpsForHash().hasKey(usersAccount, id)) {
-                int count = cartItem.getCount() + getOpsForHash().get(usersAccount, id).getCount();
+            if (getOpsForHash().hasKey(usersAccount, String.valueOf(id))) {
+                int count = cartItem.getCount() + getOpsForHash().get(usersAccount, String.valueOf(id)).getCount();
                 int price = cartItem.getProduct().getProductPrice();
 
                 cartItem.setCount(count);
                 cartItem.setSubTotalPrice(price * count);
             }
-            getOpsForHash().put(usersAccount, id, cartItem);
+            getOpsForHash().put(usersAccount, String.valueOf(id), cartItem);
         }
         redisTemplate.delete(UUID);
     }
 
     //增加商品到購物車
-    public Map<String, Integer> addToCart(String redisKEY, Integer id, Integer nums) {
+    public Map<String, Integer> addToCart(String redisKey, Integer id, Integer nums) {
 
         CartItem item;
-        if (getOpsForHash().hasKey(redisKEY, id)) {
-            item = getOpsForHash().get(redisKEY, id);
+        if (getOpsForHash().hasKey(redisKey, String.valueOf(id))) {
+            item = getOpsForHash().get(redisKey, String.valueOf(id));
             item.setCount(item.getCount() + nums);
         } else {
             Product product = pr.findById(id).orElse(null);
@@ -87,37 +87,41 @@ public class CartService {
 
         item.setSubTotalPrice(item.getProduct().getProductPrice() * item.getCount());
 
-        getOpsForHash().put(redisKEY, id, item);
+        getOpsForHash().put(redisKey, String.valueOf(id), item);
 
         String regex = "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$";
-        if (redisKEY.matches(regex)) {
-            redisTemplate.expire(redisKEY, 60, TimeUnit.SECONDS);
+        if (redisKey.matches(regex)) {
+            redisTemplate.expire(redisKey, 60, TimeUnit.SECONDS);
         }
-        return getNumsAndPrice(redisKEY);
+        return getNumsAndPrice(redisKey);
     }
 
     //更新購物車商品數量
-    public Map<String, Integer> updateNumsToCart(String redisKEY, Integer id, Integer nums) {
+    public Map<String, Integer> updateNumsToCart(String redisKey, Integer id, Integer nums) {
 
-        CartItem item = getOpsForHash().get(redisKEY, id);
+        CartItem item = getOpsForHash().get(redisKey, String.valueOf(id));
 
         item.setCount(nums);
 
         item.setSubTotalPrice(item.getProduct().getProductPrice() * nums);
 
-        getOpsForHash().put(redisKEY, id, item);
+        getOpsForHash().put(redisKey, String.valueOf(id), item);
 
-        return getNumsAndPrice(redisKEY);
+        return getNumsAndPrice(redisKey);
     }
 
     //刪除購物車商品
-    public Map<String, Integer> deleteProductToCart(String redisKEY, Integer id) {
+    public Map<String, Integer> deleteProductToCart(String redisKey, Integer id) {
 
-//        HashOperations<String, Integer, CartItem> opsForHash = redisTemplate.opsForHash();
+        getOpsForHash().delete(redisKey, String.valueOf(id));
 
-        getOpsForHash().delete(redisKEY, id);
+        return getNumsAndPrice(redisKey);
+    }
 
-        return getNumsAndPrice(redisKEY);
+    public void deleteProducts(String redisKey,List<Integer> list){
+        for (Integer id: list) {
+            getOpsForHash().delete(redisKey, String.valueOf(id));
+        }
     }
 
 }

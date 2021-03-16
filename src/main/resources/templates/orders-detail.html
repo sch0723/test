@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ogani Template">
+    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ogani | Template</title>
+
+    <div th:replace="common::commonhead"></div>
+
+    <style>
+        .container {
+            width: 90%;
+        }
+
+        .table-condensed {
+            width: 80%;
+        }
+
+        #td1{
+            width: 10%
+        }
+        .td2{
+            width: 15%;
+        }
+        #td3{
+            width: 35%
+        }
+        #td4{
+            width: 40%
+        }
+        #trrrrr td{
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+<div th:replace="common::preloder"></div>
+<div th:replace="common::humbergeroverlay"></div>
+<div th:replace="common::humbergerwrapper"></div>
+<div th:replace="common::headersection"></div>
+<div th:replace="common::herosection"></div>
+<!--    <div th:replace="common::breadcrumbsection"></div>-->
+
+
+<!-- Checkout Section Begin -->
+<section class="checkout spad">
+    <div class="container">
+        <div class="row">
+        </div>
+        <div class="checkout__form">
+            <h4>訂單</h4>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div id="sssss" class="checkout__input">
+                        <div th:each="i:${#numbers.sequence(ordersList.size()-1,0,-1)}"
+                             th:with="orders=${ordersList[i]}">
+                            <table class="table" >
+                                <tbody>
+                                <tr id="trrrrr">
+
+                                    <td id="td1">
+                                        <button type="button" class="btn btn-success" data-toggle="collapse" th:data-target="'#demo'+${i}">+</button>
+                                    </td>
+                                    <td id="td4" th:text="${orders.ordersBuyDate}">
+                                    </td>
+                                    <td id="td3" th:text="'$'+${orders.ordersSumPrice}">
+                                    </td>
+                                    <td class="td2" th:if="${orders.ordersState==0}">
+                                        <form action="/toPay" method="POST">
+                                            <input type="hidden" name="orderId" th:value="${orders.ordersId}"/>
+                                            <input type="submit" value="前往付款"/>
+                                        </form>
+                                    </td>
+                                    <td class="td2" th:if="${orders.ordersState==1}">已付款</td>
+                                    <td class="td2" th:if="${orders.ordersState==2}">已發貨</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div th:id="'demo'+${i}" class="collapse">
+                                <table class="table table-condensed" align="right">
+                                    <thead>
+                                    <tr>
+                                        <th>商品名稱</th>
+                                        <th>數量</th>
+                                        <th>金額</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="od:${orders.ordersOrdersDetail}">
+                                            <td th:text="${od.product.productName}"></td>
+                                            <td th:text="${od.ordersDetailProductNums}"></td>
+                                            <td th:text="'$'+${od.ordersDetailTotalPrice}"></td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Checkout Section End -->
+
+
+<div th:replace="common::footersection"></div>
+<div th:replace="common::commonscript"></div>
+</body>
+
+</html>
