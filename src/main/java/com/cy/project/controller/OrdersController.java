@@ -44,10 +44,6 @@ public class OrdersController {
     public String myOrders(HttpSession session, Model model){
         List<Orders> ordersList=os.findOrdersByUsers_UsersAccount((String) session.getAttribute("users"));
 
-        for (Orders o :
-                ordersList) {
-            System.out.println(o);
-        }
         model.addAttribute("ordersList",ordersList);
         return "orders-detail";
     }

@@ -46,7 +46,8 @@
                             </thead>
 
                             <tbody id="tt">
-                            <tr th:each="cartItem:${cart}">
+
+                            <tr th:each="cartItem:${cart}"  th:if="${cart.size()}!=0">
                                 <td class="shoping__cart__item">
                                     <input class='checkbox' type='checkbox' name='product[]' checked='checked'
                                            th:value="${cartItem.product.productId}">
@@ -75,9 +76,11 @@
                                     <span class="icon_close"></span>
                                 </td>
                             </tr>
+
                             </tbody>
                         </table>
                     </div>
+                    <span id="nono"><h5 th:if="${cart.size()}==0">購物車內無商品。</h5></span>
                 </div>
             </div>
             <div class="row">
@@ -216,7 +219,7 @@
                 let isChecked = checked(t);
                 deleteCartItem(t);
                 if ($("#tt").html() == 0) {
-                    $("#tt").html("<br><br><h5>購物車內無商品。</h5>");
+                    $("#nono").html("<h5>購物車內無商品。</h5>");
                 }
                 if (isChecked) {
                     addTotal()

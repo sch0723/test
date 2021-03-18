@@ -1,0 +1,34 @@
+version: '3'
+services:
+  db:
+    container_name: mariadb
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: P@ssw0rd
+    volumes:
+    - ./data.sql:/docker-entrypoint-initdb.d/data.sql
+    ports:
+    - "3306:3306"
+    networks:
+    - proxy
+  redis:
+    container_name: redis
+    image: redis
+    ports:
+    - "6379:6379"
+    networks:
+    - proxy
+  web:
+    build: 
+      context: ./
+    container_name: mydemo
+    ports:
+    - "8080:8080"
+    networks:
+    - proxy
+    depends_on:
+      - db
+      - redis
+networks:
+  proxy:

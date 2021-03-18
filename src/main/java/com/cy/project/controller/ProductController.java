@@ -53,15 +53,31 @@ public class ProductController {
 
     //搜索攔商品目錄
     @GetMapping(value = "/keys")
-    public String productToKeysPage(@RequestParam(value="keywords")String keywords,Model model) {
+    public String productToKeysPage(@RequestParam(value="sort", required = false)String sort,
+                                    @RequestParam(value="page", required = false)Integer pageIndex,
+                                    @RequestParam(value="keywords")String keywords,
+                                    Model model) {
 
         if ("".equals(keywords)){
             return "redirect:/";
         }
 
         String[] strArr=keywords.split(" ");
+        if(pageIndex==null){
+            pageIndex=1;
+        }
 
-        Page<Product> page = ps.findByKeywordsSortPage(strArr, "ASC", "productId", 0);
+        String sortType = "ASC";
+        String sortBy = "productId";
+        if ("PriceDESC".equals(sort)) {
+            sortType = "DESC";
+            sortBy = "productPrice";
+
+        } else if ("PriceASC".equals(sort)) {
+            sortType = "ASC";
+            sortBy = "productPrice";
+        }
+        Page<Product> page = ps.findByKeywordsSortPage(strArr, sortType, sortBy, pageIndex-1);
         model.addAttribute("pageData",page);
         model.addAttribute("search","keys");
         model.addAttribute("getKeys",keywords);

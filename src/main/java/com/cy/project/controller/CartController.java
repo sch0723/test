@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 public class CartController {
@@ -49,6 +51,10 @@ public class CartController {
         if(usersAccount!=null){
             map = cs.getNumsAndPrice(usersAccount);
         }else if (myUUID!=null){
+            String regex = "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$";
+            if (!myUUID.matches(regex)) {
+                return null;
+            }
             map = cs.getNumsAndPrice(myUUID);
         }
         return map;
@@ -65,16 +71,20 @@ public class CartController {
         Map<String, Integer> map;
 
         if(usersAccount!=null){
-            map = cs.addToCart(usersAccount, id, nums);
+            map = cs.addToCartForUsersAccount(usersAccount, id, nums);
         }else if (myUUID!=null){
-            map = cs.addToCart(myUUID, id, nums);
+            String regex = "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$";
+            if (!myUUID.matches(regex)) {
+                return null;
+            }
+            map = cs.addToCartForUUID(myUUID, id, nums);
         }else {
             myUUID= UUID.randomUUID().toString();
             Cookie cookie = new Cookie("myUUID", myUUID);
             cookie.setPath("/");
             response.addCookie(cookie);
 
-            map = cs.addToCart(myUUID, id, nums);
+            map = cs.addToCartForUUID(myUUID, id, nums);
         }
 
         return map;

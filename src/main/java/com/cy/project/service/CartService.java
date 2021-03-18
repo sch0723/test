@@ -71,8 +71,8 @@ public class CartService {
         redisTemplate.delete(UUID);
     }
 
-    //增加商品到購物車
-    public Map<String, Integer> addToCart(String redisKey, Integer id, Integer nums) {
+    //增加商品到購物車ForUsersAccount
+    public Map<String, Integer> addToCartForUsersAccount(String redisKey, Integer id, Integer nums) {
 
         CartItem item;
         if (getOpsForHash().hasKey(redisKey, String.valueOf(id))) {
@@ -89,10 +89,28 @@ public class CartService {
 
         getOpsForHash().put(redisKey, String.valueOf(id), item);
 
-        String regex = "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$";
-        if (redisKey.matches(regex)) {
-            redisTemplate.expire(redisKey, 60, TimeUnit.SECONDS);
+        return getNumsAndPrice(redisKey);
+    }
+    //增加商品到購物車ForUUID
+    public Map<String, Integer> addToCartForUUID(String redisKey, Integer id, Integer nums) {
+
+        CartItem item;
+        if (getOpsForHash().hasKey(redisKey, String.valueOf(id))) {
+            item = getOpsForHash().get(redisKey, String.valueOf(id));
+            item.setCount(item.getCount() + nums);
+        } else {
+            Product product = pr.findById(id).orElse(null);
+            item = new CartItem();
+            item.setProduct(product);
+            item.setCount(nums);
         }
+
+        item.setSubTotalPrice(item.getProduct().getProductPrice() * item.getCount());
+
+        getOpsForHash().put(redisKey, String.valueOf(id), item);
+
+        redisTemplate.expire(redisKey, 60, TimeUnit.SECONDS);
+
         return getNumsAndPrice(redisKey);
     }
 

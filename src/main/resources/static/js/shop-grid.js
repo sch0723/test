@@ -1,14 +1,38 @@
 
 
-var keywords;
+var keywords="";
 var search = $("#search").val();
-var sort = "productIdASC";
+var sort = "Default";
 var page = 1;
 var d = $("#getKeys").val();
 if (d) {
     keywords = d;
     search = "keys";
 }
+
+// let stateObject={
+//     keywords:keywords,
+//     search : search,
+//     sort : sort,
+//     page : page,
+// };
+// window.history.replaceState(stateObject,null,"")
+//
+// alert(window.history.prototype);
+
+
+
+// $(document).on("click", ".toPro", function () {
+//     window.sessionStorage.setItem("myhtml",$("#content").html());
+// });
+//
+// window.onload=function(){
+//     const myhtml = window.sessionStorage.getItem("myhtml");
+//     if(myhtml!=null){
+//         $("#content").html(myhtml);
+//         window.sessionStorage.clear();
+//     }
+// }
 
 $("#totalPages a:first").addClass("pages-focus").siblings().removeClass("pages-focus");
 
@@ -17,7 +41,7 @@ function refreshList(data) {
     let content = data.content;
     let contentStr = "";
     for (let i = 0; i < content.length; i++) {
-        contentStr += "<div class='col-lg-4 col-md-6 col-sm-6'><div class='product__item'><div class='product__item__pic set-bg' ><img src='/res/img/product/" + content[i].productId + ".jpg' alt=''><ul class='product__item__pic__hover'><li value='" + content[i].productId + "' class='productId'><a href='#' class='addToCart'><i class='fa fa-shopping-cart'></i></a></li></ul></div> <div class='product__item__text'><h6><a href='/product/" + content[i].productId + "'>" + content[i].productName + "</a></h6><h5>$" + content[i].productPrice + "</h5></div></div></div>";
+        contentStr += "<div class='col-lg-4 col-md-6 col-sm-6'><div class='product__item'><div class='product__item__pic set-bg' ><img src='/res/img/product/" + content[i].productId + ".jpg' alt=''><ul class='product__item__pic__hover'><li value='" + content[i].productId + "' class='productId'><a href='#' class='addToCart'><i class='fa fa-shopping-cart'></i></a></li></ul></div> <div class='product__item__text'><h6><a href='/product/" + content[i].productId + "' class='toPro'>" + content[i].productName + "</a></h6><h5>$" + content[i].productPrice + "</h5></div></div></div>";
     }
     $("#content").html(contentStr)
 }
@@ -36,6 +60,23 @@ function refreshAll(data) {
     $("#totalPages").html(pageStr)
 
     refreshList(data)
+}
+
+function refreshSort(sort) {
+    $('.nice-select span').html(sort)
+    $('.nice-select ul .selected').removeClass('selected')
+    $('.nice-select ul li[data-value='+sort+']').addClass('selected');
+    $("#sort").val(sort);
+}
+
+function refreshPageIndex(pageIndex) {
+    $('.pages[value='+pageIndex+']').addClass("pages-focus").siblings().removeClass("pages-focus");
+}
+
+function scrollToTop() {
+    $('html,body').animate({
+        scrollTop: $("body").offset().top
+    }, 500);
 }
 
 // function productType(search) {
@@ -80,6 +121,7 @@ function keysSortOrPages(keywords, sort, page) {
         data: {"keywords": keywords},
         success: function (data) {
             refreshList(data)
+
         }
     });
 }
@@ -87,34 +129,86 @@ function keysSortOrPages(keywords, sort, page) {
 //依排序載入商品
 $(document).on("change", "#sortSelect", function () {
     $("#totalPages a:first").addClass("pages-focus").siblings().removeClass("pages-focus");
-
     sort = $("#sortSelect option:selected").val();
     page = 1;
 
     if (search === "keys") {
         keysSortOrPages(keywords, sort, page)
+        // let stateObject={
+        //     keywords:keywords,
+        //     search : search,
+        //     sort : sort,
+        //     page : page,
+        // };
+        // window.history.pushState(stateObject,null,"?keywords="+keywords+"&sort="+sort+"&page="+page);
+        // alert(window.history.length);
     } else {
         sortOrPages(search, sort, page)
+        // let stateObject={
+        //     keywords:keywords,
+        //     search : search,
+        //     sort : sort,
+        //     page : page,
+        // };
+        // // alert(JSON.stringify(stateObject));
+        // window.history.pushState(stateObject,null,"?search="+search+"&sort="+sort+"&page="+page);
+        // alert(window.history.length);
     }
     return false;
 });
 
+// window.addEventListener("popstate", function(e) {
+//     var state = e.state;
+//     //滾輪上移,頁碼上色
+//     // alert(window.document.location.pathname);
+//
+//     alert(JSON.stringify(state));
+//
+//     if (state!=null&&state.search==="keys"){
+//         keysSortOrPages(state.keywords, state.sort, state.page);
+//         scrollToTop();
+//         refreshPageIndex(state.page);
+//         refreshSort(state.sort);
+//     }
+//
+//     if (state!==null&&state.search!=="keys"){
+//         sortOrPages(state.search, state.sort, state.page);
+//         scrollToTop();
+//         refreshPageIndex(state.page);
+//         refreshSort(state.sort);
+//     }
+// });
 
 //依頁碼載入商品
 $(document).on("click", ".pages", function () {
     //滾輪上移,頁碼上色
-    $('html,body').animate({
-        scrollTop: $("#totalElements").offset().top
-    }, 500);
+    scrollToTop();
     $(this).addClass("pages-focus").siblings().removeClass("pages-focus");
 
 
-    const page = $(this).html();
+    page = $(this).html();
     if (search === "keys") {
         keysSortOrPages(keywords, sort, page)
+        // let stateObject={
+        //     keywords:keywords,
+        //     search : search,
+        //     sort : sort,
+        //     page : page,
+        // };
+        // window.history.pushState(stateObject,null,"?keywords="+keywords+"&sort="+sort+"&page="+page)
+        // alert(window.history.length);
     } else {
-        sortOrPages(search, sort, page)
+        sortOrPages(search, sort, page);
+        // let stateObject={
+        //     keywords:keywords,
+        //     search : search,
+        //     sort : sort,
+        //     page : page,
+        // };
+        // window.history.pushState(stateObject,null,"?search="+search+"&sort="+sort+"&page="+page);
+        // alert(window.history.length);
     }
+
     return false;
 });
 
@@ -128,6 +222,7 @@ $(document).on("click", ".addToCart", function () {
         dataType: "JSON",
 
         success: function (data) {
+
             if(data){
                 $(".totalNums").html(data.totalNums);
                 $(".totalPrice").html(data.totalPrice);
@@ -137,6 +232,7 @@ $(document).on("click", ".addToCart", function () {
             }
         }
     });
+
     return false;
 });
 

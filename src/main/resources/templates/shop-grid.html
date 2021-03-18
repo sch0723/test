@@ -51,7 +51,7 @@
                             <div class="filter__sort">
                                 <span>Sort By</span>
                                 <label for="sortSelect"></label><select id="sortSelect">
-                                <option value="productIdASC" id="AAA">Default</option>
+                                <option value="Default" id="AAA">Default</option>
                                 <option value="PriceDESC">PriceDESC</option>
                                 <option value="PriceASC">PriceASC</option>
                             </select>
@@ -82,7 +82,7 @@
                             </div>
                             <div class='product__item__text'>
                                 <h6>
-                                    <a  th:href="'/product/'+${product.productId}" th:text='${product.productName}'></a>
+                                    <a  th:href="'/product/'+${product.productId}" th:text='${product.productName}' class="toPro"></a>
                                 </h6>
                                 <h5 th:text="'$'+${product.productPrice}"></h5>
                             </div>
@@ -90,7 +90,7 @@
                     </div>
                 </div>
                 <div class="product__pagination" id="totalPages" >
-                    <a href="" class='pages' th:each="i:${#numbers.sequence(1, pageData.totalPages)}" th:text="${i}" th:if="${pageData.getTotalElements()}!=0">1</a>
+                    <a href="" th:class="pages" th:each="i:${#numbers.sequence(1, pageData.totalPages)}" th:text="${i}" th:value="${i}" th:if="${pageData.getTotalElements()}!=0">1</a>
                     <div th:if="${pageData.getTotalElements()}==0"><br><br><h5>沒有搜索到商品。</h5></div>
                 </div>
 
