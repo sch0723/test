@@ -32,6 +32,7 @@ public class OrdersController {
         this.cs = cartService;
     }
 
+    //產生初始化訂單進入check
     @GetMapping(value = "/check")
     public String checkout(@RequestParam(value = "product[]") Integer[] product, HttpSession session) {
 
@@ -40,6 +41,7 @@ public class OrdersController {
         return "checkout";
     }
 
+    //使用者訂單目錄
     @GetMapping(value = "/myOrders")
     public String myOrders(HttpSession session, Model model){
         List<Orders> ordersList=os.findOrdersByUsers_UsersAccount((String) session.getAttribute("users"));
@@ -48,6 +50,7 @@ public class OrdersController {
         return "orders-detail";
     }
 
+    //設定訂單剩餘屬性並儲存
     @PostMapping(value = "/createOrders")
     public String createOrders(String name, String address, String phone, String email, HttpSession session) {
         String users = (String) session.getAttribute("users");

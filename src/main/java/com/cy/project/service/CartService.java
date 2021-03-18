@@ -109,6 +109,7 @@ public class CartService {
 
         getOpsForHash().put(redisKey, String.valueOf(id), item);
 
+        //未登入設定儲存時間
         redisTemplate.expire(redisKey, 60, TimeUnit.SECONDS);
 
         return getNumsAndPrice(redisKey);
@@ -136,6 +137,7 @@ public class CartService {
         return getNumsAndPrice(redisKey);
     }
 
+    //刪除購物車多個商品
     public void deleteProducts(String redisKey,List<Integer> list){
         for (Integer id: list) {
             getOpsForHash().delete(redisKey, String.valueOf(id));

@@ -25,6 +25,7 @@ public class CartController {
         this.cs=cartService;
     }
 
+    //購物車頁面
     @GetMapping(value = "/cart")
     public String cart(HttpSession session, Model model) {
 
@@ -38,8 +39,7 @@ public class CartController {
         return "shopping-cart";
     }
 
-
-
+    //購物車商品總數和總金額
     @GetMapping(value = "/getCartNumsAndPrice")
     @ResponseBody
     public Map<String,Integer> getNumsAndPrice(HttpSession session, @CookieValue(value = "myUUID",required = false)String myUUID){
@@ -60,6 +60,7 @@ public class CartController {
         return map;
     }
 
+    //添加商品進購物車
     @PostMapping(value = "/cart/{id}/{nums}")
     @ResponseBody
     public Map<String,Integer> addToCart(HttpSession session, HttpServletResponse response,
@@ -70,14 +71,19 @@ public class CartController {
 
         Map<String, Integer> map;
 
+        //登入
         if(usersAccount!=null){
             map = cs.addToCartForUsersAccount(usersAccount, id, nums);
+
+        //未登入有UUID
         }else if (myUUID!=null){
             String regex = "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$";
             if (!myUUID.matches(regex)) {
                 return null;
             }
             map = cs.addToCartForUUID(myUUID, id, nums);
+
+        //未登入也沒有UUID,產生UUID存cookie
         }else {
             myUUID= UUID.randomUUID().toString();
             Cookie cookie = new Cookie("myUUID", myUUID);
@@ -90,6 +96,7 @@ public class CartController {
         return map;
     }
 
+    //更新數量
     @PutMapping(value = "/cart/{id}/{nums}")
     @ResponseBody
     public Map<String,Integer> updateNums(HttpSession session, @PathVariable Integer id, @PathVariable Integer nums){
@@ -99,6 +106,7 @@ public class CartController {
         return cs.updateNumsToCart(usersAccount, id, nums);
     }
 
+    //刪除
     @DeleteMapping(value = "/cart/{id}")
     @ResponseBody
     public Map<String,Integer> deleteProduct(HttpSession session, @PathVariable Integer id){

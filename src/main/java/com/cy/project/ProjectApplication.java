@@ -20,10 +20,14 @@ public class ProjectApplication {
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Object> template = new RedisTemplate();
         template.setConnectionFactory(redisConnectionFactory);
-        template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-        template.setHashKeySerializer(new StringRedisSerializer());
-        template.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
+
+        StringRedisSerializer stringRedisSerializer=new StringRedisSerializer();
+        GenericJackson2JsonRedisSerializer genericJackson2JsonRedisSerializer=new GenericJackson2JsonRedisSerializer();
+
+        template.setKeySerializer(stringRedisSerializer);
+        template.setValueSerializer(genericJackson2JsonRedisSerializer);
+        template.setHashKeySerializer(stringRedisSerializer);
+        template.setHashValueSerializer(genericJackson2JsonRedisSerializer);
         return template;
     }
 }

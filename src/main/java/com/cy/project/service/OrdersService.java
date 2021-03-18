@@ -36,10 +36,12 @@ public class OrdersService {
         return or.save(orders);
     }
 
+    //使用者所有訂單
     public List<Orders> findOrdersByUsers_UsersAccount(String usersAccount){
         return or.findOrdersByUsers_UsersAccount(usersAccount);
     }
 
+    //初始化訂單
     public Orders getInitOrders(String usersAccount,Integer[] arrayId){
 
         Orders orders=new Orders();

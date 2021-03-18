@@ -31,13 +31,13 @@ public class UsersController {
     @GetMapping(value = "/logout")
     public String toLogout(HttpSession session) {
         session.removeAttribute("users");
-
         return "login";
     }
 
 
+    //登入驗證
     @PostMapping(value = "/verifyUsers")
-    public String productById(String usersAccount, String usersPwd, Model model,
+    public String verifyUsers(String usersAccount, String usersPwd, Model model,
                               HttpSession session, HttpServletResponse response,
                               @CookieValue(value = "preURI", required = false) String preURI,
                               @CookieValue(value = "myUUID", required = false) String myUUID) {
@@ -64,9 +64,10 @@ public class UsersController {
         cookie.setPath("/");
         response.addCookie(cookie);
 
-        //
+        //儲存登入狀態
         session.setAttribute("users", users.getUsersAccount());
 
+        //前往攔截前請求
         if (preURI != null) {
             return "redirect:" + preURI;
         }

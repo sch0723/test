@@ -22,6 +22,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;
         }
 
+        //儲存攔截請求
         session.setAttribute("preURI",request.getRequestURI());
         Cookie cookie = new Cookie("preURI", request.getRequestURI());
         cookie.setMaxAge(300);
@@ -29,6 +30,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         request.setAttribute("msg","請登錄");
 
+        //登入頁
         request.getRequestDispatcher("/login").forward(request,response);
         return false;
     }
