@@ -39,7 +39,6 @@ public class UsersController {
     @PostMapping(value = "/verifyUsers")
     public String verifyUsers(String usersAccount, String usersPwd, Model model,
                               HttpSession session, HttpServletResponse response,
-                              @CookieValue(value = "preURI", required = false) String preURI,
                               @CookieValue(value = "myUUID", required = false) String myUUID) {
 
 
@@ -68,6 +67,7 @@ public class UsersController {
         session.setAttribute("users", users.getUsersAccount());
 
         //前往攔截前請求
+        String preURI = (String)session.getAttribute("preURI");
         if (preURI != null) {
             return "redirect:" + preURI;
         }

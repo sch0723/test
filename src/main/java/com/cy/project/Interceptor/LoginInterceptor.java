@@ -24,9 +24,6 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         //儲存攔截請求
         session.setAttribute("preURI",request.getRequestURI());
-        Cookie cookie = new Cookie("preURI", request.getRequestURI());
-        cookie.setMaxAge(300);
-        response.addCookie(cookie);
 
         request.setAttribute("msg","請登錄");
 
@@ -38,10 +35,9 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 
-        Cookie cookie = new Cookie("preURI", null);
-        cookie.setMaxAge(0);
+        HttpSession session = request.getSession();
+        session.removeAttribute("preURI");
 
-        response.addCookie(cookie);
     }
 
     @Override
