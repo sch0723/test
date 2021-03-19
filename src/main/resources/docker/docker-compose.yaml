@@ -21,7 +21,7 @@ services:
     - proxy
   web:
     build: 
-      context: ./
+      context: ../../java
     container_name: mydemo
     ports:
     - "8080:8080"
