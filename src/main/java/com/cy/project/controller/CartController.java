@@ -97,7 +97,7 @@ public class CartController {
         return map;
     }
 
-    //更新數量(登入only)返回購物車商品總數和總金額供頁面更新
+    //更新數量(登入only在購物車頁面中)返回購物車商品總數和總金額供頁面更新
     @PutMapping(value = "/cart/{id}/{nums}")
     @ResponseBody
     public Map<String,Integer> updateNums(HttpSession session, @PathVariable Integer id, @PathVariable Integer nums){
@@ -107,7 +107,7 @@ public class CartController {
         return cs.updateNumsToCart(usersAccount, id, nums);
     }
 
-    //刪除(登入only)返回購物車商品總數和總金額供頁面更新
+    //刪除(登入only在購物車頁面中)返回購物車商品總數和總金額供頁面更新
     @DeleteMapping(value = "/cart/{id}")
     @ResponseBody
     public Map<String,Integer> deleteProduct(HttpSession session, @PathVariable Integer id){
