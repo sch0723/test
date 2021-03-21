@@ -22,12 +22,12 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        //儲存攔截請求
+        //儲存攔截前請求供登入完成使用
         session.setAttribute("preURI",request.getRequestURI());
 
         request.setAttribute("msg","請登錄");
 
-        //登入頁
+        //未登入轉向登入頁
         request.getRequestDispatcher("/login").forward(request,response);
         return false;
     }
@@ -35,6 +35,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 
+        //登入完成刪除攔截前的請求
         HttpSession session = request.getSession();
         session.removeAttribute("preURI");
 

@@ -10,15 +10,24 @@ if (d) {
     search = "keys";
 }
 
-// let stateObject={
+// var stateObject={
 //     keywords:keywords,
 //     search : search,
 //     sort : sort,
 //     page : page,
 // };
-// window.history.replaceState(stateObject,null,"")
 //
-// alert(window.history.prototype);
+// window.onload=function(){
+//
+//
+//     if(!window.history.state){
+//         window.history.replaceState(stateObject,null,"");
+//
+//     }
+//
+// }
+
+
 
 
 
@@ -33,6 +42,8 @@ if (d) {
 //         window.sessionStorage.clear();
 //     }
 // }
+
+
 
 $("#totalPages a:first").addClass("pages-focus").siblings().removeClass("pages-focus");
 
@@ -62,6 +73,7 @@ function refreshAll(data) {
     refreshList(data)
 }
 
+//更新排序樣式
 function refreshSort(sort) {
     $('.nice-select span').html(sort)
     $('.nice-select ul .selected').removeClass('selected')
@@ -69,6 +81,7 @@ function refreshSort(sort) {
     $("#sort").val(sort);
 }
 
+//更新頁碼樣式
 function refreshPageIndex(pageIndex) {
     $('.pages[value='+pageIndex+']').addClass("pages-focus").siblings().removeClass("pages-focus");
 }
@@ -101,7 +114,7 @@ function scrollToTop() {
 //     });
 // }
 
-
+//ajax更新商品目錄for所有商品和分類商品
 function sortOrPages(search, sort, page) {
     $.ajax({
         url: "/grid/" + search + "/" + sort + "/" + page,
@@ -113,6 +126,7 @@ function sortOrPages(search, sort, page) {
     });
 }
 
+//ajax更新商品目錄for搜索攔商品
 function keysSortOrPages(keywords, sort, page) {
     $.ajax({
         url: "/keys/" + sort + "/" + page,
@@ -126,6 +140,27 @@ function keysSortOrPages(keywords, sort, page) {
     });
 }
 
+// window.addEventListener("popstate", function(e) {
+//     var state = e.state;
+//
+//     if (state!=null&&state.search==="keys"){
+//         keysSortOrPages(state.keywords, state.sort, state.page);
+//         scrollToTop();
+//         refreshPageIndex(state.page);
+//         refreshSort(state.sort);
+//         // return false;
+//     }
+//
+//     if (state!==null&&state.search!=="keys"){
+//         sortOrPages(state.search, state.sort, state.page);
+//         scrollToTop();
+//         refreshPageIndex(state.page);
+//         refreshSort(state.sort);
+//         // return false;
+//     }
+//
+// });
+
 //依排序載入商品
 $(document).on("change", "#sortSelect", function () {
     $("#totalPages a:first").addClass("pages-focus").siblings().removeClass("pages-focus");
@@ -134,50 +169,27 @@ $(document).on("change", "#sortSelect", function () {
 
     if (search === "keys") {
         keysSortOrPages(keywords, sort, page)
-        // let stateObject={
-        //     keywords:keywords,
-        //     search : search,
-        //     sort : sort,
-        //     page : page,
-        // };
+
+        // stateObject.keywords=keywords;
+        // stateObject.search=search;
+        // stateObject.sort=sort;
+        // stateObject.page=page;
         // window.history.pushState(stateObject,null,"?keywords="+keywords+"&sort="+sort+"&page="+page);
-        // alert(window.history.length);
+
     } else {
         sortOrPages(search, sort, page)
-        // let stateObject={
-        //     keywords:keywords,
-        //     search : search,
-        //     sort : sort,
-        //     page : page,
-        // };
-        // // alert(JSON.stringify(stateObject));
+
+        // stateObject.keywords=keywords;
+        // stateObject.search=search;
+        // stateObject.sort=sort;
+        // stateObject.page=page;
         // window.history.pushState(stateObject,null,"?search="+search+"&sort="+sort+"&page="+page);
-        // alert(window.history.length);
+
     }
     return false;
 });
 
-// window.addEventListener("popstate", function(e) {
-//     var state = e.state;
-//     //滾輪上移,頁碼上色
-//     // alert(window.document.location.pathname);
-//
-//     alert(JSON.stringify(state));
-//
-//     if (state!=null&&state.search==="keys"){
-//         keysSortOrPages(state.keywords, state.sort, state.page);
-//         scrollToTop();
-//         refreshPageIndex(state.page);
-//         refreshSort(state.sort);
-//     }
-//
-//     if (state!==null&&state.search!=="keys"){
-//         sortOrPages(state.search, state.sort, state.page);
-//         scrollToTop();
-//         refreshPageIndex(state.page);
-//         refreshSort(state.sort);
-//     }
-// });
+
 
 //依頁碼載入商品
 $(document).on("click", ".pages", function () {
@@ -189,24 +201,20 @@ $(document).on("click", ".pages", function () {
     page = $(this).html();
     if (search === "keys") {
         keysSortOrPages(keywords, sort, page)
-        // let stateObject={
-        //     keywords:keywords,
-        //     search : search,
-        //     sort : sort,
-        //     page : page,
-        // };
+
+        // stateObject.keywords=keywords;
+        // stateObject.search=search;
+        // stateObject.sort=sort;
+        // stateObject.page=page;
         // window.history.pushState(stateObject,null,"?keywords="+keywords+"&sort="+sort+"&page="+page)
-        // alert(window.history.length);
     } else {
         sortOrPages(search, sort, page);
-        // let stateObject={
-        //     keywords:keywords,
-        //     search : search,
-        //     sort : sort,
-        //     page : page,
-        // };
+
+        // stateObject.keywords=keywords;
+        // stateObject.search=search;
+        // stateObject.sort=sort;
+        // stateObject.page=page;
         // window.history.pushState(stateObject,null,"?search="+search+"&sort="+sort+"&page="+page);
-        // alert(window.history.length);
     }
 
     return false;

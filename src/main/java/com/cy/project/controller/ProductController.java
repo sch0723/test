@@ -29,7 +29,7 @@ public class ProductController {
         return "shop-details";
     }
 
-    //所有商品目錄
+    //所有商品目錄預設排序第一頁
     @GetMapping(value = "/")
     public String index(Model model) {
         Page<Product> page = ps.findBySortPage("ASC", "productId", 0);
@@ -40,7 +40,7 @@ public class ProductController {
         return "shop-grid";
     }
 
-    //分類商品目錄
+    //分類商品目錄預設排序第一頁
     @GetMapping(value = "/category/{category}")
     public String category(@PathVariable String category,Model model) {
         Page<Product> page = ps.findByCategorySortPage(category, "ASC", "productId", 0);
@@ -51,7 +51,7 @@ public class ProductController {
         return "shop-grid";
     }
 
-    //搜索攔商品目錄
+    //搜索攔商品目錄預設排序第一頁
     @GetMapping(value = "/keys")
     public String productToKeysPage(@RequestParam(value="sort", required = false)String sort,
                                     @RequestParam(value="page", required = false)Integer pageIndex,
@@ -85,7 +85,7 @@ public class ProductController {
         return "shop-grid";
     }
 
-    //所有和分類商品排序分頁
+    //所有和分類商品排序分頁返回商品資料
     @GetMapping(value = "/grid/{productType}/{sort}/{pageIndex}")
     @ResponseBody
     public Page<Product> productPage(@PathVariable String productType, @PathVariable String sort, @PathVariable Integer pageIndex) {
@@ -111,7 +111,7 @@ public class ProductController {
         return page;
     }
 
-    //搜索攔排序分頁
+    //搜索攔排序分頁返回商品資料
     @GetMapping(value = "/keys/{sort}/{pageIndex}")
     @ResponseBody
     public Page<Product>  productKeysPage(@PathVariable String sort, @PathVariable Integer pageIndex,String keywords) {

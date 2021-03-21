@@ -52,7 +52,7 @@ public class CartService {
         return getOpsForHash().values(redisKey);
     }
 
-    //合併UUID和帳號購物車
+    //將UUID購物車併入帳號購物車
     public void mergeCart(String usersAccount, String UUID) {
 
         List<CartItem> cartItemList = getOpsForHash().values(UUID);

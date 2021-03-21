@@ -39,7 +39,7 @@ public class CartController {
         return "shopping-cart";
     }
 
-    //購物車商品總數和總金額
+    //計算購物車商品總數和總金額(登入未登入皆可)
     @GetMapping(value = "/getCartNumsAndPrice")
     @ResponseBody
     public Map<String,Integer> getNumsAndPrice(HttpSession session, @CookieValue(value = "myUUID",required = false)String myUUID){
@@ -60,7 +60,7 @@ public class CartController {
         return map;
     }
 
-    //添加商品進購物車
+    //添加某數量商品進購物車(登入未登入皆可)返回購物車商品總數和總金額供頁面更新
     @PostMapping(value = "/cart/{id}/{nums}")
     @ResponseBody
     public Map<String,Integer> addToCart(HttpSession session, HttpServletResponse response,
@@ -77,6 +77,7 @@ public class CartController {
 
         //未登入有UUID
         }else if (myUUID!=null){
+            //檢查cookie中UUID格式
             String regex = "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$";
             if (!myUUID.matches(regex)) {
                 return null;
@@ -96,7 +97,7 @@ public class CartController {
         return map;
     }
 
-    //更新數量
+    //更新數量(登入only)返回購物車商品總數和總金額供頁面更新
     @PutMapping(value = "/cart/{id}/{nums}")
     @ResponseBody
     public Map<String,Integer> updateNums(HttpSession session, @PathVariable Integer id, @PathVariable Integer nums){
@@ -106,7 +107,7 @@ public class CartController {
         return cs.updateNumsToCart(usersAccount, id, nums);
     }
 
-    //刪除
+    //刪除(登入only)返回購物車商品總數和總金額供頁面更新
     @DeleteMapping(value = "/cart/{id}")
     @ResponseBody
     public Map<String,Integer> deleteProduct(HttpSession session, @PathVariable Integer id){

@@ -52,12 +52,13 @@ public class UsersController {
             return "login";
         }
 
+        //驗證成功
         //合併購物車
         if (myUUID != null) {
             cs.mergeCart(usersAccount,myUUID);
         }
 
-        //清除UUID
+        //清除未登入下儲存購物車的UUID
         Cookie cookie = new Cookie("myUUID", null);
         cookie.setMaxAge(0);
         cookie.setPath("/");
@@ -66,7 +67,7 @@ public class UsersController {
         //儲存登入狀態
         session.setAttribute("users", users.getUsersAccount());
 
-        //前往攔截前請求
+        //如果有前往攔截前請求
         String preURI = (String)session.getAttribute("preURI");
         if (preURI != null) {
             return "redirect:" + preURI;

@@ -31,6 +31,7 @@ public class OrdersService {
         this.pr = productRepository;
     }
 
+    //儲存訂單
     @Transactional
     public Orders save(Orders orders){
         return or.save(orders);
@@ -41,7 +42,7 @@ public class OrdersService {
         return or.findOrdersByUsers_UsersAccount(usersAccount);
     }
 
-    //初始化訂單
+    //初始化訂單(設定訂單商品明細)
     public Orders getInitOrders(String usersAccount,Integer[] arrayId){
 
         Orders orders=new Orders();

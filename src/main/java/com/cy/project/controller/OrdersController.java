@@ -32,7 +32,7 @@ public class OrdersController {
         this.cs = cartService;
     }
 
-    //產生初始化訂單進入check
+    //產生初始化訂單(設定訂單商品明細放入session供儲存定單使用)進入check
     @GetMapping(value = "/check")
     public String checkout(@RequestParam(value = "product[]") Integer[] product, HttpSession session) {
 
@@ -55,8 +55,8 @@ public class OrdersController {
     public String createOrders(String name, String address, String phone, String email, HttpSession session) {
         String users = (String) session.getAttribute("users");
 
+        //取出session中初始化定單
         Orders orders = (Orders)session.getAttribute("orders");
-
         orders.setUsers(us.findByUsersAccount(users));
         orders.setOrdersContactName(name);
         orders.setOrdersReceiveAddress(address);
@@ -66,12 +66,13 @@ public class OrdersController {
 
         os.save(orders);
 
+        //從購物車刪除已結帳商品
         List<Integer> list = new ArrayList<>();
         for (OrdersDetail od : orders.getOrdersOrdersDetail()) {
             list.add(od.getProduct().getProductId());
         }
         cs.deleteProducts(users,list);
-
+        //訂單儲存後刪除session中初始化定單
         session.removeAttribute("orders");
 
         return "redirect:/myOrders";
