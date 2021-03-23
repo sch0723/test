@@ -22,7 +22,7 @@ public class  OrdersDetail implements Serializable {
 
     private Integer ordersDetailTotalPrice;
 
-    @ManyToOne(targetEntity = Product.class)
+    @ManyToOne(targetEntity = Product.class,fetch = FetchType.LAZY)
     @JoinColumn(name="productId",referencedColumnName = "productId")
     private Product product;
 

@@ -18,10 +18,9 @@ if (d) {
 // };
 //
 // window.onload=function(){
-//
-//
+//     // window.location.pathname;
 //     if(!window.history.state){
-//         window.history.replaceState(stateObject,null,"");
+//         window.history.replaceState(stateObject,null,window.location.pathname+location.search);
 //
 //     }
 //
@@ -141,6 +140,10 @@ function keysSortOrPages(keywords, sort, page) {
 }
 
 // window.addEventListener("popstate", function(e) {
+//     // location.reload(false);
+//
+//
+//     alert(JSON.stringify(window.history.state));
 //     var state = e.state;
 //
 //     if (state!=null&&state.search==="keys"){
@@ -160,6 +163,8 @@ function keysSortOrPages(keywords, sort, page) {
 //     }
 //
 // });
+
+
 
 //依排序載入商品
 $(document).on("change", "#sortSelect", function () {

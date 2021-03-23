@@ -12,6 +12,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @SpringBootTest
@@ -31,9 +32,9 @@ public class OrdersTest {
 
     @Test
     @Transactional
-    @Rollback(value = false)
+//    @Rollback(value = false)
     public void test1(){
-        Users users = us.findByUsersAccount("abc123");
+//        Users users = us.findByUsersAccount("abc123");
 
 //        Integer[] arrayid={1,2,3};
 //
@@ -46,17 +47,20 @@ public class OrdersTest {
 
 
 ////        users.getUsersOrders().remove(1);
-//        Orders orders = or.findById(19).orElse(null);
-        or.deleteById(24);
-//        Set<OrdersDetail> detail = orders.getOrdersOrdersDetail();
+        Orders orders = or.findById(43).orElse(null);
+//        or.deleteById(24);
+        Set<OrdersDetail> detail = orders.getOrdersOrdersDetail();
 //
-//
-//        for (OrdersDetail d: detail) {
-//            detail.remove(d);
-//            odr.delete(d);
-////            odr.saveAndFlush(d);
-//            break;
-//        }
+
+//        List<OrdersDetail> ordersDetailByOrders_ordersId = odr.findOrdersDetailByOrders_OrdersId(29);
+
+//        odr.deleteAll(ordersDetailByOrders_ordersId);
+
+        for (OrdersDetail d: detail) {
+            detail.remove(d);
+            odr.delete(d);
+//            odr.saveAndFlush(d);
+        }
 
 
 

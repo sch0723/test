@@ -72,7 +72,7 @@ public class CartService {
     }
 
     //增加商品到購物車ForUsersAccount
-    public Map<String, Integer> addToCartForUsersAccount(String redisKey, Integer id, Integer nums) {
+    public void addToCartForUsersAccount(String redisKey, Integer id, Integer nums) {
 
         CartItem item;
         if (getOpsForHash().hasKey(redisKey, String.valueOf(id))) {
@@ -89,10 +89,9 @@ public class CartService {
 
         getOpsForHash().put(redisKey, String.valueOf(id), item);
 
-        return getNumsAndPrice(redisKey);
     }
     //增加商品到購物車ForUUID
-    public Map<String, Integer> addToCartForUUID(String redisKey, Integer id, Integer nums) {
+    public void addToCartForUUID(String redisKey, Integer id, Integer nums) {
 
         CartItem item;
         if (getOpsForHash().hasKey(redisKey, String.valueOf(id))) {
@@ -112,11 +111,10 @@ public class CartService {
         //未登入設定儲存時間
         redisTemplate.expire(redisKey, 60, TimeUnit.SECONDS);
 
-        return getNumsAndPrice(redisKey);
     }
 
     //更新購物車商品數量
-    public Map<String, Integer> updateNumsToCart(String redisKey, Integer id, Integer nums) {
+    public void updateNumsToCart(String redisKey, Integer id, Integer nums) {
 
         CartItem item = getOpsForHash().get(redisKey, String.valueOf(id));
 
@@ -126,15 +124,15 @@ public class CartService {
 
         getOpsForHash().put(redisKey, String.valueOf(id), item);
 
-        return getNumsAndPrice(redisKey);
+
     }
 
     //刪除購物車商品
-    public Map<String, Integer> deleteProductToCart(String redisKey, Integer id) {
+    public void deleteProductToCart(String redisKey, Integer id) {
 
         getOpsForHash().delete(redisKey, String.valueOf(id));
 
-        return getNumsAndPrice(redisKey);
+
     }
 
     //刪除購物車多個商品

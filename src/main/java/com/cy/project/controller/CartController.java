@@ -73,7 +73,8 @@ public class CartController {
 
         //登入
         if(usersAccount!=null){
-            map = cs.addToCartForUsersAccount(usersAccount, id, nums);
+            cs.addToCartForUsersAccount(usersAccount, id, nums);
+            map=cs.getNumsAndPrice(usersAccount);
 
         //未登入有UUID
         }else if (myUUID!=null){
@@ -82,7 +83,8 @@ public class CartController {
             if (!myUUID.matches(regex)) {
                 return null;
             }
-            map = cs.addToCartForUUID(myUUID, id, nums);
+            cs.addToCartForUUID(myUUID, id, nums);
+            map=cs.getNumsAndPrice(myUUID);
 
         //未登入也沒有UUID,產生UUID存cookie
         }else {
@@ -91,7 +93,8 @@ public class CartController {
             cookie.setPath("/");
             response.addCookie(cookie);
 
-            map = cs.addToCartForUUID(myUUID, id, nums);
+            cs.addToCartForUUID(myUUID, id, nums);
+            map=cs.getNumsAndPrice(myUUID);
         }
 
         return map;
@@ -103,8 +106,8 @@ public class CartController {
     public Map<String,Integer> updateNums(HttpSession session, @PathVariable Integer id, @PathVariable Integer nums){
 
         String usersAccount = (String)session.getAttribute("users");
-
-        return cs.updateNumsToCart(usersAccount, id, nums);
+        cs.updateNumsToCart(usersAccount, id, nums);
+        return cs.getNumsAndPrice(usersAccount);
     }
 
     //刪除(登入only在購物車頁面中)返回購物車商品總數和總金額供頁面更新
@@ -113,7 +116,7 @@ public class CartController {
     public Map<String,Integer> deleteProduct(HttpSession session, @PathVariable Integer id){
 
         String usersAccount = (String)session.getAttribute("users");
-
-        return cs.deleteProductToCart(usersAccount, id);
+        cs.deleteProductToCart(usersAccount, id);
+        return cs.getNumsAndPrice(usersAccount);
     }
 }
