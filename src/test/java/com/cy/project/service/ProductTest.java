@@ -3,6 +3,7 @@ package com.cy.project.service;
 
 import com.cy.project.entity.Product;
 import com.cy.project.repository.ProductRepository;
+import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -58,7 +59,7 @@ public class ProductTest {
             }
         };
 
-        Specification<Product> sp2 = (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(root.get("productName"), "%" + pros + "%");
+//        Specification<Product> sp2 = (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(root.get("productName"), "%" + pros + "%");
 
         Page<Product> page = pr.findAll(sp1, pageable);
 
@@ -174,5 +175,6 @@ public class ProductTest {
 
 
     }
+
 
 }

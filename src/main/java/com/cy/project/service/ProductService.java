@@ -3,6 +3,7 @@ package com.cy.project.service;
 
 import com.cy.project.entity.Product;
 import com.cy.project.repository.ProductRepository;
+import com.cy.project.util.ProductUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -35,54 +36,26 @@ public class ProductService {
 
     //搜索全商品
     public Page<Product> findBySortPage(String sortType, String sortBy, Integer pageIndex){
-        Sort sort;
-        if("DESC".equals(sortType)){
-            sort = Sort.by(sortBy).descending();
-        }else {
-            sort = Sort.by(sortBy).ascending();
-        }
-        Pageable pageable = PageRequest.of(pageIndex, PAGESIZE, sort);
 
-        return pr.findAll(pageable);
+        return pr.findAll(ProductUtil.getPageable(sortType,sortBy,pageIndex));
     }
 
     //搜索分類商品
     public Page<Product> findByCategorySortPage(String category,String sortType,String sortBy, Integer pageIndex){
-        Sort sort;
-        if("DESC".equals(sortType)){
-            sort = Sort.by(sortBy).descending();
-        }else {
-            sort = Sort.by(sortBy).ascending();
-        }
-        Pageable pageable = PageRequest.of(pageIndex, PAGESIZE, sort);
 
-        return pr.findByProductCategory(category,pageable);
+        return pr.findByProductCategory(category,ProductUtil.getPageable(sortType,sortBy,pageIndex));
     }
 
     //like搜索單一條件
     public Page<Product> findByKeywordSortPage(String keyword, String sortType, String sortBy, Integer pageIndex){
-        Sort sort;
-        if("DESC".equals(sortType)){
-            sort = Sort.by(sortBy).descending();
-        }else {
-            sort = Sort.by(sortBy).ascending();
-        }
-        Pageable pageable = PageRequest.of(pageIndex, PAGESIZE, sort);
 
         Specification<Product> sp= (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(root.get("productName"),"%"+keyword+"%");
 
-        return pr.findAll(sp,pageable);
+        return pr.findAll(sp,ProductUtil.getPageable(sortType,sortBy,pageIndex));
     }
 
     //like搜索多條件
     public Page<Product> findByKeywordsSortPage(String[] keywords, String sortType, String sortBy, Integer pageIndex){
-        Sort sort;
-        if("DESC".equals(sortType)){
-            sort = Sort.by(sortBy).descending();
-        }else {
-            sort = Sort.by(sortBy).ascending();
-        }
-        Pageable pageable = PageRequest.of(pageIndex, PAGESIZE, sort);
 
         Specification<Product> sp= (root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
@@ -91,7 +64,7 @@ public class ProductService {
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
-        return pr.findAll(sp,pageable);
+        return pr.findAll(sp,ProductUtil.getPageable(sortType,sortBy,pageIndex));
     }
 
 }

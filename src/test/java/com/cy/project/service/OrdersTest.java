@@ -12,6 +12,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -32,7 +33,7 @@ public class OrdersTest {
 
     @Test
     @Transactional
-//    @Rollback(value = false)
+    @Rollback(value = false)
     public void test1(){
 //        Users users = us.findByUsersAccount("abc123");
 
@@ -47,7 +48,11 @@ public class OrdersTest {
 
 
 ////        users.getUsersOrders().remove(1);
-        Orders orders = or.findById(43).orElse(null);
+        Users abc123 = us.findByUsersAccount("abc123");
+        List<Orders> usersOrders = abc123.getUsersOrders();
+        Iterator<Orders> ordersIterator = usersOrders.iterator();
+
+        Orders orders = or.findById(41).orElse(null);
 //        or.deleteById(24);
         Set<OrdersDetail> detail = orders.getOrdersOrdersDetail();
 //
@@ -56,11 +61,19 @@ public class OrdersTest {
 
 //        odr.deleteAll(ordersDetailByOrders_ordersId);
 
-        for (OrdersDetail d: detail) {
-            detail.remove(d);
-            odr.delete(d);
-//            odr.saveAndFlush(d);
+
+        Iterator<OrdersDetail> iterator = detail.iterator();
+        System.out.println(detail.toString());
+        while (iterator.hasNext()){
+            OrdersDetail next = iterator.next();
+            iterator.remove();
+//            or.delete(next);
         }
+//        for (OrdersDetail d: detail) {
+//            detail.remove(d);
+//            odr.delete(d);
+////            odr.saveAndFlush(d);
+//        }
 
 
 
