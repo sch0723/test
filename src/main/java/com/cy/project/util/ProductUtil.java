@@ -8,13 +8,25 @@ public class ProductUtil {
     //每頁商品數目
     private static final int PAGESIZE = 12;
 
-    public static Pageable getPageable(String sortType, String sortBy, Integer pageIndex){
-        Sort sort;
-        if("DESC".equals(sortType)){
-            sort = Sort.by(sortBy).descending();
-        }else {
-            sort = Sort.by(sortBy).ascending();
+    public static Pageable getPageable(String sort, Integer pageIndex){
+
+        String sortType = "ASC";
+        String sortBy = "productId";
+        if ("PriceDESC".equals(sort)) {
+            sortType = "DESC";
+            sortBy = "productPrice";
+
+        } else if ("PriceASC".equals(sort)) {
+            sortType = "ASC";
+            sortBy = "productPrice";
         }
-        return PageRequest.of(pageIndex, PAGESIZE, sort);
+
+        Sort mySort;
+        if("DESC".equals(sortType)){
+            mySort = Sort.by(sortBy).descending();
+        }else {
+            mySort = Sort.by(sortBy).ascending();
+        }
+        return PageRequest.of(pageIndex, PAGESIZE, mySort);
     }
 }

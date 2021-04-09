@@ -32,7 +32,8 @@ public class ProductController {
     //所有商品目錄預設排序第一頁
     @GetMapping(value = "/")
     public String index(Model model) {
-        Page<Product> page = ps.findBySortPage("ASC", "productId", 0);
+
+        Page<Product> page = ps.findBySortPage("productIdASC", 0);
 
         model.addAttribute("pageData",page);
         model.addAttribute("search","all");
@@ -43,7 +44,8 @@ public class ProductController {
     //分類商品目錄預設排序第一頁
     @GetMapping(value = "/category/{category}")
     public String category(@PathVariable String category,Model model) {
-        Page<Product> page = ps.findByCategorySortPage(category, "ASC", "productId", 0);
+
+        Page<Product> page = ps.findByCategorySortPage(category, "productIdASC", 0);
 
         model.addAttribute("pageData",page);
         model.addAttribute("search",category);
@@ -67,17 +69,7 @@ public class ProductController {
             pageIndex=1;
         }
 
-        String sortType = "ASC";
-        String sortBy = "productId";
-        if ("PriceDESC".equals(sort)) {
-            sortType = "DESC";
-            sortBy = "productPrice";
-
-        } else if ("PriceASC".equals(sort)) {
-            sortType = "ASC";
-            sortBy = "productPrice";
-        }
-        Page<Product> page = ps.findByKeywordsSortPage(strArr, sortType, sortBy, pageIndex-1);
+        Page<Product> page = ps.findByKeywordsSortPage(strArr, sort, pageIndex-1);
         model.addAttribute("pageData",page);
         model.addAttribute("search","keys");
         model.addAttribute("getKeys",keywords);
@@ -90,22 +82,11 @@ public class ProductController {
     @ResponseBody
     public Page<Product> productPage(@PathVariable String productType, @PathVariable String sort, @PathVariable Integer pageIndex) {
 
-        String sortType = "ASC";
-        String sortBy = "productId";
-        if ("PriceDESC".equals(sort)) {
-            sortType = "DESC";
-            sortBy = "productPrice";
-
-        } else if ("PriceASC".equals(sort)) {
-            sortType = "ASC";
-            sortBy = "productPrice";
-        }
-
         Page<Product> page;
         if ("all".equals(productType)) {
-            page = ps.findBySortPage(sortType, sortBy, pageIndex - 1);
+            page = ps.findBySortPage(sort, pageIndex - 1);
         } else {
-            page = ps.findByCategorySortPage(productType, sortType, sortBy, pageIndex - 1);
+            page = ps.findByCategorySortPage(productType, sort, pageIndex - 1);
         }
 
         return page;
@@ -118,18 +99,7 @@ public class ProductController {
 
         String[] strArr=keywords.split(" ");
 
-        String sortType = "ASC";
-        String sortBy = "productId";
-        if ("PriceDESC".equals(sort)) {
-            sortType = "DESC";
-            sortBy = "productPrice";
-
-        } else if ("PriceASC".equals(sort)) {
-            sortType = "ASC";
-            sortBy = "productPrice";
-        }
-
-        return ps.findByKeywordsSortPage(strArr, sortType, sortBy, pageIndex-1);
+        return ps.findByKeywordsSortPage(strArr, sort, pageIndex-1);
     }
 
     //5XX

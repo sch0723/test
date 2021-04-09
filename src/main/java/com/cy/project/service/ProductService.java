@@ -29,27 +29,27 @@ public class ProductService {
 
 
     //搜索全商品
-    public Page<Product> findBySortPage(String sortType, String sortBy, Integer pageIndex){
+    public Page<Product> findBySortPage(String sort, Integer pageIndex){
 
-        return pr.findAll(ProductUtil.getPageable(sortType,sortBy,pageIndex));
+        return pr.findAll(ProductUtil.getPageable(sort,pageIndex));
     }
 
     //搜索分類商品
-    public Page<Product> findByCategorySortPage(String category,String sortType,String sortBy, Integer pageIndex){
+    public Page<Product> findByCategorySortPage(String category,String sort, Integer pageIndex){
 
-        return pr.findByProductCategory(category,ProductUtil.getPageable(sortType,sortBy,pageIndex));
+        return pr.findByProductCategory(category,ProductUtil.getPageable(sort,pageIndex));
     }
 
     //like搜索單一條件
-    public Page<Product> findByKeywordSortPage(String keyword, String sortType, String sortBy, Integer pageIndex){
+    public Page<Product> findByKeywordSortPage(String keyword, String sort, Integer pageIndex){
 
         Specification<Product> sp= (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(root.get("productName"),"%"+keyword+"%");
 
-        return pr.findAll(sp,ProductUtil.getPageable(sortType,sortBy,pageIndex));
+        return pr.findAll(sp,ProductUtil.getPageable(sort,pageIndex));
     }
 
     //like搜索多條件
-    public Page<Product> findByKeywordsSortPage(String[] keywords, String sortType, String sortBy, Integer pageIndex){
+    public Page<Product> findByKeywordsSortPage(String[] keywords, String sort, Integer pageIndex){
 
         Specification<Product> sp= (root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
@@ -58,7 +58,7 @@ public class ProductService {
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
-        return pr.findAll(sp,ProductUtil.getPageable(sortType,sortBy,pageIndex));
+        return pr.findAll(sp,ProductUtil.getPageable(sort,pageIndex));
     }
 
 }

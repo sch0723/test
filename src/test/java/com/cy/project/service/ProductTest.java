@@ -113,7 +113,7 @@ public class ProductTest {
 
     @org.junit.jupiter.api.Test
     void test4() {
-        Page<Product> page = ps.findBySortPage("", "productPrice", 1);
+        Page<Product> page = ps.findBySortPage( "productPrice", 1);
 
         System.out.println("本頁筆數:" + page.getNumberOfElements());
         System.out.println("每頁筆數:" + page.getSize());
@@ -125,7 +125,7 @@ public class ProductTest {
 
     @org.junit.jupiter.api.Test
     void test5() {
-        Page<Product> page = ps.findByCategorySortPage("七龍珠", "", "productPrice", 1);
+        Page<Product> page = ps.findByCategorySortPage("七龍珠", "productPrice", 1);
 
         System.out.println("本頁筆數:" + page.getNumberOfElements());
         System.out.println("每頁筆數:" + page.getSize());
@@ -138,7 +138,7 @@ public class ProductTest {
     @org.junit.jupiter.api.Test
     void test6() {
         String[] keywords = {};
-        Page<Product> page = ps.findByKeywordsSortPage(keywords, "", "productPrice", 17);
+        Page<Product> page = ps.findByKeywordsSortPage(keywords, "productPrice", 17);
 
         System.out.println("本頁筆數:" + page.getNumberOfElements());
         System.out.println("每頁筆數:" + page.getSize());
