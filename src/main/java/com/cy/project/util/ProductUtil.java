@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 public class ProductUtil {
-
+    //每頁商品數目
     private static final int PAGESIZE = 12;
 
     public static Pageable getPageable(String sortType, String sortBy, Integer pageIndex){

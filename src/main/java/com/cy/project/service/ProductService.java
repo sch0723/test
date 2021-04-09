@@ -5,9 +5,6 @@ import com.cy.project.entity.Product;
 import com.cy.project.repository.ProductRepository;
 import com.cy.project.util.ProductUtil;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,9 +17,6 @@ import java.util.Optional;
 @Service
 @Transactional(readOnly = true)
 public class ProductService {
-
-    //每頁商品數目
-    private final int PAGESIZE=12;
 
     private final ProductRepository pr;
 
