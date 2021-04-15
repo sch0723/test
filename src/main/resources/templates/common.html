@@ -182,7 +182,7 @@
     <script th:inline="javascript">
         var usersAccount = [[${session.users}]];
         $.ajax({
-            url: "/getCartNumsAndPrice",
+            url: "/cart/getCartNumsAndPrice",
             method: "GET",
             dataType: "JSON",
 

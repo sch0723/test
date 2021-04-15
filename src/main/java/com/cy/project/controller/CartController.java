@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Controller
+@RequestMapping(value = "/cart")
 public class CartController {
 
     private final CartService cs;
@@ -24,7 +25,7 @@ public class CartController {
     }
 
     //購物車頁面
-    @GetMapping(value = "/cart")
+    @GetMapping(value = "")
     public String cart(HttpSession session, Model model) {
 
         String usersAccount=(String) session.getAttribute("users");
@@ -59,7 +60,7 @@ public class CartController {
     }
 
     //添加某數量商品進購物車(登入未登入皆可)返回購物車商品總數和總金額供頁面更新
-    @PostMapping(value = "/cart/{id}/{nums}")
+    @PostMapping(value = "/{id}/{nums}")
     @ResponseBody
     public Map<String,Integer> addToCart(HttpSession session, HttpServletResponse response,
                                          @PathVariable Integer id, @PathVariable Integer nums,
@@ -99,7 +100,7 @@ public class CartController {
     }
 
     //更新數量(登入only在購物車頁面中)返回購物車商品總數和總金額供頁面更新
-    @PutMapping(value = "/cart/{id}/{nums}")
+    @PutMapping(value = "/{id}/{nums}")
     @ResponseBody
     public Map<String,Integer> updateNums(HttpSession session, @PathVariable Integer id, @PathVariable Integer nums){
 
@@ -109,7 +110,7 @@ public class CartController {
     }
 
     //刪除(登入only在購物車頁面中)返回購物車商品總數和總金額供頁面更新
-    @DeleteMapping(value = "/cart/{id}")
+    @DeleteMapping(value = "/{id}")
     @ResponseBody
     public Map<String,Integer> deleteProduct(HttpSession session, @PathVariable Integer id){
 
