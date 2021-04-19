@@ -19,6 +19,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.sound.midi.Soundbank;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -156,11 +157,11 @@ public class ProductTest {
         String pros = "鬼滅之刃";
 
 
-//        Specification<Product> sp1= (root, criteriaQuery, criteriaBuilder) -> {
-//            List<Predicate> predicates=new ArrayList<>();
-//            predicates.add(criteriaBuilder.like(root.get("productName"),"%"+pros+"%"));
-//            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-//        };
+        Specification<Product> sp1= (root, criteriaQuery, criteriaBuilder) -> {
+            List<Predicate> predicates=new ArrayList<>();
+            predicates.add(criteriaBuilder.like(root.get("productName"),"%"+pros+"%"));
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
 
         Specification<Product> sp2 = (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(root.get("productName"), "%" + pros + "%");
 
@@ -174,7 +175,6 @@ public class ProductTest {
         pr.saveAll(page);
 
 
+
     }
-
-
 }

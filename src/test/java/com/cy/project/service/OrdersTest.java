@@ -56,7 +56,7 @@ public class OrdersTest {
 //        or.deleteById(24);
         Set<OrdersDetail> detail = orders.getOrdersOrdersDetail();
 //
-
+        or.save(orders);
 //        List<OrdersDetail> ordersDetailByOrders_ordersId = odr.findOrdersDetailByOrders_OrdersId(29);
 
 //        odr.deleteAll(ordersDetailByOrders_ordersId);

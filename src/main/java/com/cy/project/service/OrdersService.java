@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-@Transactional(readOnly = true)
+//@Transactional(readOnly = true)
 public class OrdersService {
 
     @Resource
@@ -33,7 +33,7 @@ public class OrdersService {
     }
 
     //儲存訂單
-    @Transactional(readOnly = false)
+//    @Transactional(readOnly = false)
     public Orders save(Orders orders){
         return or.save(orders);
     }
