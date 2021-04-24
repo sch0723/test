@@ -10,12 +10,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class OrdersController {
@@ -76,5 +82,29 @@ public class OrdersController {
         session.removeAttribute("orders");
 
         return "redirect:/myOrders";
+    }
+
+    //前往綠界結帳
+    @PostMapping(path = "/toPay")
+    @ResponseBody
+    public String toPay(@RequestParam("orderId") Integer orderId) {
+
+        return os.genAioCheckOutALL(orderId);
+    }
+
+    //接收綠界回傳交易結果,更新訂單狀態
+    @PostMapping(path = "/confirmPay")
+    @ResponseBody
+    public String confirmPay(@RequestParam("RtnCode") Integer RtnCode,
+                             @RequestParam("MerchantTradeNo") String MerchantTradeNo,
+                             @RequestParam("CheckMacValue") String CheckMacValue) {
+
+        boolean check = os.compareCheckMacValue(CheckMacValue);
+
+        if (RtnCode == 1) {
+            os.confirmPay(Integer.parseInt(MerchantTradeNo.substring(13)));
+            return "1|OK";
+        }
+        return "";
     }
 }

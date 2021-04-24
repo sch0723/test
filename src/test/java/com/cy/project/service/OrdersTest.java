@@ -8,9 +8,16 @@ import com.cy.project.repository.OrdersRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -76,6 +83,15 @@ public class OrdersTest {
 //        }
 
 
+
+    }
+
+    @Test
+    public void test2() {
+
+        String s = os.genAioCheckOutALL(42);
+        System.out.println(s);
+//        os.confirmPay(42);
 
     }
 }
