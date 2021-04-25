@@ -136,4 +136,18 @@ public class OrdersService {
 
         return all.compareCheckMacValue(dict);
     }
+
+    //檢查訂單狀態未繳費設定為過期
+    @Transactional
+    public boolean checkOrdersExpiration(Integer id){
+
+        Orders orders = or.findById(id).orElse(null);
+
+        if (orders.getOrdersState()==0){
+            orders.setOrdersState(3);
+            return false;
+        }
+
+        return true;
+    }
 }

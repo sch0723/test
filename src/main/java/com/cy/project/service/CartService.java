@@ -5,6 +5,8 @@ import com.cy.project.entity.Product;
 import com.cy.project.repository.ProductRepository;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -16,12 +18,15 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class CartService {
 
+    private StringRedisTemplate stringRedisTemplate;
+
     @Resource
     private RedisTemplate<String, CartItem> redisTemplate;
 
     private final ProductRepository pr;
 
-    public CartService(ProductRepository productRepository) {
+    public CartService(StringRedisTemplate stringRedisTemplate, ProductRepository productRepository) {
+        this.stringRedisTemplate = stringRedisTemplate;
         this.pr = productRepository;
     }
 
@@ -62,7 +67,6 @@ public class CartService {
             if (getOpsForHash().hasKey(usersAccount, String.valueOf(id))) {
                 int count = cartItem.getCount() + getOpsForHash().get(usersAccount, String.valueOf(id)).getCount();
                 int price = cartItem.getProduct().getProductPrice();
-
                 cartItem.setCount(count);
                 cartItem.setSubTotalPrice(price * count);
             }
@@ -140,6 +144,12 @@ public class CartService {
         for (Integer id: list) {
             getOpsForHash().delete(redisKey, String.valueOf(id));
         }
+    }
+
+    public void orderStateExpiration(String message){
+        ValueOperations<String, String> stringValueOperations = stringRedisTemplate.opsForValue();
+        stringValueOperations.append(message,"");
+        stringRedisTemplate.expire(message,60,TimeUnit.SECONDS);
     }
 
 }
