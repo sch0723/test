@@ -30,7 +30,7 @@ public class ProductController {
     }
 
     //所有商品目錄預設排序第一頁
-    @GetMapping(value = "/")
+    @GetMapping(value = "/product")
     public String index(Model model) {
 
         Page<Product> page = ps.findBySortPage("productIdASC", 0);

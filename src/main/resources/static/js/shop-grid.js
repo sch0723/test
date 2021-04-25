@@ -10,39 +10,6 @@ if (d) {
     search = "keys";
 }
 
-// var stateObject={
-//     keywords:keywords,
-//     search : search,
-//     sort : sort,
-//     page : page,
-// };
-//
-// window.onload=function(){
-//     // window.location.pathname;
-//     if(!window.history.state){
-//         window.history.replaceState(stateObject,null,window.location.pathname+location.search);
-//
-//     }
-//
-// }
-
-
-
-
-
-// $(document).on("click", ".toPro", function () {
-//     window.sessionStorage.setItem("myhtml",$("#content").html());
-// });
-//
-// window.onload=function(){
-//     const myhtml = window.sessionStorage.getItem("myhtml");
-//     if(myhtml!=null){
-//         $("#content").html(myhtml);
-//         window.sessionStorage.clear();
-//     }
-// }
-
-
 
 $("#totalPages a:first").addClass("pages-focus").siblings().removeClass("pages-focus");
 
@@ -91,27 +58,17 @@ function scrollToTop() {
     }, 500);
 }
 
-// function productType(search) {
-//     $.ajax({
-//         url: "/grid/" + search + "/productIdASC/1",
-//         method: "GET",
-//         success: function (data) {
-//             refreshAll(data)
-//         }
-//     });
-// }
-//
-// function productKeys(keywords) {
-//     let arr = keywords.split(" ");
-//     $.ajax({
-//         url: "/keys/productIdASC/1",
-//         method: "GET",
-//         data: {"keywords": arr},
-//         success: function (data) {
-//             refreshAll(data)
-//         }
-//     });
-// }
+//ajax更新商品目錄for所有商品和分類商品
+function sortOrPages(search, sort, page) {
+    $.ajax({
+        url: "/grid/" + search + "/" + sort + "/" + page,
+        method: "GET",
+        dataType: "JSON",
+        success: function (data) {
+            refreshList(data)
+        }
+    });
+}
 
 //ajax更新商品目錄for所有商品和分類商品
 function sortOrPages(search, sort, page) {
@@ -139,32 +96,6 @@ function keysSortOrPages(keywords, sort, page) {
     });
 }
 
-// window.addEventListener("popstate", function(e) {
-//     // location.reload(false);
-//
-//
-//     alert(JSON.stringify(window.history.state));
-//     var state = e.state;
-//
-//     if (state!=null&&state.search==="keys"){
-//         keysSortOrPages(state.keywords, state.sort, state.page);
-//         scrollToTop();
-//         refreshPageIndex(state.page);
-//         refreshSort(state.sort);
-//         // return false;
-//     }
-//
-//     if (state!==null&&state.search!=="keys"){
-//         sortOrPages(state.search, state.sort, state.page);
-//         scrollToTop();
-//         refreshPageIndex(state.page);
-//         refreshSort(state.sort);
-//         // return false;
-//     }
-//
-// });
-
-
 
 //依排序載入商品
 $(document).on("change", "#sortSelect", function () {
@@ -175,21 +106,8 @@ $(document).on("change", "#sortSelect", function () {
     if (search === "keys") {
         keysSortOrPages(keywords, sort, page)
 
-        // stateObject.keywords=keywords;
-        // stateObject.search=search;
-        // stateObject.sort=sort;
-        // stateObject.page=page;
-        // window.history.pushState(stateObject,null,"?keywords="+keywords+"&sort="+sort+"&page="+page);
-
     } else {
         sortOrPages(search, sort, page)
-
-        // stateObject.keywords=keywords;
-        // stateObject.search=search;
-        // stateObject.sort=sort;
-        // stateObject.page=page;
-        // window.history.pushState(stateObject,null,"?search="+search+"&sort="+sort+"&page="+page);
-
     }
     return false;
 });
@@ -206,20 +124,8 @@ $(document).on("click", ".pages", function () {
     page = $(this).html();
     if (search === "keys") {
         keysSortOrPages(keywords, sort, page)
-
-        // stateObject.keywords=keywords;
-        // stateObject.search=search;
-        // stateObject.sort=sort;
-        // stateObject.page=page;
-        // window.history.pushState(stateObject,null,"?keywords="+keywords+"&sort="+sort+"&page="+page)
     } else {
         sortOrPages(search, sort, page);
-
-        // stateObject.keywords=keywords;
-        // stateObject.search=search;
-        // stateObject.sort=sort;
-        // stateObject.page=page;
-        // window.history.pushState(stateObject,null,"?search="+search+"&sort="+sort+"&page="+page);
     }
 
     return false;

@@ -15,19 +15,4 @@ public class ProjectApplication {
         SpringApplication.run(ProjectApplication.class, args);
     }
 
-
-//    @Bean
-//    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
-//        RedisTemplate<String, Object> template = new RedisTemplate();
-//        template.setConnectionFactory(redisConnectionFactory);
-//
-//        StringRedisSerializer stringRedisSerializer=new StringRedisSerializer();
-//        GenericJackson2JsonRedisSerializer genericJackson2JsonRedisSerializer=new GenericJackson2JsonRedisSerializer();
-//
-//        template.setKeySerializer(stringRedisSerializer);
-//        template.setValueSerializer(genericJackson2JsonRedisSerializer);
-//        template.setHashKeySerializer(stringRedisSerializer);
-//        template.setHashValueSerializer(genericJackson2JsonRedisSerializer);
-//        return template;
-//    }
 }
