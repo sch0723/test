@@ -24,6 +24,7 @@ public class RedisConfig {
         template.setValueSerializer(genericJackson2JsonRedisSerializer);
         template.setHashKeySerializer(stringRedisSerializer);
         template.setHashValueSerializer(genericJackson2JsonRedisSerializer);
+
         return template;
     }
 
@@ -39,6 +40,8 @@ public class RedisConfig {
 
     @Bean
     public RedisExpirationListener redisExpirationListener(RedisMessageListenerContainer redisMessageListenerContainer){
+
         return new RedisExpirationListener(redisMessageListenerContainer);
+
     }
 }
