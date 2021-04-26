@@ -17,6 +17,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+
         registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/cart","/check","/myOrders","/createOrders");
     }
 
@@ -24,7 +25,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
 
         registry.addViewController("/").setViewName("forward:/product");
-
     }
 
 }

@@ -18,8 +18,6 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class CartService {
 
-
-
     @Resource
     private RedisTemplate<String, CartItem> redisTemplate;
 
@@ -91,8 +89,8 @@ public class CartService {
         item.setSubTotalPrice(item.getProduct().getProductPrice() * item.getCount());
 
         getOpsForHash().put(redisKey, String.valueOf(id), item);
-
     }
+
     //增加商品到購物車ForUUID
     public void addToCartForUUID(String redisKey, Integer id, Integer nums) {
 
@@ -113,7 +111,6 @@ public class CartService {
 
         //未登入設定儲存時間
         redisTemplate.expire(redisKey, 5, TimeUnit.MINUTES);
-
     }
 
     //更新購物車商品數量
@@ -126,20 +123,17 @@ public class CartService {
         item.setSubTotalPrice(item.getProduct().getProductPrice() * nums);
 
         getOpsForHash().put(redisKey, String.valueOf(id), item);
-
-
     }
 
     //刪除購物車商品
     public void deleteProductToCart(String redisKey, Integer id) {
 
         getOpsForHash().delete(redisKey, String.valueOf(id));
-
-
     }
 
     //刪除購物車多個商品
     public void deleteProducts(String redisKey,List<Integer> list){
+
         for (Integer id: list) {
             getOpsForHash().delete(redisKey, String.valueOf(id));
         }

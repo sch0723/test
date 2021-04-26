@@ -14,6 +14,7 @@ public class RedisConfig {
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+
         RedisTemplate<String, Object> template = new RedisTemplate();
         template.setConnectionFactory(redisConnectionFactory);
 
@@ -32,9 +33,7 @@ public class RedisConfig {
     public RedisMessageListenerContainer redisMessageListenerContainer(RedisConnectionFactory redisConnectionFactory) {
 
         RedisMessageListenerContainer redisMessageListenerContainer = new RedisMessageListenerContainer();
-
         redisMessageListenerContainer.setConnectionFactory(redisConnectionFactory);
-
         return redisMessageListenerContainer;
     }
 
@@ -42,6 +41,5 @@ public class RedisConfig {
     public RedisExpirationListener redisExpirationListener(RedisMessageListenerContainer redisMessageListenerContainer){
 
         return new RedisExpirationListener(redisMessageListenerContainer);
-
     }
 }

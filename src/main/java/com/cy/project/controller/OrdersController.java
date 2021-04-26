@@ -43,13 +43,13 @@ public class OrdersController {
     public String checkout(@RequestParam(value = "product[]") Integer[] product, HttpSession session) {
 
         session.setAttribute("orders", os.getInitOrders((String) session.getAttribute("users"), product));
-
         return "checkout";
     }
 
     //使用者訂單目錄
     @GetMapping(value = "/myOrders")
     public String myOrders(HttpSession session, Model model){
+
         List<Orders> ordersList=os.findOrdersByUsers_UsersAccount((String) session.getAttribute("users"));
 
         model.addAttribute("ordersList",ordersList);
@@ -59,6 +59,7 @@ public class OrdersController {
     //設定訂單剩餘屬性並儲存
     @PostMapping(value = "/createOrders")
     public String createOrders(String name, String address, String phone, String email, HttpSession session) {
+
         String users = (String) session.getAttribute("users");
 
         //取出session中初始化定單
