@@ -18,15 +18,14 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class CartService {
 
-    private StringRedisTemplate stringRedisTemplate;
+
 
     @Resource
     private RedisTemplate<String, CartItem> redisTemplate;
 
     private final ProductRepository pr;
 
-    public CartService(StringRedisTemplate stringRedisTemplate, ProductRepository productRepository) {
-        this.stringRedisTemplate = stringRedisTemplate;
+    public CartService(ProductRepository productRepository) {
         this.pr = productRepository;
     }
 
@@ -113,7 +112,7 @@ public class CartService {
         getOpsForHash().put(redisKey, String.valueOf(id), item);
 
         //未登入設定儲存時間
-        redisTemplate.expire(redisKey, 60, TimeUnit.SECONDS);
+        redisTemplate.expire(redisKey, 5, TimeUnit.MINUTES);
 
     }
 
@@ -145,11 +144,4 @@ public class CartService {
             getOpsForHash().delete(redisKey, String.valueOf(id));
         }
     }
-
-    public void orderStateExpiration(String message){
-        ValueOperations<String, String> stringValueOperations = stringRedisTemplate.opsForValue();
-        stringValueOperations.append(message,"");
-        stringRedisTemplate.expire(message,60,TimeUnit.SECONDS);
-    }
-
 }

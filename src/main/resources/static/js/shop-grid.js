@@ -134,7 +134,7 @@ $(document).on("click", ".pages", function () {
 //添加商品到購物車
 $(document).on("click", ".addToCart", function () {
     let productId = $(this).parent().val();
-    alert(productId);
+    alert("已加入購物車");
     $.ajax({
         url: "/cart/" + productId+"/1",
         method: "post",

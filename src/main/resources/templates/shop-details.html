@@ -65,7 +65,7 @@
     $(document).on("click", ".addToCart", function () {
         let productId = $("#productId").val();
         let productNums = $("#pro-qty").val();
-        alert(productId);
+        alert("已加入購物車");
         $.ajax({
             url: "/cart/" + productId+"/"+productNums,
             method: "post",

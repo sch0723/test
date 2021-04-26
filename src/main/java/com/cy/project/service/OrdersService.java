@@ -13,12 +13,15 @@ import ecpay.payment.integration.domain.AioCheckOutALL;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service
 //@Transactional(readOnly = true)
@@ -32,11 +35,14 @@ public class OrdersService {
     @Resource
     private RedisTemplate<String, CartItem> redisTemplate;
 
+    private StringRedisTemplate stringRedisTemplate;
+
     private final OrdersRepository or;
 
     private final ProductRepository pr;
 
-    public OrdersService(OrdersRepository ordersRepository, ProductRepository productRepository) {
+    public OrdersService(StringRedisTemplate stringRedisTemplate, OrdersRepository ordersRepository, ProductRepository productRepository) {
+        this.stringRedisTemplate = stringRedisTemplate;
         this.or = ordersRepository;
         this.pr = productRepository;
     }
@@ -149,5 +155,12 @@ public class OrdersService {
         }
 
         return true;
+    }
+
+    //orderId儲存redis用以監聽過期
+    public void orderStateExpiration(String message){
+        ValueOperations<String, String> stringValueOperations = stringRedisTemplate.opsForValue();
+        stringValueOperations.append(message,"");
+        stringRedisTemplate.expire(message,5, TimeUnit.MINUTES);
     }
 }

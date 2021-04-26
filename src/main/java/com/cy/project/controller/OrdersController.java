@@ -73,7 +73,7 @@ public class OrdersController {
         orders = os.save(orders);
 
         //orderid加入redis監聽訂單過期
-        cs.orderStateExpiration("orders:"+orders.getOrdersId());
+        os.orderStateExpiration("orders:"+orders.getOrdersId());
 
         //從購物車刪除已結帳商品
         List<Integer> list = new ArrayList<>();
