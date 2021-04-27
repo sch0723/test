@@ -4,6 +4,7 @@ package com.cy.project.service;
 import com.cy.project.entity.Product;
 import com.cy.project.repository.ProductRepository;
 import com.cy.project.util.ProductUtil;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.Optional;
 
 @Service
 //@Transactional(readOnly = true)
+@Cacheable("product")
 public class ProductService {
 
     private final ProductRepository pr;

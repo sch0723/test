@@ -50,7 +50,10 @@ public class OrdersService {
     //儲存訂單
 //    @Transactional(readOnly = false)
     public Orders save(Orders orders){
-        return or.save(orders);
+        orders = or.save(orders);
+        //ordersId加入redis監聽訂單過期
+        orderStateExpiration(orders.getOrdersId());
+        return orders;
     }
 
     //使用者所有訂單
