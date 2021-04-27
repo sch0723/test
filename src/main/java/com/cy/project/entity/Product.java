@@ -31,7 +31,7 @@ public class Product implements Serializable {
 
 	private String productCategory;
 
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Temporal(value = TemporalType.TIMESTAMP)
 	private Date productDate;
 
 //	@OneToMany(mappedBy = "product")

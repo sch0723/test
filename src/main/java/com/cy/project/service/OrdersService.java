@@ -158,8 +158,9 @@ public class OrdersService {
     }
 
     //orderId儲存redis用以監聽過期
-    public void orderStateExpiration(String message){
+    public void orderStateExpiration(Integer ordersId){
         ValueOperations<String, String> stringValueOperations = stringRedisTemplate.opsForValue();
+        String message="orders:"+ordersId;
         stringValueOperations.append(message,"");
         stringRedisTemplate.expire(message,5, TimeUnit.MINUTES);
     }
