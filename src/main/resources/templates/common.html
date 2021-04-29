@@ -48,13 +48,7 @@
             <a href="/logout">Logout</a>
         </div>
     </div>
-    <div class="humberger__menu__widget" th:each="cookie :${#httpServletRequest.getCookies()}" th:if="${cookie.getName().equals('users')}">
-        <i th:text="'Hi! '+${cookie.getValue()}"></i>
-        &nbsp;&nbsp;&nbsp;
-        <div class="header__top__right__auth">
-            <a href="/logout">Logout</a>
-        </div>
-    </div>
+
     <nav class="humberger__menu__nav mobile-menu">
         <ul>
             <li class="active"><a href="./index.html">Home</a></li>
