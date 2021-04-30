@@ -5,8 +5,6 @@ import com.cy.project.entity.Product;
 import com.cy.project.repository.ProductRepository;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -21,14 +19,13 @@ public class CartService {
     @Resource
     private RedisTemplate<String, CartItem> redisTemplate;
 
+    @Resource(name = "redisTemplate")
+    private HashOperations<String, String, CartItem> hashOperations;
+
     private final ProductRepository pr;
 
     public CartService(ProductRepository productRepository) {
         this.pr = productRepository;
-    }
-
-    private HashOperations<String, String, CartItem> getOpsForHash(){
-        return redisTemplate.opsForHash();
     }
 
     //購物車總數和總金額
@@ -36,7 +33,7 @@ public class CartService {
 
         int totalNums = 0;
         int totalPrice = 0;
-        List<CartItem> cartItemList = getOpsForHash().values(redisKey);
+        List<CartItem> cartItemList = hashOperations.values(redisKey);
         for (CartItem cartItem : cartItemList) {
             totalNums += cartItem.getCount();
             totalPrice += cartItem.getSubTotalPrice();
@@ -51,23 +48,23 @@ public class CartService {
     //購物車清單
     public List<CartItem> getCart(String redisKey) {
 
-        return getOpsForHash().values(redisKey);
+        return hashOperations.values(redisKey);
     }
 
     //將UUID購物車併入帳號購物車
     public void mergeCart(String usersAccount, String UUID) {
 
-        List<CartItem> cartItemList = getOpsForHash().values(UUID);
+        List<CartItem> cartItemList = hashOperations.values(UUID);
         for (CartItem cartItem : cartItemList) {
             int id = cartItem.getProduct().getProductId();
 
-            if (getOpsForHash().hasKey(usersAccount, String.valueOf(id))) {
-                int count = cartItem.getCount() + getOpsForHash().get(usersAccount, String.valueOf(id)).getCount();
+            if (hashOperations.hasKey(usersAccount, String.valueOf(id))) {
+                int count = cartItem.getCount() + hashOperations.get(usersAccount, String.valueOf(id)).getCount();
                 int price = cartItem.getProduct().getProductPrice();
                 cartItem.setCount(count);
                 cartItem.setSubTotalPrice(price * count);
             }
-            getOpsForHash().put(usersAccount, String.valueOf(id), cartItem);
+            hashOperations.put(usersAccount, String.valueOf(id), cartItem);
         }
         redisTemplate.delete(UUID);
     }
@@ -76,8 +73,8 @@ public class CartService {
     public void addToCartForUsersAccount(String redisKey, Integer id, Integer nums) {
 
         CartItem item;
-        if (getOpsForHash().hasKey(redisKey, String.valueOf(id))) {
-            item = getOpsForHash().get(redisKey, String.valueOf(id));
+        if (hashOperations.hasKey(redisKey, String.valueOf(id))) {
+            item = hashOperations.get(redisKey, String.valueOf(id));
             item.setCount(item.getCount() + nums);
         } else {
             Product product = pr.findById(id).orElse(null);
@@ -88,15 +85,15 @@ public class CartService {
 
         item.setSubTotalPrice(item.getProduct().getProductPrice() * item.getCount());
 
-        getOpsForHash().put(redisKey, String.valueOf(id), item);
+        hashOperations.put(redisKey, String.valueOf(id), item);
     }
 
     //增加商品到購物車ForUUID
     public void addToCartForUUID(String redisKey, Integer id, Integer nums) {
 
         CartItem item;
-        if (getOpsForHash().hasKey(redisKey, String.valueOf(id))) {
-            item = getOpsForHash().get(redisKey, String.valueOf(id));
+        if (hashOperations.hasKey(redisKey, String.valueOf(id))) {
+            item = hashOperations.get(redisKey, String.valueOf(id));
             item.setCount(item.getCount() + nums);
         } else {
             Product product = pr.findById(id).orElse(null);
@@ -107,7 +104,7 @@ public class CartService {
 
         item.setSubTotalPrice(item.getProduct().getProductPrice() * item.getCount());
 
-        getOpsForHash().put(redisKey, String.valueOf(id), item);
+        hashOperations.put(redisKey, String.valueOf(id), item);
 
         //未登入設定儲存時間
         redisTemplate.expire(redisKey, 5, TimeUnit.MINUTES);
@@ -116,26 +113,26 @@ public class CartService {
     //更新購物車商品數量
     public void updateNumsToCart(String redisKey, Integer id, Integer nums) {
 
-        CartItem item = getOpsForHash().get(redisKey, String.valueOf(id));
+        CartItem item = hashOperations.get(redisKey, String.valueOf(id));
 
         item.setCount(nums);
 
         item.setSubTotalPrice(item.getProduct().getProductPrice() * nums);
 
-        getOpsForHash().put(redisKey, String.valueOf(id), item);
+        hashOperations.put(redisKey, String.valueOf(id), item);
     }
 
     //刪除購物車商品
     public void deleteProductToCart(String redisKey, Integer id) {
 
-        getOpsForHash().delete(redisKey, String.valueOf(id));
+        hashOperations.delete(redisKey, String.valueOf(id));
     }
 
     //刪除購物車多個商品
     public void deleteProducts(String redisKey,List<Integer> list){
 
         for (Integer id: list) {
-            getOpsForHash().delete(redisKey, String.valueOf(id));
+            hashOperations.delete(redisKey, String.valueOf(id));
         }
     }
 }

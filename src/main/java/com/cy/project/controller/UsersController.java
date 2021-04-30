@@ -3,6 +3,10 @@ package com.cy.project.controller;
 import com.cy.project.entity.Users;
 import com.cy.project.service.CartService;
 import com.cy.project.service.UsersService;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.util.Collections;
 
 
 @Controller
@@ -75,5 +82,37 @@ public class UsersController {
         }
 
         return "redirect:/";
+    }
+
+
+    @PostMapping("/googleVerify")
+    @ResponseBody
+    public String main(String id_token) {
+        System.out.println(id_token);
+        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(
+                new NetHttpTransport(), JacksonFactory.getDefaultInstance())
+                .setAudience(Collections.singletonList("265118023405-67ju2c654opfpfui0r4861gh5q7vs950.apps.googleusercontent.com")).build();
+        GoogleIdToken idToken = null;
+
+        try {
+            idToken = verifier.verify(id_token);
+        } catch (GeneralSecurityException e) {
+            System.out.println("GeneralSecurityException");
+        } catch (IOException e) {
+            System.out.println("IOException");
+        }
+
+        if (idToken != null) {
+            System.out.println("Y");
+            GoogleIdToken.Payload payload = idToken.getPayload();
+
+            String email = payload.getEmail();
+            System.out.println(email);
+
+        } else {
+            System.out.println("Invalid ID token.");
+
+        }
+        return "Y";
     }
 }
