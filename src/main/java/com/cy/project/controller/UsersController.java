@@ -31,19 +31,36 @@ public class UsersController {
         this.cs = cartService;
     }
 
+    /**
+     * 進入登入頁面
+     * @return
+     */
     @GetMapping(value = "/login")
     public String toLogin() {
         return "login";
     }
 
+    /**
+     * 登出
+     * @param session
+     * @return
+     */
     @GetMapping(value = "/logout")
     public String toLogout(HttpSession session) {
         session.removeAttribute("users");
         return "login";
     }
 
-
-    //登入驗證
+    /**
+     * 登入驗證
+     * @param usersAccount 帳號
+     * @param usersPwd 密碼
+     * @param model
+     * @param session
+     * @param response
+     * @param myUUID 未登入下儲存購物車的redis key
+     * @return
+     */
     @PostMapping(value = "/verifyUsers")
     public String verifyUsers(String usersAccount, String usersPwd, Model model,
                               HttpSession session, HttpServletResponse response,

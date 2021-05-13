@@ -12,16 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class OrdersController {
@@ -38,7 +33,12 @@ public class OrdersController {
         this.cs = cartService;
     }
 
-    //產生初始化訂單(設定訂單商品明細放入session供儲存定單使用)進入check
+    /**
+     * 產生初始化訂單(設定訂單商品明細放入session供儲存定單使用)進入check
+     * @param product 生成初始化訂單需要的商品
+     * @param session
+     * @return
+     */
     @GetMapping(value = "/check")
     public String checkout(@RequestParam(value = "product[]") Integer[] product, HttpSession session) {
 
@@ -46,7 +46,12 @@ public class OrdersController {
         return "checkout";
     }
 
-    //使用者訂單目錄
+    /**
+     * 進入訂單目錄頁面
+     * @param session
+     * @param model
+     * @return
+     */
     @GetMapping(value = "/myOrders")
     public String myOrders(HttpSession session, Model model){
 
@@ -56,7 +61,15 @@ public class OrdersController {
         return "orders-detail";
     }
 
-    //設定訂單剩餘屬性並儲存
+    /**
+     * 設定訂單剩餘屬性並儲存
+     * @param name 收件人姓名
+     * @param address 收件人地址
+     * @param phone 收件人電話
+     * @param email 收件人email
+     * @param session
+     * @return
+     */
     @PostMapping(value = "/createOrders")
     public String createOrders(String name, String address, String phone, String email, HttpSession session) {
 
@@ -88,7 +101,11 @@ public class OrdersController {
         return "redirect:/myOrders";
     }
 
-    //前往綠界結帳
+    /**
+     * 前往綠界結帳
+     * @param orderId 結帳訂單的id
+     * @return
+     */
     @PostMapping(path = "/toPay")
     @ResponseBody
     public String toPay(@RequestParam("orderId") Integer orderId) {
@@ -96,7 +113,13 @@ public class OrdersController {
         return os.genAioCheckOutALL(orderId);
     }
 
-    //接收綠界回傳交易結果,更新訂單狀態
+    /**
+     * 接收綠界回傳交易結果,更新訂單狀態
+     * @param RtnCode 交易結果
+     * @param MerchantTradeNo 訂單編號
+     * @param CheckMacValue
+     * @return
+     */
     @PostMapping(path = "/confirmPay")
     @ResponseBody
     public String confirmPay(@RequestParam("RtnCode") Integer RtnCode,

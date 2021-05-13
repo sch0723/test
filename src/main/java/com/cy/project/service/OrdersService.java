@@ -24,7 +24,6 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
-//@Transactional(readOnly = true)
 public class OrdersService {
 
     @Value("${ecpay.returnURL}")
@@ -47,8 +46,12 @@ public class OrdersService {
         this.pr = productRepository;
     }
 
-    //儲存訂單
-//    @Transactional(readOnly = false)
+    /**
+     * 儲存訂單
+     * @param orders 訂單
+     * @return
+     */
+    @Transactional
     public Orders save(Orders orders){
         orders = or.save(orders);
         //ordersId加入redis監聽訂單過期
@@ -56,12 +59,21 @@ public class OrdersService {
         return orders;
     }
 
-    //使用者所有訂單
+    /**
+     * 使用者所有訂單
+     * @param usersAccount 帳號
+     * @return
+     */
     public List<Orders> findOrdersByUsers_UsersAccount(String usersAccount){
         return or.findOrdersByUsers_UsersAccount(usersAccount);
     }
 
-    //初始化訂單(設定訂單商品明細)
+    /**
+     * 初始化訂單(設定訂單商品明細)
+     * @param usersAccount 帳號
+     * @param arrayId 初始化訂單需要的商品id
+     * @return
+     */
     public Orders getInitOrders(String usersAccount,Integer[] arrayId){
 
         Orders orders=new Orders();
@@ -91,7 +103,11 @@ public class OrdersService {
         return orders;
     }
 
-    //生成綠界表單
+    /**
+     * 生成綠界表單
+     * @param id 訂單id
+     * @return
+     */
     @Transactional
     public String genAioCheckOutALL(Integer id){
         AllInOne all = new AllInOne("");
@@ -124,7 +140,11 @@ public class OrdersService {
         return form;
     }
 
-    //更改訂單狀態為已結帳
+    /**
+     * 更改訂單狀態為已結帳
+     * @param id 訂單id
+     * @return
+     */
     @Transactional
     public Orders confirmPay(int id) {
 
@@ -135,7 +155,11 @@ public class OrdersService {
         return order;
     }
 
-    //檢查CheckMacValue
+    /**
+     * 檢查CheckMacValue
+     * @param checkMacValue
+     * @return
+     */
     public boolean compareCheckMacValue(String checkMacValue) {
         System.out.println(checkMacValue);
         AllInOne all = new AllInOne("");
@@ -146,7 +170,11 @@ public class OrdersService {
         return all.compareCheckMacValue(dict);
     }
 
-    //檢查訂單狀態未繳費設定為過期
+    /**
+     * 檢查訂單狀態未繳費設定為過期
+     * @param id 訂單id
+     * @return
+     */
     @Transactional
     public boolean checkOrdersExpiration(Integer id){
 
@@ -160,7 +188,10 @@ public class OrdersService {
         return true;
     }
 
-    //orderId儲存redis用以監聽過期
+    /**
+     * orderId儲存redis用以監聽過期
+     * @param ordersId 訂單id
+     */
     public void orderStateExpiration(Integer ordersId){
         ValueOperations<String, String> stringValueOperations = stringRedisTemplate.opsForValue();
         String message="orders:"+ordersId;

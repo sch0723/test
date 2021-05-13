@@ -18,7 +18,12 @@ public class ProductController {
         this.ps = productService;
     }
 
-    //商品頁面
+    /**
+     * 進入商品頁面
+     * @param id 商品id
+     * @param model
+     * @return
+     */
     @GetMapping(value = "/product/{id}")
     public String productById(@PathVariable Integer id,Model model) {
 
@@ -29,7 +34,11 @@ public class ProductController {
         return "shop-details";
     }
 
-    //所有商品目錄預設排序第一頁
+    /**
+     * 所有商品目錄預設排序第一頁
+     * @param model
+     * @return
+     */
     @GetMapping(value = "/product")
     public String index(Model model) {
 
@@ -41,7 +50,12 @@ public class ProductController {
         return "shop-grid";
     }
 
-    //分類商品目錄預設排序第一頁
+    /**
+     * 分類商品目錄預設排序第一頁
+     * @param category 分類類型
+     * @param model
+     * @return
+     */
     @GetMapping(value = "/category/{category}")
     public String category(@PathVariable String category,Model model) {
 
@@ -53,7 +67,14 @@ public class ProductController {
         return "shop-grid";
     }
 
-    //搜索攔商品目錄預設排序第一頁
+    /**
+     * 搜索攔商品目錄預設排序第一頁
+     * @param sort 排序
+     * @param pageIndex 頁碼
+     * @param keywords 搜索的關鍵字
+     * @param model
+     * @return
+     */
     @GetMapping(value = "/keys")
     public String productToKeysPage(@RequestParam(value="sort", required = false)String sort,
                                     @RequestParam(value="page", required = false)Integer pageIndex,
@@ -77,7 +98,13 @@ public class ProductController {
         return "shop-grid";
     }
 
-    //所有和分類商品排序分頁返回商品資料
+    /**
+     * 所有和分類商品排序分頁返回商品資料
+     * @param productType 頁面為所有商品(all)或分類(分類類型)
+     * @param sort 排序
+     * @param pageIndex 頁碼
+     * @return
+     */
     @GetMapping(value = "/grid/{productType}/{sort}/{pageIndex}")
     @ResponseBody
     public Page<Product> productPage(@PathVariable String productType, @PathVariable String sort, @PathVariable Integer pageIndex) {
@@ -92,7 +119,13 @@ public class ProductController {
         return page;
     }
 
-    //搜索攔排序分頁返回商品資料
+    /**
+     * 搜索攔排序分頁返回商品資料
+     * @param sort 排序
+     * @param pageIndex 頁碼
+     * @param keywords 搜索的關鍵字
+     * @return
+     */
     @GetMapping(value = "/keys/{sort}/{pageIndex}")
     @ResponseBody
     public Page<Product>  productKeysPage(@PathVariable String sort, @PathVariable Integer pageIndex,String keywords) {

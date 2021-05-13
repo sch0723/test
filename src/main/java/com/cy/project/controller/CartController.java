@@ -24,7 +24,12 @@ public class CartController {
         this.cs=cartService;
     }
 
-    //購物車頁面
+    /**
+     * 進入購物車頁面
+     * @param session
+     * @param model
+     * @return
+     */
     @GetMapping(value = "")
     public String cart(HttpSession session, Model model) {
 
@@ -38,7 +43,12 @@ public class CartController {
         return "shopping-cart";
     }
 
-    //計算購物車商品總數和總金額(登入未登入皆可)
+    /**
+     * 計算購物車商品總數和總金額(登入未登入皆可)
+     * @param session
+     * @param myUUID 未登入下儲存購物車的redis key
+     * @return
+     */
     @GetMapping(value = "/getCartNumsAndPrice")
     @ResponseBody
     public Map<String,Integer> getNumsAndPrice(HttpSession session, @CookieValue(value = "myUUID",required = false)String myUUID){
@@ -59,7 +69,15 @@ public class CartController {
         return map;
     }
 
-    //添加某數量商品進購物車(登入未登入皆可)返回購物車商品總數和總金額供頁面更新
+    /**
+     * 添加某數量商品進購物車(登入未登入皆可)返回購物車商品總數和總金額供頁面更新
+     * @param session
+     * @param response
+     * @param id 商品id
+     * @param nums 添加商品的數量
+     * @param myUUID 未登入下儲存購物車的redis key
+     * @return
+     */
     @PostMapping(value = "/{id}/{nums}")
     @ResponseBody
     public Map<String,Integer> addToCart(HttpSession session, HttpServletResponse response,
@@ -99,7 +117,13 @@ public class CartController {
         return map;
     }
 
-    //更新數量(登入only在購物車頁面中)返回購物車商品總數和總金額供頁面更新
+    /**
+     * 更新數量(登入only在購物車頁面中)返回購物車商品總數和總金額供頁面更新
+     * @param session
+     * @param id 商品id
+     * @param nums 更新商品的數量
+     * @return
+     */
     @PutMapping(value = "/{id}/{nums}")
     @ResponseBody
     public Map<String,Integer> updateNums(HttpSession session, @PathVariable Integer id, @PathVariable Integer nums){
@@ -109,7 +133,12 @@ public class CartController {
         return cs.getNumsAndPrice(usersAccount);
     }
 
-    //刪除(登入only在購物車頁面中)返回購物車商品總數和總金額供頁面更新
+    /**
+     * 刪除(登入only在購物車頁面中)返回購物車商品總數和總金額供頁面更新
+     * @param session
+     * @param id 刪除商品的id
+     * @return
+     */
     @DeleteMapping(value = "/{id}")
     @ResponseBody
     public Map<String,Integer> deleteProduct(HttpSession session, @PathVariable Integer id){
