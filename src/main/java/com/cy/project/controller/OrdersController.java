@@ -35,14 +35,14 @@ public class OrdersController {
 
     /**
      * 產生初始化訂單(設定訂單商品明細放入session供儲存定單使用)進入check
-     * @param product 生成初始化訂單需要的商品
+     * @param productIdArray 生成初始化訂單需要的商品
      * @param session
      * @return
      */
     @GetMapping(value = "/check")
-    public String checkout(@RequestParam(value = "product[]") Integer[] product, HttpSession session) {
+    public String checkout(@RequestParam(value = "product[]") Integer[] productIdArray, HttpSession session) {
 
-        session.setAttribute("orders", os.getInitOrders((String) session.getAttribute("users"), product));
+        session.setAttribute("orders", os.getInitOrders((String) session.getAttribute("users"), productIdArray));
         return "checkout";
     }
 

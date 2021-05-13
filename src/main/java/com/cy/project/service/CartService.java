@@ -30,7 +30,7 @@ public class CartService {
 
     /**
      * 購物車購物車key商品總數和總金額
-     * @param redisKey
+     * @param redisKey 帳號或UUID
      * @return
      */
     public Map<String, Integer> getNumsAndPrice(String redisKey) {
@@ -51,7 +51,7 @@ public class CartService {
 
     /**
      * 購物車內商品
-     * @param redisKey
+     * @param redisKey 帳號或UUID
      * @return
      */
     public List<CartItem> getCart(String redisKey) {
@@ -84,49 +84,49 @@ public class CartService {
     /**
      * 增加商品到購物車ForUsersAccount
      * @param redisKey
-     * @param id 商品id
-     * @param nums 增加商品數量
+     * @param productId 商品id
+     * @param addNums 增加商品數量
      */
-    public void addToCartForUsersAccount(String redisKey, Integer id, Integer nums) {
+    public void addToCartForUsersAccount(String redisKey, Integer productId, Integer addNums) {
 
         CartItem item;
-        if (hashOperations.hasKey(redisKey, String.valueOf(id))) {
-            item = hashOperations.get(redisKey, String.valueOf(id));
-            item.setCount(item.getCount() + nums);
+        if (hashOperations.hasKey(redisKey, String.valueOf(productId))) {
+            item = hashOperations.get(redisKey, String.valueOf(productId));
+            item.setCount(item.getCount() + addNums);
         } else {
-            Product product = pr.findById(id).orElse(null);
+            Product product = pr.findById(productId).orElse(null);
             item = new CartItem();
             item.setProduct(product);
-            item.setCount(nums);
+            item.setCount(addNums);
         }
 
         item.setSubTotalPrice(item.getProduct().getProductPrice() * item.getCount());
 
-        hashOperations.put(redisKey, String.valueOf(id), item);
+        hashOperations.put(redisKey, String.valueOf(productId), item);
     }
 
     /**
      * 增加商品到購物車ForUUID,儲存時間5分鐘
      * @param redisKey
-     * @param id 商品id
-     * @param nums 增加商品數量
+     * @param productId 商品id
+     * @param addNums 增加商品數量
      */
-    public void addToCartForUUID(String redisKey, Integer id, Integer nums) {
+    public void addToCartForUUID(String redisKey, Integer productId, Integer addNums) {
 
         CartItem item;
-        if (hashOperations.hasKey(redisKey, String.valueOf(id))) {
-            item = hashOperations.get(redisKey, String.valueOf(id));
-            item.setCount(item.getCount() + nums);
+        if (hashOperations.hasKey(redisKey, String.valueOf(productId))) {
+            item = hashOperations.get(redisKey, String.valueOf(productId));
+            item.setCount(item.getCount() + addNums);
         } else {
-            Product product = pr.findById(id).orElse(null);
+            Product product = pr.findById(productId).orElse(null);
             item = new CartItem();
             item.setProduct(product);
-            item.setCount(nums);
+            item.setCount(addNums);
         }
 
         item.setSubTotalPrice(item.getProduct().getProductPrice() * item.getCount());
 
-        hashOperations.put(redisKey, String.valueOf(id), item);
+        hashOperations.put(redisKey, String.valueOf(productId), item);
 
         //未登入設定儲存時間
         redisTemplate.expire(redisKey, 5, TimeUnit.MINUTES);
@@ -135,39 +135,39 @@ public class CartService {
     /**
      * 更新購物車商品數量
      * @param redisKey
-     * @param id 商品id
-     * @param nums 更新商品數量
+     * @param productId 商品id
+     * @param updateNums 更新商品數量
      */
-    public void updateNumsToCart(String redisKey, Integer id, Integer nums) {
+    public void updateNumsToCart(String redisKey, Integer productId, Integer updateNums) {
 
-        CartItem item = hashOperations.get(redisKey, String.valueOf(id));
+        CartItem item = hashOperations.get(redisKey, String.valueOf(productId));
 
-        item.setCount(nums);
+        item.setCount(updateNums);
 
-        item.setSubTotalPrice(item.getProduct().getProductPrice() * nums);
+        item.setSubTotalPrice(item.getProduct().getProductPrice() * updateNums);
 
-        hashOperations.put(redisKey, String.valueOf(id), item);
+        hashOperations.put(redisKey, String.valueOf(productId), item);
     }
 
     /**
      * 刪除購物車商品
      * @param redisKey
-     * @param id 刪除商品的id
+     * @param productId 刪除商品的id
      */
-    public void deleteProductToCart(String redisKey, Integer id) {
+    public void deleteProductToCart(String redisKey, Integer productId) {
 
-        hashOperations.delete(redisKey, String.valueOf(id));
+        hashOperations.delete(redisKey, String.valueOf(productId));
     }
 
     /**
      * 刪除購物車多個商品
      * @param redisKey
-     * @param list 刪除商品的id集合
+     * @param productIdList 刪除商品的id集合
      */
-    public void deleteProducts(String redisKey,List<Integer> list){
+    public void deleteProducts(String redisKey,List<Integer> productIdList){
 
-        for (Integer id: list) {
-            hashOperations.delete(redisKey, String.valueOf(id));
+        for (Integer productId: productIdList) {
+            hashOperations.delete(redisKey, String.valueOf(productId));
         }
     }
 }

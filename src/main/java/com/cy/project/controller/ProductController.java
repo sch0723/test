@@ -20,14 +20,14 @@ public class ProductController {
 
     /**
      * 進入商品頁面
-     * @param id 商品id
+     * @param productId 商品id
      * @param model
      * @return
      */
-    @GetMapping(value = "/product/{id}")
-    public String productById(@PathVariable Integer id,Model model) {
+    @GetMapping(value = "/product/{productId}")
+    public String productById(@PathVariable Integer productId,Model model) {
 
-        Product product = ps.findByProductId(id).orElse(null);
+        Product product = ps.findByProductId(productId).orElse(null);
 
         model.addAttribute("product",product);
 

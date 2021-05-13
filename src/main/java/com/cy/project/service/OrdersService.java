@@ -71,17 +71,17 @@ public class OrdersService {
     /**
      * 初始化訂單(設定訂單商品明細)
      * @param usersAccount 帳號
-     * @param arrayId 初始化訂單需要的商品id
+     * @param productIdArray 初始化訂單需要的商品id
      * @return
      */
-    public Orders getInitOrders(String usersAccount,Integer[] arrayId){
+    public Orders getInitOrders(String usersAccount,Integer[] productIdArray){
 
         Orders orders=new Orders();
         Set<OrdersDetail> ordersDetailSet = new HashSet<>();
 
 
         int SumPrice=0;
-        for (Integer id : arrayId) {
+        for (Integer id : productIdArray) {
             Product product=pr.findById(id).orElse(null);
             HashOperations<String, String, CartItem> opsForHash = redisTemplate.opsForHash();
 
@@ -105,16 +105,16 @@ public class OrdersService {
 
     /**
      * 生成綠界表單
-     * @param id 訂單id
+     * @param ordersId 訂單id
      * @return
      */
     @Transactional
-    public String genAioCheckOutALL(Integer id){
+    public String genAioCheckOutALL(Integer ordersId){
         AllInOne all = new AllInOne("");
 
         AioCheckOutALL obj = new AioCheckOutALL();
 
-        Orders order = or.findById(id).orElse(null);
+        Orders order = or.findById(ordersId).orElse(null);
 
         if (order.getOrdersState()!=0){
             return "";
@@ -142,13 +142,13 @@ public class OrdersService {
 
     /**
      * 更改訂單狀態為已結帳
-     * @param id 訂單id
+     * @param ordersId 訂單id
      * @return
      */
     @Transactional
-    public Orders confirmPay(int id) {
+    public Orders confirmPay(int ordersId) {
 
-        Orders order = or.findById(id).orElse(null);
+        Orders order = or.findById(ordersId).orElse(null);
         order.setOrdersState(1);
 //        order = or.save(order);
 
@@ -172,13 +172,13 @@ public class OrdersService {
 
     /**
      * 檢查訂單狀態未繳費設定為過期
-     * @param id 訂單id
+     * @param ordersId 訂單id
      * @return
      */
     @Transactional
-    public boolean checkOrdersExpiration(Integer id){
+    public boolean checkOrdersExpiration(Integer ordersId){
 
-        Orders orders = or.findById(id).orElse(null);
+        Orders orders = or.findById(ordersId).orElse(null);
 
         if (orders.getOrdersState()==0){
             orders.setOrdersState(3);

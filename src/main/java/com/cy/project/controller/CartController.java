@@ -73,15 +73,15 @@ public class CartController {
      * 添加某數量商品進購物車(登入未登入皆可)返回購物車商品總數和總金額供頁面更新
      * @param session
      * @param response
-     * @param id 商品id
-     * @param nums 添加商品的數量
+     * @param productId 商品id
+     * @param addNums 添加商品的數量
      * @param myUUID 未登入下儲存購物車的redis key
      * @return
      */
-    @PostMapping(value = "/{id}/{nums}")
+    @PostMapping(value = "/{productId}/{addNums}")
     @ResponseBody
     public Map<String,Integer> addToCart(HttpSession session, HttpServletResponse response,
-                                         @PathVariable Integer id, @PathVariable Integer nums,
+                                         @PathVariable Integer productId, @PathVariable Integer addNums,
                                          @CookieValue(value = "myUUID",required = false)String myUUID){
 
         String usersAccount = (String)session.getAttribute("users");
@@ -90,7 +90,7 @@ public class CartController {
 
         //登入
         if(usersAccount!=null){
-            cs.addToCartForUsersAccount(usersAccount, id, nums);
+            cs.addToCartForUsersAccount(usersAccount, productId, addNums);
             map=cs.getNumsAndPrice(usersAccount);
 
         //未登入有UUID
@@ -100,7 +100,7 @@ public class CartController {
             if (!myUUID.matches(regex)) {
                 return null;
             }
-            cs.addToCartForUUID(myUUID, id, nums);
+            cs.addToCartForUUID(myUUID, productId, addNums);
             map=cs.getNumsAndPrice(myUUID);
 
         //未登入也沒有UUID,產生UUID存cookie
@@ -110,7 +110,7 @@ public class CartController {
             cookie.setPath("/");
             response.addCookie(cookie);
 
-            cs.addToCartForUUID(myUUID, id, nums);
+            cs.addToCartForUUID(myUUID, productId, addNums);
             map=cs.getNumsAndPrice(myUUID);
         }
 
@@ -120,31 +120,31 @@ public class CartController {
     /**
      * 更新數量(登入only在購物車頁面中)返回購物車商品總數和總金額供頁面更新
      * @param session
-     * @param id 商品id
-     * @param nums 更新商品的數量
+     * @param productId 商品id
+     * @param updateNums 更新商品的數量
      * @return
      */
-    @PutMapping(value = "/{id}/{nums}")
+    @PutMapping(value = "/{productId}/{updateNums}")
     @ResponseBody
-    public Map<String,Integer> updateNums(HttpSession session, @PathVariable Integer id, @PathVariable Integer nums){
+    public Map<String,Integer> updateNums(HttpSession session, @PathVariable Integer productId, @PathVariable Integer updateNums){
 
         String usersAccount = (String)session.getAttribute("users");
-        cs.updateNumsToCart(usersAccount, id, nums);
+        cs.updateNumsToCart(usersAccount, productId, updateNums);
         return cs.getNumsAndPrice(usersAccount);
     }
 
     /**
      * 刪除(登入only在購物車頁面中)返回購物車商品總數和總金額供頁面更新
      * @param session
-     * @param id 刪除商品的id
+     * @param productId 刪除商品的id
      * @return
      */
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/{productId}")
     @ResponseBody
-    public Map<String,Integer> deleteProduct(HttpSession session, @PathVariable Integer id){
+    public Map<String,Integer> deleteProduct(HttpSession session, @PathVariable Integer productId){
 
         String usersAccount = (String)session.getAttribute("users");
-        cs.deleteProductToCart(usersAccount, id);
+        cs.deleteProductToCart(usersAccount, productId);
         return cs.getNumsAndPrice(usersAccount);
     }
 }
