@@ -2,6 +2,7 @@ package com.cy.project.service;
 
 
 import com.cy.project.entity.Product;
+import com.cy.project.enumeration.ProductSortEnum;
 import com.cy.project.repository.ProductRepository;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.Test;
@@ -176,5 +177,13 @@ public class ProductTest {
 
 
 
+    }
+
+    @Test
+    void test8(){
+        String str="DEFAULT";
+        ProductSortEnum sortEnum = ProductSortEnum.valueOf(str);
+        System.out.println(sortEnum.getSortBy());
+        System.out.println(sortEnum.getSortType());
     }
 }

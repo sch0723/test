@@ -3,6 +3,7 @@ package com.cy.project.service;
 import com.cy.project.entity.Orders;
 import com.cy.project.entity.OrdersDetail;
 import com.cy.project.entity.Users;
+import com.cy.project.enumeration.OrdersStateEnum;
 import com.cy.project.repository.OrdersDetailRepository;
 import com.cy.project.repository.OrdersRepository;
 import org.junit.jupiter.api.Test;
@@ -93,5 +94,12 @@ public class OrdersTest {
         System.out.println(s);
 //        os.confirmPay(42);
 
+    }
+
+    @Test
+    public void test3() {
+        for (OrdersStateEnum ordersState : OrdersStateEnum.values()) {
+            System.out.println(ordersState);
+        }
     }
 }

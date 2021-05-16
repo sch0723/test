@@ -42,7 +42,7 @@ public class ProductController {
     @GetMapping(value = "/product")
     public String index(Model model) {
 
-        Page<Product> page = ps.findBySortPage("productIdASC", 0);
+        Page<Product> page = ps.findBySortPage("DEFAULT", 0);
 
         model.addAttribute("pageData",page);
         model.addAttribute("search","all");
@@ -59,7 +59,7 @@ public class ProductController {
     @GetMapping(value = "/category/{category}")
     public String category(@PathVariable String category,Model model) {
 
-        Page<Product> page = ps.findByCategorySortPage(category, "productIdASC", 0);
+        Page<Product> page = ps.findByCategorySortPage(category, "DEFAULT", 0);
 
         model.addAttribute("pageData",page);
         model.addAttribute("search",category);

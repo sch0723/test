@@ -2,7 +2,7 @@
 
 var keywords="";
 var search = $("#search").val();
-var sort = "Default";
+var sort = "DEFAULT";
 var page = 1;
 var d = $("#getKeys").val();
 if (d) {

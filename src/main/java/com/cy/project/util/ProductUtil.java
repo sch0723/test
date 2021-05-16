@@ -1,5 +1,6 @@
 package com.cy.project.util;
 
+import com.cy.project.enumeration.ProductSortEnum;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -10,23 +11,16 @@ public class ProductUtil {
 
     public static Pageable getPageable(String sort, Integer pageIndex){
 
-        String sortType = "ASC";
-        String sortBy = "productId";
-        if ("PriceDESC".equals(sort)) {
-            sortType = "DESC";
-            sortBy = "productPrice";
+        ProductSortEnum sortEnum = ProductSortEnum.valueOf(sort);
 
-        } else if ("PriceASC".equals(sort)) {
-            sortType = "ASC";
-            sortBy = "productPrice";
+        Sort mySort=null;
+        if("DESC".equals(sortEnum.getSortType())){
+            mySort = Sort.by(sortEnum.getSortBy()).descending();
+        }else if("ASC".equals(sortEnum.getSortType())){
+            mySort = Sort.by(sortEnum.getSortBy()).ascending();
         }
 
-        Sort mySort;
-        if("DESC".equals(sortType)){
-            mySort = Sort.by(sortBy).descending();
-        }else {
-            mySort = Sort.by(sortBy).ascending();
-        }
+
         return PageRequest.of(pageIndex, PAGESIZE, mySort);
     }
 }
