@@ -1,13 +1,20 @@
 package com.cy.project.util;
 
 import com.cy.project.enumeration.ProductSortEnum;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ProductUtil {
     //每頁商品數目
-    private static final int PAGESIZE = 12;
+    private static int pageSize;
+    @Value("${page.size}")
+    public void setPageSize(int pageSize) {
+        ProductUtil.pageSize = pageSize;
+    }
 
     public static Pageable getPageable(String sort, Integer pageIndex){
 
@@ -21,6 +28,6 @@ public class ProductUtil {
         }
 
 
-        return PageRequest.of(pageIndex, PAGESIZE, mySort);
+        return PageRequest.of(pageIndex, pageSize, mySort);
     }
 }

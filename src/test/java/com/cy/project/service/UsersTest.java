@@ -15,6 +15,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import javax.sql.DataSource;
 import java.util.Map;
+import java.util.TimeZone;
 
 @SpringBootTest
 public class UsersTest {
@@ -50,10 +51,16 @@ public class UsersTest {
 
 
 
-        System.out.println(appContext.getEnvironment().getProperty("user.timezone"));
-        for (Map.Entry en : System.getProperties().entrySet()) {
+//        System.out.println(appContext.getEnvironment().getProperty("user.timezone"));
+        for (String en : appContext.getBeanDefinitionNames()) {
             System.out.println(en);
         }
+//        System.out.println(TimeZone.getDefault());
+//        for (String str : TimeZone.getAvailableIDs()) {
+//            System.out.println(str);
+//        }
+
+
 
     }
 

@@ -34,7 +34,7 @@ public class OrdersService {
     @Resource
     private RedisTemplate<String, CartItem> redisTemplate;
 
-    private StringRedisTemplate stringRedisTemplate;
+    private final StringRedisTemplate stringRedisTemplate;
 
     private final OrdersRepository or;
 
