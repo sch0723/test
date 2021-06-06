@@ -16,10 +16,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.*;
 import javax.sound.midi.Soundbank;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +32,8 @@ public class ProductTest {
     private ProductRepository pr;
     @Autowired
     private ProductService ps;
+    @Autowired
+    private EntityManager entityManager;
 
     @Test
     void test1() {
@@ -181,9 +181,46 @@ public class ProductTest {
 
     @Test
     void test8(){
-        String str="DEFAULT";
-        ProductSortEnum sortEnum = ProductSortEnum.valueOf(str);
-        System.out.println(sortEnum.getSortBy());
-        System.out.println(sortEnum.getSortType());
+
+        String[] strs=new String[]{"海","賊","王"};
+        int pageSize=12;
+        int pageIndex=3;
+
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+
+        Root<Product> root = criteriaQuery.from(Product.class);
+
+        ArrayList<Predicate> predicateArrayList = new ArrayList<>();
+
+        for (String str : strs) {
+            predicateArrayList.add(criteriaBuilder.like(root.get("productName"),"%"+str+"%"));
+        }
+
+        Path<Long> productName = root.get( "productName" );
+        Path<String> productPrice = root.get( "productPrice");
+
+        criteriaQuery.select(criteriaBuilder.array( productName, productPrice ));
+        criteriaQuery.where(predicateArrayList.toArray(new Predicate[0]));
+        criteriaQuery.orderBy(criteriaBuilder.desc(root.get("productPrice")));
+
+        List<Object[]> resultList = entityManager.createQuery(criteriaQuery).setFirstResult((pageIndex-1)*pageSize).setMaxResults(pageSize).getResultList();
+
+        for (Object[] product : resultList) {
+            for (Object p : product) {
+
+                System.out.println(p);
+            }
+//            System.out.println(product);
+        }
+
+//        List<Product> resultList = entityManager.createQuery(criteriaQuery).setFirstResult((pageIndex-1)*pageSize).setMaxResults(pageSize).getResultList();
+//
+//        for (Product product : resultList) {
+//            System.out.println(product.getProductName()+"="+product.getProductPrice());;
+//        }
+
+
     }
 }

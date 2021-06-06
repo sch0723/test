@@ -7,13 +7,17 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Users implements Serializable {
 
 	private static final long serialVersionUID = 7971373323053352652L;
@@ -34,4 +38,9 @@ public class Users implements Serializable {
 
 	@OneToMany(mappedBy = "users",cascade = {CascadeType.MERGE,CascadeType.PERSIST})
 	private List<Orders> usersOrders = new ArrayList<>();
+
+	public Users(String usersAccount, String usersPwd) {
+		this.usersAccount = usersAccount;
+		this.usersPwd = usersPwd;
+	}
 }

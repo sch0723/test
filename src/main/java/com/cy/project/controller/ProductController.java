@@ -90,7 +90,7 @@ public class ProductController {
             pageIndex=1;
         }
 
-        Page<Product> page = ps.findByKeywordsSortPage(strArr, sort, pageIndex-1);
+        Page<Product> page = ps.findByKeywordsSortPage(strArr, "DEFAULT", pageIndex-1);
         model.addAttribute("pageData",page);
         model.addAttribute("search","keys");
         model.addAttribute("getKeys",keywords);
