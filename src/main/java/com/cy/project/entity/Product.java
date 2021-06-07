@@ -1,6 +1,8 @@
 package com.cy.project.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -13,6 +15,8 @@ import javax.persistence.*;
 @Table
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product implements Serializable {
 
 	private static final long serialVersionUID = 2982227680155473789L;
@@ -34,6 +38,10 @@ public class Product implements Serializable {
 	@Temporal(value = TemporalType.TIMESTAMP)
 	private Date productDate;
 
+	public Product(String productName, Integer productPrice) {
+		this.productName = productName;
+		this.productPrice = productPrice;
+	}
 //	@OneToMany(mappedBy = "product")
 //	private Set<Cart> productCart = new HashSet<>();
 //

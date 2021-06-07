@@ -188,7 +188,7 @@ public class ProductTest {
 
 
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+        CriteriaQuery<Product> criteriaQuery = criteriaBuilder.createQuery(Product.class);
 
         Root<Product> root = criteriaQuery.from(Product.class);
 
@@ -201,26 +201,14 @@ public class ProductTest {
         Path<Long> productName = root.get( "productName" );
         Path<String> productPrice = root.get( "productPrice");
 
-        criteriaQuery.select(criteriaBuilder.array( productName, productPrice ));
+        criteriaQuery.select(criteriaBuilder.construct(Product.class,productName,productPrice));
         criteriaQuery.where(predicateArrayList.toArray(new Predicate[0]));
         criteriaQuery.orderBy(criteriaBuilder.desc(root.get("productPrice")));
 
-        List<Object[]> resultList = entityManager.createQuery(criteriaQuery).setFirstResult((pageIndex-1)*pageSize).setMaxResults(pageSize).getResultList();
+        List<Product> resultList = entityManager.createQuery(criteriaQuery).setFirstResult((pageIndex-1)*pageSize).setMaxResults(pageSize).getResultList();
 
-        for (Object[] product : resultList) {
-            for (Object p : product) {
-
-                System.out.println(p);
-            }
-//            System.out.println(product);
+        for (Product product : resultList) {
+            System.out.println(product.getProductId()+":"+product.getProductName()+":"+product.getProductPrice()+":"+product.getProductNumsOfSale());
         }
-
-//        List<Product> resultList = entityManager.createQuery(criteriaQuery).setFirstResult((pageIndex-1)*pageSize).setMaxResults(pageSize).getResultList();
-//
-//        for (Product product : resultList) {
-//            System.out.println(product.getProductName()+"="+product.getProductPrice());;
-//        }
-
-
     }
 }
