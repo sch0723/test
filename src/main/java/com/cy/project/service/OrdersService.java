@@ -176,16 +176,13 @@ public class OrdersService {
      * @return
      */
     @Transactional
-    public boolean checkOrdersExpiration(Integer ordersId){
+    public void checkOrdersExpiration(Integer ordersId){
 
         Orders orders = or.findById(ordersId).orElse(null);
 
         if (orders.getOrdersState()==0){
-            orders.setOrdersState(3);
-            return false;
+            or.setOrdersState(1, ordersId);
         }
-
-        return true;
     }
 
     /**
