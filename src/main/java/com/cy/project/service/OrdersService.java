@@ -175,13 +175,13 @@ public class OrdersService {
      * @param ordersId 訂單id
      * @return
      */
-    @Transactional
+//    @Transactional
     public void checkOrdersExpiration(Integer ordersId){
 
         Orders orders = or.findById(ordersId).orElse(null);
 
         if (orders.getOrdersState()==0){
-            or.setOrdersState(1, ordersId);
+            or.setOrdersState(3, ordersId);
         }
     }
 

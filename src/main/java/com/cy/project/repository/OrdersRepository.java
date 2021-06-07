@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ public interface OrdersRepository extends JpaRepository<Orders,Integer> {
     List<Orders> findOrdersByUsers_UsersAccount(String usersAccount);
 
     @Modifying
+    @Transactional
     @Query("UPDATE Orders o SET o.ordersState =:ordersState WHERE o.ordersId=:ordersId")
     int setOrdersState(int ordersState ,int ordersId);
 }
