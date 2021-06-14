@@ -17,9 +17,11 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.criteria.*;
 import javax.sound.midi.Soundbank;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -77,7 +79,7 @@ public class ProductTest {
     }
 
 
-    @org.junit.jupiter.api.Test
+    @Test
     void test2() {
 
         int pageIndex = 0;
@@ -185,6 +187,7 @@ public class ProductTest {
         String[] strs=new String[]{"海","賊","王"};
         int pageSize=12;
         int pageIndex=3;
+        String sort="DEFAULT";
 
 
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -197,15 +200,82 @@ public class ProductTest {
         for (String str : strs) {
             predicateArrayList.add(criteriaBuilder.like(root.get("productName"),"%"+str+"%"));
         }
-
+        new HashMap<>();
         Path<Long> productName = root.get( "productName" );
         Path<String> productPrice = root.get( "productPrice");
 
         criteriaQuery.select(criteriaBuilder.construct(Product.class,productName,productPrice));
         criteriaQuery.where(predicateArrayList.toArray(new Predicate[0]));
-        criteriaQuery.orderBy(criteriaBuilder.desc(root.get("productPrice")));
+
+        ProductSortEnum productSortEnum = ProductSortEnum.valueOf(sort);
+        if (productSortEnum.getSortType().equals("ASC")){
+            criteriaQuery.orderBy(criteriaBuilder.asc(root.get(productSortEnum.getSortBy())));
+        }else if(productSortEnum.getSortType().equals("DESC")){
+            criteriaQuery.orderBy(criteriaBuilder.desc(root.get(productSortEnum.getSortBy())));
+        }
+
 
         List<Product> resultList = entityManager.createQuery(criteriaQuery).setFirstResult((pageIndex-1)*pageSize).setMaxResults(pageSize).getResultList();
+
+        for (Product product : resultList) {
+            System.out.println(product.getProductId()+":"+product.getProductName()+":"+product.getProductPrice()+":"+product.getProductNumsOfSale());
+        }
+    }
+
+    @Test
+    void test9(){
+
+        String[] strs=new String[]{"海","賊","王"};
+        int pageSize=12;
+        int pageIndex=3;
+        String sort="DEFAULT";
+
+        StringBuffer buffer = new StringBuffer("SELECT p FROM Product p ");
+        for (int i = 0 ; i<strs.length ; i++){
+            if(i==0){
+                buffer.append("WHERE productName like "+"'%"+strs[i]+"%' ");
+            }else {
+                buffer.append("AND productName like "+"'%"+strs[i]+"%' ");
+            }
+        }
+
+        ProductSortEnum productSortEnum = ProductSortEnum.valueOf(sort);
+        buffer.append("ORDER BY "+productSortEnum.getSortBy()+" "+productSortEnum.getSortType());
+
+        System.out.println(buffer.toString());
+
+        List<Product> resultList = entityManager.createQuery(buffer.toString()).setFirstResult((pageIndex-1)*pageSize).setMaxResults(pageSize).getResultList();
+
+        for (Product product : resultList) {
+            System.out.println(product.getProductId()+":"+product.getProductName()+":"+product.getProductPrice()+":"+product.getProductNumsOfSale());
+        }
+    }
+
+    @Test
+    void test10(){
+
+        String[] strs=new String[]{"海","賊","王"};
+        int pageSize=12;
+        int pageIndex=3;
+        String sort="DEFAULT";
+
+        StringBuffer buffer = new StringBuffer("SELECT p FROM Product p WHERE 1=1 ");
+        for (int i = 0 ; i<strs.length ; i++){
+            buffer.append("AND p.productName like :str"+(i+1)+" ");
+        }
+        buffer.append("ORDER BY :sort");
+
+        System.out.println(buffer.toString());
+
+        Query query = entityManager.createQuery(buffer.toString());
+        for (int i = 0; i<strs.length;i++){
+            query.setParameter("str"+(i+1),"%"+strs[i]+"%");
+        }
+        ProductSortEnum productSortEnum = ProductSortEnum.valueOf(sort);
+        query.setParameter("sort",productSortEnum.getSortBy()+" "+productSortEnum.getSortType());
+
+
+        List<Product> resultList = query.setFirstResult((pageIndex-1)*pageSize).setMaxResults(pageSize).getResultList();
 
         for (Product product : resultList) {
             System.out.println(product.getProductId()+":"+product.getProductName()+":"+product.getProductPrice()+":"+product.getProductNumsOfSale());
