@@ -204,8 +204,8 @@ public class ProductTest {
         Path<Long> productName = root.get( "productName" );
         Path<String> productPrice = root.get( "productPrice");
 
-        criteriaQuery.select(criteriaBuilder.construct(Product.class,productName,productPrice));
-        criteriaQuery.where(predicateArrayList.toArray(new Predicate[0]));
+        criteriaQuery.select(criteriaBuilder.construct(Product.class,productName,productPrice))
+                     .where(predicateArrayList.toArray(new Predicate[0]));
 
         ProductSortEnum productSortEnum = ProductSortEnum.valueOf(sort);
         if (productSortEnum.getSortType().equals("ASC")){
