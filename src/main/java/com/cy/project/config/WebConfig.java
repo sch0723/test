@@ -19,6 +19,12 @@ public class WebConfig implements WebMvcConfigurer {
 //    public void addInterceptors(InterceptorRegistry registry) {
 //
 //        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/cart","/check","/myOrders","/createOrders");
+    //        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/cart","/check","/myOrders","/createOrders");
+    //        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/cart","/check","/myOrders","/createOrders");
+    //        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/cart","/check","/myOrders","/createOrders");
+    //        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/cart","/check","/myOrders","/createOrders");
+    //        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/cart","/check","/myOrders","/createOrders");
+    //        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/cart","/check","/myOrders","/createOrders");
 //    }
 
     @Override
