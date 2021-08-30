@@ -15,11 +15,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
         registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/cart","/check","/myOrders","/createOrders");
     }
+
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//
+//        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/cart","/check","/myOrders","/createOrders");
+//     registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/cart","/check","/myOrders","/createOrders");
+//    }
+
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
